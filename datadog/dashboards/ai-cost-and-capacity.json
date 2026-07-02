@@ -1,0 +1,59 @@
+{
+  "title": "AI Cost and Capacity — Order Support & Returns Assistant",
+  "description": "Template dashboard (import via Datadog UI/API). Token usage, cost by model/provider, quota utilisation, budget burn, fallback cost. Adapt metric names to your actual instrumentation — see ../README.md.",
+  "layout_type": "ordered",
+  "status": "implemented_in_demo",
+  "widgets": [
+    {
+      "definition": {
+        "type": "query_value",
+        "title": "Forecasted monthly run-rate",
+        "requests": [{ "q": "sum:genai.workflow.cost_usd{*}.as_count() * (30 / query_window_days())" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "query_value",
+        "title": "Budget burn %",
+        "requests": [{
+          "formula": "query_a / query_b * 100",
+          "queries": [
+            { "name": "query_a", "query": "cumsum(sum:genai.workflow.cost_usd{*}.as_count())" },
+            { "name": "query_b", "query": "monthly_cost_budget_usd" }
+          ]
+        }]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Token usage — input vs output",
+        "requests": [
+          { "q": "sum:genai.llm.tokens{token_type:input}.as_count()" },
+          { "q": "sum:genai.llm.tokens{token_type:output}.as_count()" }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Cost by model",
+        "requests": [{ "q": "sum:genai.llm.call.count{*} by {model}.as_count()", "display_type": "bars" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Provider quota utilisation %",
+        "requests": [{ "formula": "query_a / daily_llm_call_quota * 100", "queries": [{ "name": "query_a", "query": "sum:genai.llm.call.count{*}.as_count()" }] }]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Fallback-model cost uplift",
+        "requests": [{ "q": "sum:genai.llm.call.count{model:claude-3-5-haiku}.as_count() * avg:genai.llm.cost_per_call_usd{model:claude-3-5-haiku}", "display_type": "bars" }]
+      }
+    }
+  ]
+}

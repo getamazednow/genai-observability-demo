@@ -1,0 +1,63 @@
+{
+  "title": "AI Engineering Operations — Order Support & Returns Assistant",
+  "description": "Template dashboard (import via Datadog UI/API). Trace-level operational view: latency decomposition by layer, error/retry/timeout rate, rate-limit events. Adapt metric names to your actual instrumentation — see ../README.md.",
+  "layout_type": "ordered",
+  "status": "implemented_in_demo",
+  "widgets": [
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Latency by layer (P95)",
+        "requests": [
+          { "q": "p95:genai.llm.latency_ms{*} by {model}" },
+          { "q": "p95:genai.retrieval.latency_ms{*}" },
+          { "q": "p95:genai.tool.latency_ms{*} by {tool_name}" }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "End-to-end latency percentiles",
+        "requests": [
+          { "q": "p50:genai.workflow.latency_ms{*}" },
+          { "q": "p95:genai.workflow.latency_ms{*}" },
+          { "q": "p99:genai.workflow.latency_ms{*}" }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "LLM error / retry / tool error rate (%)",
+        "requests": [
+          { "formula": "query_a / query_b * 100", "queries": [
+            { "name": "query_a", "query": "sum:genai.llm.call.count{status:error} by {model}.as_count()" },
+            { "name": "query_b", "query": "sum:genai.llm.call.count{*} by {model}.as_count()" }
+          ]}
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Provider rate-limit events",
+        "requests": [{ "q": "sum:genai.llm.call.count{finish_reason:rate_limit_error} by {provider}.as_count()", "display_type": "bars" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Agent loop / replanning events",
+        "requests": [{ "q": "sum:genai.agent.loop_count{*}.as_count()", "display_type": "bars" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "trace_service",
+        "title": "Trace waterfall — representative workflow (use APM trace explorer / LLM Observability trace view)",
+        "notes": "In a live implementation this widget is replaced by Datadog's native LLM Observability trace view, not a custom query — see https://docs.datadoghq.com/llm_observability/monitoring/agent_monitoring/"
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+%% Mock to Real: What Changes, What Carries Over
+%% Source: docs/datadog-mapping.md -- "What would change to go from mock to real" (5 steps)
+flowchart LR
+    subgraph M["THIS DEMO (mock)"]
+        direction TB
+        M1["1. Python generator scripts<br/>data/generator/*.py"]
+        M2["2. aggregate_dashboard_summary.py<br/>local rollup logic"]
+        M3["3. Static dashboard/ app<br/>reads local JSON"]
+        M4["4. Monitor / SLO JSON<br/>definitions only, not wired"]
+        M5["5. Synthetic eval-harness series<br/>groundedness, hallucination, etc."]
+    end
+
+    subgraph R["PRODUCTION (real)"]
+        direction TB
+        R1["Datadog LLM/Agent Obs SDK<br/>or OpenTelemetry GenAI semconv"]
+        R2["Datadog dashboard widget<br/>queries (same aggregations)"]
+        R3["Native Datadog dashboards<br/>from datadog/dashboards/*.json"]
+        R4["Live monitors + SLOs wired to<br/>real on-call / PagerDuty / Slack"]
+        R5["Real eval harness: LLM-as-judge +<br/>human review + golden sets"]
+    end
+
+    M1 --> R1
+    M2 --> R2
+    M3 --> R3
+    M4 --> R4
+    M5 --> R5
+
+    classDef mockNode fill:#DCF2F0,stroke:#1F9E97,color:#16213E
+    classDef realNode fill:#F7DDDA,stroke:#C0392B,color:#16213E
+    class M1,M2,M3,M4,M5 mockNode
+    class R1,R2,R3,R4,R5 realNode

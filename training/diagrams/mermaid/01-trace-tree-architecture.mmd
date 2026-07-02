@@ -1,0 +1,31 @@
+%% Observability Trace-Tree Architecture
+%% Every workflow is one trace: request -> policy -> context -> retrieval -> planning -> model -> tool -> evaluation -> approval -> outcome
+%% Source: Metrics Catalogue v1.0, section 1
+flowchart TD
+    A["User Request<br/><small>workflow_id . use_case . tenant . channel . risk_tier</small>"]
+    B["Policy / Guardrail Check<br/><small>policy_name . evaluator . allow / block / escalate</small>"]
+    C["Context Assembly<br/><small>session state . user profile . conversation history</small>"]
+    D["Retrieval<br/><small>retriever . top_k . source_authority . relevance_score</small>"]
+    E["Planning<br/><small>step decomposition . tool selection</small>"]
+    F["Model Call(s)<br/><small>provider . model . tokens . cost . latency . finish_reason</small>"]
+    G["Tool Call(s)<br/><small>tool_name . risk_class . approval_required . read/write</small>"]
+    H["Evaluator / Guardrail Check<br/><small>groundedness . citation accuracy . toxicity</small>"]
+    I{"Human Approval<br/>required?"}
+    J["Final Outcome<br/><small>resolved . escalated_human . blocked_policy . failed</small>"]
+
+    A --> B --> C --> D --> E --> F --> G --> H --> I
+    I -- yes --> K["Human reviewer approves / rejects"] --> J
+    I -- no --> J
+
+    classDef req fill:#0F3460,stroke:#16213E,color:#fff
+    classDef guard fill:#1F9E97,stroke:#16213E,color:#fff
+    classDef mid fill:#3E5C76,stroke:#16213E,color:#fff
+    classDef human fill:#E0982A,stroke:#16213E,color:#fff
+    classDef out fill:#16213E,stroke:#16213E,color:#fff
+
+    class A req
+    class B,H guard
+    class C,D,E mid
+    class F,G req
+    class I,K human
+    class J out

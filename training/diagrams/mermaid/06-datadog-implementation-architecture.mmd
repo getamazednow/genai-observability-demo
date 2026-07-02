@@ -1,0 +1,30 @@
+%% Target Datadog Implementation Architecture
+%% Layered view: instrumentation -> ingestion -> platform -> consumption -> action, governance as an overlay
+flowchart TB
+    L1["INSTRUMENTATION<br/>Agent/App code . Datadog LLM & Agent Observability SDK . OpenTelemetry GenAI semantic conventions"]
+    L2["INGESTION<br/>Datadog Agent . OTel Collector . API/Intake endpoints (traces, spans, logs, metrics)"]
+    L3["DATADOG PLATFORM<br/>LLM Observability . APM . Log Management . Metrics . Sensitive Data Scanner . Managed/Custom Evaluations"]
+    L4["CONSUMPTION<br/>Dashboards-as-code (datadog/dashboards) . Notebooks . Monitors (datadog/monitors) . SLOs (datadog/slos)"]
+    L5["ACTION<br/>PagerDuty / Slack / ServiceNow on-call routing . Runbooks . Incident Management"]
+
+    L1 --> L2 --> L3 --> L4 --> L5
+
+    G["Governance overlay:<br/>policy ownership stays with<br/>Architecture / Security / Data Governance / Risk<br/>(Datadog operationalises, does not replace it)"]
+    L1 -.-> G
+    L2 -.-> G
+    L3 -.-> G
+    L4 -.-> G
+
+    classDef inst fill:#0F3460,stroke:#16213E,color:#fff
+    classDef ing fill:#3E5C76,stroke:#16213E,color:#fff
+    classDef plat fill:#1F9E97,stroke:#16213E,color:#fff
+    classDef cons fill:#E0982A,stroke:#16213E,color:#fff
+    classDef act fill:#C0392B,stroke:#16213E,color:#fff
+    classDef gov fill:#F6F7F9,stroke:#16213E,color:#16213E,stroke-dasharray: 4 3
+
+    class L1 inst
+    class L2 ing
+    class L3 plat
+    class L4 cons
+    class L5 act
+    class G gov

@@ -1,0 +1,13 @@
+{
+  "name": "[GenAI][Order Support Assistant] Sensitive data egress detected",
+  "type": "query alert",
+  "query": "sum(last_5m):sum:genai.guardrail.decision.count{policy_name:output_pii_egress_scan,reason_code:pii_detected,use_case:order_support_returns_assistant}.as_count() > 0",
+  "message": "Zero-tolerance control breached: confirmed PII/secret/protected-data egress event. Escalate to Security + Data Governance immediately per severity policy. @security-oncall @pagerduty-genai-oncall",
+  "tags": ["service:support-agent-orchestrator", "use_case:order_support_returns_assistant", "team:security", "severity:sev1"],
+  "options": {
+    "thresholds": { "critical": 0 },
+    "notify_no_data": false,
+    "renotify_interval": 15
+  },
+  "source_addendum_ref": "AI Observability - Datadog Implementation Addendum, §8 — 'Zero tolerance for confirmed credential, secret or protected data leakage'"
+}

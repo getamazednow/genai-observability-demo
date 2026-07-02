@@ -1,0 +1,40 @@
+{
+  "title": "AI Release and Evaluation — Order Support & Returns Assistant",
+  "description": "Template dashboard (import via Datadog UI/API). Regression pass rate, golden-set accuracy, canary health, release/rollback log. Adapt metric names to your actual instrumentation — see ../README.md.",
+  "layout_type": "ordered",
+  "status": "implemented_in_demo",
+  "caveat": "regression_pass_rate and golden_set_accuracy come from a scheduled evaluation-harness run, not live production traces — wire this to your eval pipeline's own metrics endpoint, not APM.",
+  "widgets": [
+    {
+      "definition": {
+        "type": "query_value",
+        "title": "Current prompt version",
+        "requests": [{ "q": "last:genai.release.active_prompt_version{*}" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Regression pass rate & golden-set accuracy (%)",
+        "requests": [
+          { "q": "avg:genai.eval.regression_pass_rate{*}" },
+          { "q": "avg:genai.eval.golden_set_accuracy{*}" }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "query_value",
+        "title": "Rollbacks (30d)",
+        "requests": [{ "q": "sum:genai.release.event{event_type:rollback}.as_count()" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "query_table",
+        "title": "Release / rollback log",
+        "requests": [{ "q": "sum:genai.release.event{*} by {event_type,artefact,from_version,to_version}.as_count()" }]
+      }
+    }
+  ]
+}

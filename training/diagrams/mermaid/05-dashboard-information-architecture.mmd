@@ -1,0 +1,17 @@
+%% Dashboard Information Architecture
+%% 7 dashboards, 7 audiences, one common trace-tree source of truth
+flowchart TB
+    T["Common Trace Tree<br/>workflow . llm . retrieval . tool . guardrail spans"]
+
+    T --> D1["1. Executive AI Health<br/><i>C-suite / Board</i><br/>Volume, success rate, cost avoidance, P95, incidents"]
+    T --> D2["2. Engineering Operations<br/><i>Platform Engineering</i><br/>Latency by layer, error/retry, rate limits, trace waterfall"]
+    T --> D3["3. Security & Responsible AI<br/><i>CyberSec / Risk</i><br/>Injection attempts, egress, toxicity, approval bypass"]
+    T --> D4["4. Cost & Capacity<br/><i>FinOps / Product Owner</i><br/>Tokens, cost by model, quota, budget burn"]
+    T --> D5["5. Agent Behaviour<br/><i>AI/Agent Engineering</i><br/>Steps & tool-calls per workflow, escalation, tool mix"]
+    T --> D6["6. RAG & Grounding<br/><i>Data / ML / Responsible AI</i><br/>Hit rate, groundedness, hallucination, abstention"]
+    T --> D7["7. Release & Evaluation<br/><i>Release Eng / QA</i><br/>Regression pass rate, golden-set accuracy, rollback log"]
+
+    classDef root fill:#16213E,stroke:#16213E,color:#fff
+    classDef d fill:#0F3460,stroke:#16213E,color:#fff
+    class T root
+    class D1,D2,D3,D4,D5,D6,D7 d

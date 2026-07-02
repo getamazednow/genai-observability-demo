@@ -1,0 +1,13 @@
+{
+  "name": "[GenAI][Order Support Assistant] Provider rate-limit spike",
+  "type": "query alert",
+  "query": "sum(last_15m):sum:genai.llm.call.count{finish_reason:rate_limit_error,use_case:order_support_returns_assistant}.as_count() > 40",
+  "message": "Sustained provider rate-limit errors detected — matches the failure pattern behind incident INC-2026-0621 (see docs/roadmap.md). Check quota utilisation and fallback-model routing. @pagerduty-genai-oncall",
+  "tags": ["service:support-agent-orchestrator", "use_case:order_support_returns_assistant", "team:platform-engineering"],
+  "options": {
+    "thresholds": { "critical": 40, "warning": 20 },
+    "notify_no_data": false,
+    "renotify_interval": 30
+  },
+  "source_addendum_ref": "AI Observability - Datadog Implementation Addendum, §8 — 'rate limits were a significant share of observed LLM failures'"
+}

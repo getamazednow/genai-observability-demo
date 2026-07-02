@@ -1,0 +1,13 @@
+{
+  "name": "[GenAI][Order Support Assistant] Agent loop / fan-out threshold breach",
+  "type": "query alert",
+  "query": "sum(last_15m):sum:genai.agent.loop_count{use_case:order_support_returns_assistant}.as_count() > 25",
+  "message": "Repeated agent replanning/loop events exceeding threshold — treat as both a reliability and cost-risk event (runaway agent pattern). @pagerduty-genai-oncall",
+  "tags": ["service:support-agent-orchestrator", "use_case:order_support_returns_assistant", "team:platform-engineering"],
+  "options": {
+    "thresholds": { "critical": 25, "warning": 15 },
+    "notify_no_data": false,
+    "renotify_interval": 30
+  },
+  "source_addendum_ref": "AI Observability - Datadog Implementation Addendum, §8 — 'Hard stop after defined step count, repeated tool sequence or fan-out threshold'"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "Order Support Assistant — Workflow Success Rate",
+  "type": "metric",
+  "description": "Business-outcome success rate (resolved + escalated_human) / total workflows, for low/medium-risk workflows. Higher target for critical workflows per addendum §8.",
+  "thresholds": [
+    { "timeframe": "30d", "target": 98.0, "warning": 99.0 }
+  ],
+  "query": {
+    "numerator": "sum:genai.workflow.count{outcome:resolved,use_case:order_support_returns_assistant}.as_count() + sum:genai.workflow.count{outcome:escalated_human,use_case:order_support_returns_assistant}.as_count()",
+    "denominator": "sum:genai.workflow.count{use_case:order_support_returns_assistant}.as_count()"
+  },
+  "monitor_ids_ref": ["monitors/workflow-success-rate.json"],
+  "tags": ["use_case:order_support_returns_assistant", "team:platform-engineering"]
+}

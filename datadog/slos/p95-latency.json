@@ -1,0 +1,14 @@
+{
+  "name": "Order Support Assistant — P95 End-to-End Latency",
+  "type": "metric",
+  "description": "Use-case-specific latency target for an interactive chat/mobile/IVR support workflow. Adjust per channel — interactive channels should carry a tighter target than any future batch/async agent use case.",
+  "thresholds": [
+    { "timeframe": "30d", "target": 99.0, "warning": 99.5 }
+  ],
+  "query": {
+    "note": "Latency SLOs in Datadog are typically defined as % of requests under a latency threshold (e.g. % of workflows completing under 4000ms), not a raw percentile target. Example numerator/denominator below.",
+    "numerator": "sum:genai.workflow.count{use_case:order_support_returns_assistant,latency_ms:<4000}.as_count()",
+    "denominator": "sum:genai.workflow.count{use_case:order_support_returns_assistant}.as_count()"
+  },
+  "tags": ["use_case:order_support_returns_assistant", "team:platform-engineering"]
+}

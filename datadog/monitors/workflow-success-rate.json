@@ -1,0 +1,14 @@
+{
+  "name": "[GenAI][Order Support Assistant] Workflow success rate below target",
+  "type": "query alert",
+  "query": "sum(last_1h):( sum:genai.workflow.count{outcome:resolved,use_case:order_support_returns_assistant}.as_count() + sum:genai.workflow.count{outcome:escalated_human,use_case:order_support_returns_assistant}.as_count() ) / sum:genai.workflow.count{use_case:order_support_returns_assistant}.as_count() * 100 < 98",
+  "message": "Workflow success rate has dropped below the 98% SLO target for low/medium-risk workflows. See runbook: docs/roadmap.md#suggested-production-slos. @pagerduty-genai-oncall",
+  "tags": ["service:support-agent-orchestrator", "use_case:order_support_returns_assistant", "team:platform-engineering"],
+  "options": {
+    "thresholds": { "critical": 98, "warning": 99 },
+    "notify_no_data": true,
+    "no_data_timeframe": 20,
+    "renotify_interval": 60
+  },
+  "source_addendum_ref": "AI Observability - Datadog Implementation Addendum, §8 (Suggested production SLOs and alert policies)"
+}

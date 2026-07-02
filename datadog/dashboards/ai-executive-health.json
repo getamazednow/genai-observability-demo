@@ -1,0 +1,80 @@
+{
+  "title": "AI Executive Health — Order Support & Returns Assistant",
+  "description": "Template dashboard (import via Datadog UI/API). Business value, reliability, cost and risk summary for executive/architecture-board review. Adapt metric names to your actual instrumentation — see ../README.md.",
+  "layout_type": "ordered",
+  "status": "implemented_in_demo",
+  "template_variables": [
+    { "name": "use_case", "default": "order_support_returns_assistant", "prefix": "use_case" },
+    { "name": "tenant", "default": "*", "prefix": "tenant" }
+  ],
+  "widgets": [
+    {
+      "definition": {
+        "type": "query_value",
+        "title": "Workflows (30d)",
+        "requests": [{ "q": "sum:genai.workflow.count{$use_case,$tenant}.as_count()", "aggregator": "sum" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "query_value",
+        "title": "Success rate %",
+        "requests": [{
+          "formula": "(query_a + query_b) / query_c * 100",
+          "queries": [
+            { "name": "query_a", "query": "sum:genai.workflow.count{outcome:resolved,$use_case,$tenant}.as_count()" },
+            { "name": "query_b", "query": "sum:genai.workflow.count{outcome:escalated_human,$use_case,$tenant}.as_count()" },
+            { "name": "query_c", "query": "sum:genai.workflow.count{$use_case,$tenant}.as_count()" }
+          ]
+        }]
+      }
+    },
+    {
+      "definition": {
+        "type": "query_value",
+        "title": "Cost per successful workflow (USD)",
+        "requests": [{
+          "formula": "query_a / (query_b + query_c)",
+          "queries": [
+            { "name": "query_a", "query": "sum:genai.workflow.cost_usd{$use_case,$tenant}.as_count()" },
+            { "name": "query_b", "query": "sum:genai.workflow.count{outcome:resolved,$use_case,$tenant}.as_count()" },
+            { "name": "query_c", "query": "sum:genai.workflow.count{outcome:escalated_human,$use_case,$tenant}.as_count()" }
+          ]
+        }]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Daily workflow volume by outcome",
+        "requests": [
+          { "q": "sum:genai.workflow.count{outcome:resolved,$use_case,$tenant} by {outcome}.as_count()", "display_type": "bars" },
+          { "q": "sum:genai.workflow.count{outcome:escalated_human,$use_case,$tenant} by {outcome}.as_count()", "display_type": "bars" },
+          { "q": "sum:genai.workflow.count{outcome:blocked_policy,$use_case,$tenant} by {outcome}.as_count()", "display_type": "bars" },
+          { "q": "sum:genai.workflow.count{outcome:failed,$use_case,$tenant} by {outcome}.as_count()", "display_type": "bars" }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "P95 end-to-end latency",
+        "requests": [{ "q": "p95:genai.workflow.latency_ms{$use_case,$tenant}" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "toplist",
+        "title": "Workflow volume by tenant",
+        "requests": [{ "q": "sum:genai.workflow.count{$use_case} by {tenant}.as_count()" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "query_table",
+        "title": "Incident log (Sev1/Sev2)",
+        "requests": [{ "q": "sum:genai.incident.count{$use_case} by {severity,root_cause_category}.as_count()" }]
+      }
+    }
+  ]
+}

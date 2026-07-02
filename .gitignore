@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
+venv/
+node_modules/
+*.log
+.idea/
+.vscode/
+
+# Private source documents — not for publication
+docs/source-documents/*.pdf

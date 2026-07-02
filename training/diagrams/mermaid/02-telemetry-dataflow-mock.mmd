@@ -1,0 +1,33 @@
+%% Demo Data Flow -- Synthetic Telemetry Pipeline (Mock)
+%% This repo's mock pipeline mirrors the shape of a real ingestion pipeline, field for field.
+flowchart LR
+    subgraph MOCK["THIS DEMO (mock)"]
+        direction LR
+        SRC["Source Documents<br/>Metrics Catalogue +<br/>Datadog Addendum PDFs"] --> GEN["Python Generator<br/>generate_synthetic_data.py"]
+        GEN --> S1["workflow_trace.csv"]
+        GEN --> S2["llm_span.csv"]
+        GEN --> S3["retrieval_span.csv"]
+        GEN --> S4["tool_span.csv"]
+        GEN --> S5["guardrail_span.csv"]
+        GEN --> S6["incident_event.csv"]
+        GEN --> S7["release_event.csv"]
+        S1 & S2 & S3 & S4 & S5 & S6 & S7 --> AGG["Aggregator<br/>aggregate_dashboard_summary.py"]
+        AGG --> JSON["dashboard_summary.json"]
+        JSON --> DASH["Static Dashboard<br/>index.html + app.js<br/>(7 tabs, Chart.js)"]
+    end
+
+    subgraph REAL["PRODUCTION (real) -- post mock-to-real"]
+        direction LR
+        LIVE["Live Agent/App<br/>+ Datadog LLM Obs SDK / OTel"] --> DD["Datadog Platform<br/>LLM Obs . APM . Logs . Metrics"]
+        DD --> DAC["Dashboards-as-code<br/>datadog/*.json"]
+        DAC --> NDD["Native Datadog<br/>Dashboards / Monitors / SLOs"]
+    end
+
+    classDef mockNode fill:#DCF2F0,stroke:#1F9E97,color:#16213E
+    classDef genNode fill:#0F3460,stroke:#16213E,color:#fff
+    classDef realNode fill:#F7DDDA,stroke:#C0392B,color:#16213E
+    class S1,S2,S3,S4,S5,S6,S7 mockNode
+    class GEN,AGG,DASH genNode
+    class JSON mockNode
+    class SRC mockNode
+    class LIVE,DD,DAC,NDD realNode

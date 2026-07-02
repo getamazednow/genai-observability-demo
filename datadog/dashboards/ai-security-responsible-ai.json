@@ -1,0 +1,51 @@
+{
+  "title": "AI Security and Responsible AI — Order Support & Returns Assistant",
+  "description": "Template dashboard (import via Datadog UI/API). Prompt injection, sensitive-data handling, toxicity and policy-approval controls. Adapt metric names to your actual instrumentation and connect to Datadog Sensitive Data Scanner — see ../README.md.",
+  "layout_type": "ordered",
+  "status": "implemented_in_demo",
+  "widgets": [
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Prompt injection attempts — blocked vs bypassed",
+        "requests": [
+          { "q": "sum:genai.guardrail.decision.count{policy_name:input_prompt_injection_scan,allow_block_escalate:block} by {allow_block_escalate}.as_count()", "display_type": "bars" },
+          { "q": "sum:genai.guardrail.decision.count{policy_name:input_prompt_injection_scan,allow_block_escalate:allow,reason_code:prompt_injection_detected} by {allow_block_escalate}.as_count()", "display_type": "bars" }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Sensitive data egress & toxicity flags",
+        "requests": [
+          { "q": "sum:genai.guardrail.decision.count{policy_name:output_pii_egress_scan,reason_code:pii_detected}.as_count()", "display_type": "bars" },
+          { "q": "sum:genai.guardrail.decision.count{policy_name:output_toxicity_check,reason_code:toxic_content}.as_count()", "display_type": "bars" }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "High-risk tool calls & policy approval bypasses",
+        "requests": [
+          { "q": "sum:genai.tool.call.count{risk_class:high}.as_count()" },
+          { "q": "sum:genai.guardrail.decision.count{policy_name:high_risk_action_approval,allow_block_escalate:bypass}.as_count()" }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "query_value",
+        "title": "Approval bypasses (zero-tolerance SLO)",
+        "requests": [{ "q": "sum:genai.guardrail.decision.count{reason_code:approval_bypassed}.as_count()" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "note",
+        "content": "Not modelled in this demo (needs a real evaluation harness): groundedness/hallucination score, citation accuracy, bias/fairness flags, refusal quality, human override rate. See docs/metrics-catalogue.md for the full gap list."
+      }
+    }
+  ]
+}

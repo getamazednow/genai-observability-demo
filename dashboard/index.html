@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GenAI Project Observability — Demo Dashboard (Synthetic Data)</title>
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+  // Belt-and-braces fallback: if jsDelivr didn't load Chart.js (network restriction, ad
+  // blocker, offline), try cdnjs before app.js runs and needs the Chart global.
+  if (typeof Chart === "undefined") {
+    document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"><\/script>');
+  }
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <span class="brand-mark">◆</span>
+    <div>
+      <div class="brand-title">GenAI Project Observability</div>
+      <div class="brand-sub">Demo dashboard · synthetic data · Order Support &amp; Returns Assistant</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="pill pill-mock">MOCK / SYNTHETIC DATA</span>
+    <span class="pill" id="window-pill">—</span>
+  </div>
+</header>
+
+<div class="disclaimer">
+  This dashboard renders entirely synthetic, generator-produced data (<code>data/generator/</code>) to demonstrate an
+  observability approach for agentic Gen AI workflows. It is not connected to any production system. See
+  <a href="../README.md">README</a> for scope, and <code>/datadog</code> for how this maps to a real Datadog implementation.
+</div>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="exec">Executive AI Health</button>
+  <button class="tab-btn" data-tab="eng">Engineering Operations</button>
+  <button class="tab-btn" data-tab="sec">Security &amp; Responsible AI</button>
+  <button class="tab-btn" data-tab="cost">Cost &amp; Capacity</button>
+  <button class="tab-btn" data-tab="agent">Agent Behaviour</button>
+  <button class="tab-btn" data-tab="rag">RAG &amp; Grounding</button>
+  <button class="tab-btn" data-tab="release">Release &amp; Evaluation</button>
+</nav>
+
+<main>
+
+  <!-- ============ EXECUTIVE AI HEALTH ============ -->
+  <section id="tab-exec" class="tab-panel active">
+    <div class="kpi-row" id="exec-kpis"></div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Daily workflow volume by outcome</div>
+        <canvas id="chart-volume"></canvas>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Success rate (%) — daily trend</div>
+        <canvas id="chart-success"></canvas>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Cost per successful workflow (USD) — daily trend</div>
+        <canvas id="chart-cost"></canvas>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Workflow volume by tenant (brand)</div>
+        <canvas id="chart-tenant"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Cost composition — 30-day total by category</div>
+      <canvas id="chart-cost-breakdown" style="max-height:220px;"></canvas>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Incident log (Sev1/Sev2)</div>
+      <div class="table-wrap"><table id="incident-table"></table></div>
+    </div>
+  </section>
+
+  <!-- ============ ENGINEERING OPERATIONS ============ -->
+  <section id="tab-eng" class="tab-panel">
+    <div class="kpi-row" id="eng-kpis"></div>
+
+    <div class="panel">
+      <div class="panel-title">Latency by layer (P95, ms) — daily trend</div>
+      <canvas id="chart-latency-layers"></canvas>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">End-to-end latency — P50 / P95 / P99 (ms)</div>
+        <canvas id="chart-latency-pcts"></canvas>
+      </div>
+      <div class="panel">
+        <div class="panel-title">LLM error rate, retry rate &amp; tool error rate (%)</div>
+        <canvas id="chart-error-rates"></canvas>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Provider rate-limit events — daily</div>
+        <canvas id="chart-ratelimit"></canvas>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Agent loop events — daily</div>
+        <canvas id="chart-loops"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Representative trace waterfall — single workflow, incident day (rate-limit + fallback)</div>
+      <canvas id="chart-waterfall" style="max-height:260px;"></canvas>
+      <p class="panel-note">Illustrative single-trace breakdown showing how a workflow's end-to-end latency
+        decomposes into guardrail, retrieval, model (with a rate-limited retry + provider fallback) and tool steps —
+        the trace-tree view a real APM/LLM-observability tool would render per request.</p>
+    </div>
+  </section>
+
+  <!-- ============ SECURITY & RESPONSIBLE AI ============ -->
+  <section id="tab-sec" class="tab-panel">
+    <div class="kpi-row" id="sec-kpis"></div>
+
+    <div class="panel">
+      <div class="panel-title">Prompt injection attempts — blocked vs bypassed (daily)</div>
+      <canvas id="chart-injection"></canvas>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Sensitive data egress &amp; toxicity flags — daily</div>
+        <canvas id="chart-privacy"></canvas>
+      </div>
+      <div class="panel">
+        <div class="panel-title">High-risk tool calls &amp; policy approval bypasses — daily</div>
+        <canvas id="chart-highrisk"></canvas>
+      </div>
+    </div>
+
+    <div class="panel callout">
+      <div class="panel-title">Incident spotlight — INC-2026-0611 (prompt-injection policy bypass)</div>
+      <div id="incident-spotlight"></div>
+    </div>
+  </section>
+
+  <!-- ============ AI COST AND CAPACITY ============ -->
+  <section id="tab-cost" class="tab-panel">
+    <div class="kpi-row" id="cost-kpis"></div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Token usage — input vs output (daily)</div>
+        <canvas id="chart-tokens"></canvas>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Cost by model (daily, USD)</div>
+        <canvas id="chart-cost-by-model"></canvas>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Provider quota utilisation (%) — daily</div>
+        <canvas id="chart-quota"></canvas>
+        <p class="panel-note">Dashed line marks the daily LLM-call quota assumption. The promo-driven rate-limit incident (days 21-22) is exactly the kind of quota breach this panel is designed to catch before it becomes an outage.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Cumulative cost vs. monthly budget</div>
+        <canvas id="chart-budget-burn"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Fallback-model cost uplift (daily, USD)</div>
+      <canvas id="chart-fallback-cost"></canvas>
+      <p class="panel-note">Cost incurred specifically by routing to the (more expensive) fallback model during provider degradation — the direct dollar cost of the rate-limit incident.</p>
+    </div>
+  </section>
+
+  <!-- ============ AGENT BEHAVIOUR AND AGENCY ============ -->
+  <section id="tab-agent" class="tab-panel">
+    <div class="kpi-row" id="agent-kpis"></div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Average step count per workflow — daily</div>
+        <canvas id="chart-steps"></canvas>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Average tool calls per workflow — daily</div>
+        <canvas id="chart-toolcalls-avg"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Tool calls by name (30-day total)</div>
+      <canvas id="chart-tools-by-name" style="max-height:240px;"></canvas>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Human escalation rate (%) — daily</div>
+        <canvas id="chart-escalation-rate"></canvas>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Tool call success rate (%) — proxy for tool-selection quality</div>
+        <canvas id="chart-tool-success"></canvas>
+        <p class="panel-note">Proxy metric: this demo doesn't model ground-truth "correct tool for intent" labelling, so tool-call success rate stands in for tool-selection accuracy. A real evaluation harness would score selection directly against labelled intents.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RAG AND GROUNDING QUALITY ============ -->
+  <section id="tab-rag" class="tab-panel">
+    <div class="kpi-row" id="rag-kpis"></div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Retrieval hit rate (%) — daily</div>
+        <canvas id="chart-hit-rate"></canvas>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Groundedness &amp; citation accuracy — daily average</div>
+        <canvas id="chart-groundedness"></canvas>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Hallucination rate (%) — daily</div>
+        <canvas id="chart-hallucination"></canvas>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Abstention rate (%) — daily</div>
+        <canvas id="chart-abstention"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Average retrieved-source freshness (days) — daily</div>
+      <canvas id="chart-freshness"></canvas>
+    </div>
+  </section>
+
+  <!-- ============ AI RELEASE AND EVALUATION ============ -->
+  <section id="tab-release" class="tab-panel">
+    <div class="kpi-row" id="release-kpis"></div>
+
+    <div class="panel">
+      <div class="panel-title">Regression pass rate &amp; golden-set accuracy (%) — daily</div>
+      <canvas id="chart-eval-trend"></canvas>
+      <p class="panel-note">Sampled from a synthetic evaluation harness (golden-set + regression suite), run on a schedule separate from live production traffic — not derived from raw request spans, matching how a real eval pipeline operates.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Release / rollback log</div>
+      <div class="table-wrap"><table id="release-table"></table></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div>GenAI Project Observability — reference architecture &amp; demo. Sources:
+    <em>AI Observability Metrics Catalogue for Agentic LLM Workflows v1.0</em> and
+    <em>AI Observability — Datadog Implementation Addendum</em> (30 Jun 2026).</div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

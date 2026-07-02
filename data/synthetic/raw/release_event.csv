@@ -1,0 +1,3 @@
+event_id,event_type,ts,artefact,from_version,to_version,golden_set_accuracy_pct,regression_test_pass_rate_pct,canary_health,notes
+REL-2026-0608,release,2026-06-08T08:00:00+00:00,prompt,v14,v15,79.2,81.5,degraded,Prompt v15 rolled out to improve refund-policy phrasing; canary evaluation flagged a groundedness/citation-accuracy regression within 4 hours of rollout.
+REL-2026-0609,rollback,2026-06-09T11:30:00+00:00,prompt,v15,v14,91.8,97.4,healthy,Rolled back to v14 after golden-set accuracy and regression pass rate both breached release-gate thresholds; v15 held for revision before re-attempting rollout.

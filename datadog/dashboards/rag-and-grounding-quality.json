@@ -1,0 +1,65 @@
+{
+  "title": "RAG and Grounding Quality — Order Support & Returns Assistant",
+  "description": "Template dashboard (import via Datadog UI/API). Retrieval hit rate, groundedness, citation accuracy, hallucination and abstention rates, source freshness. Adapt metric names to your actual instrumentation — see ../README.md.",
+  "layout_type": "ordered",
+  "status": "implemented_in_demo",
+  "caveat": "groundedness_score, citation_accuracy_score, hallucination_flag and abstention_flag are evaluation-harness outputs (e.g. Datadog Managed/Custom Evaluations or an LLM-as-judge pipeline), not something you get from raw retrieval spans alone. See docs/roadmap.md Weeks 7-10.",
+  "widgets": [
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Retrieval hit rate %",
+        "requests": [{
+          "formula": "query_a / query_b * 100",
+          "queries": [
+            { "name": "query_a", "query": "sum:genai.retrieval.count{hit:true}.as_count()" },
+            { "name": "query_b", "query": "sum:genai.retrieval.count{*}.as_count()" }
+          ]
+        }]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Groundedness & citation accuracy (0-1)",
+        "requests": [
+          { "q": "avg:genai.eval.groundedness_score{*}" },
+          { "q": "avg:genai.eval.citation_accuracy_score{*}" }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Hallucination rate %",
+        "requests": [{
+          "formula": "query_a / query_b * 100",
+          "queries": [
+            { "name": "query_a", "query": "sum:genai.eval.hallucination_flag{*}.as_count()" },
+            { "name": "query_b", "query": "sum:genai.retrieval.count{*}.as_count()" }
+          ]
+        }]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Abstention rate %",
+        "requests": [{
+          "formula": "query_a / query_b * 100",
+          "queries": [
+            { "name": "query_a", "query": "sum:genai.eval.abstention_flag{*}.as_count()" },
+            { "name": "query_b", "query": "sum:genai.retrieval.count{*}.as_count()" }
+          ]
+        }]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Average source freshness (days)",
+        "requests": [{ "q": "avg:genai.retrieval.source_freshness_days{*}" }]
+      }
+    }
+  ]
+}

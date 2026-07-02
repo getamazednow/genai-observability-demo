@@ -1,0 +1,62 @@
+{
+  "title": "Agent Behaviour and Agency — Order Support & Returns Assistant",
+  "description": "Template dashboard (import via Datadog UI/API). Step count, tool-call mix, escalation rate, tool-call success proxy. Adapt metric names to your actual instrumentation — see ../README.md.",
+  "layout_type": "ordered",
+  "status": "implemented_in_demo",
+  "caveat": "This scenario is single-agent (no planner handoffs to sub-agents), so multi-agent handoff metrics from the addendum's full spec are out of scope here — see docs/roadmap.md for what a multi-agent version would add.",
+  "widgets": [
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Average step count per workflow",
+        "requests": [{ "q": "avg:genai.workflow.step_count{*}" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Average tool calls per workflow",
+        "requests": [{ "q": "avg:genai.tool.call.count{*} by {workflow_id}.as_count()" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "toplist",
+        "title": "Tool calls by name (30d total)",
+        "requests": [{ "q": "sum:genai.tool.call.count{*} by {tool_name}.as_count()" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Human escalation rate %",
+        "requests": [{
+          "formula": "query_a / query_b * 100",
+          "queries": [
+            { "name": "query_a", "query": "sum:genai.workflow.count{outcome:escalated_human}.as_count()" },
+            { "name": "query_b", "query": "sum:genai.workflow.count{*}.as_count()" }
+          ]
+        }]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Tool call success rate % (tool-selection quality proxy)",
+        "requests": [{
+          "formula": "query_a / query_b * 100",
+          "queries": [
+            { "name": "query_a", "query": "sum:genai.tool.call.count{status:success}.as_count()" },
+            { "name": "query_b", "query": "sum:genai.tool.call.count{*}.as_count()" }
+          ]
+        }]
+      }
+    },
+    {
+      "definition": {
+        "type": "note",
+        "content": "Not modelled in this demo: multi-agent handoffs, plan-revision count, critic/evaluator disagreement — require a multi-agent orchestration pattern this v1 single-agent scenario doesn't use."
+      }
+    }
+  ]
+}

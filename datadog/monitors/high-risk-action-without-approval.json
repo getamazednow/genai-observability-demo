@@ -1,0 +1,13 @@
+{
+  "name": "[GenAI][Order Support Assistant] High-risk tool action executed without approval",
+  "type": "query alert",
+  "query": "sum(last_5m):sum:genai.guardrail.decision.count{policy_name:high_risk_action_approval,allow_block_escalate:bypass,use_case:order_support_returns_assistant}.as_count() > 0",
+  "message": "A high-risk action (write/delete/send/purchase/financial) executed without required approval. Zero-tolerance governance control. Escalate to Architecture + Responsible AI/Risk. @security-oncall @pagerduty-genai-oncall",
+  "tags": ["service:support-agent-orchestrator", "use_case:order_support_returns_assistant", "team:responsible-ai", "severity:sev1"],
+  "options": {
+    "thresholds": { "critical": 0 },
+    "notify_no_data": false,
+    "renotify_interval": 15
+  },
+  "source_addendum_ref": "AI Observability - Datadog Implementation Addendum, §8 — 'High-risk action without approval: Zero tolerance'"
+}
