@@ -1,17 +1,30 @@
+/*
+  GenAI Project Observability — dashboard theme
+  Themed on the Getamazednow AI Design System v1.0 (assets/tokens.css).
+  Dark surface = brand Ink family; accent = Signal; semantics use the
+  on-Ink variants for AA contrast on dark surfaces.
+*/
+@import url("assets/tokens.css");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+
 :root {
-  --bg: #14162b;
-  --bg-panel: #1c1f3a;
-  --bg-panel-2: #232748;
-  --border: #2e3260;
-  --text: #e7e9f5;
-  --text-dim: #9ea3c7;
-  --accent: #8c6dfc;
-  --accent-2: #4fd1c5;
-  --green: #34d399;
-  --amber: #fbbf24;
-  --red: #f87171;
-  --blue: #60a5fa;
-  --radius: 10px;
+  --bg: var(--gai-neutral-900);        /* #1C1F21 */
+  --bg-panel: var(--gai-ink);          /* #2A363B */
+  --bg-panel-2: var(--gai-neutral-800);/* #2C3234 */
+  --border: var(--gai-neutral-700);    /* #3F474A */
+  --text: var(--gai-neutral-50);       /* #F6F7F7 */
+  --text-dim: var(--gai-neutral-300);  /* #B7BEC2 */
+  --accent: var(--gai-signal);         /* #5FA8CC */
+  --accent-2: var(--gai-signal-core);  /* #8FC3DE */
+  --stone: var(--gai-stone);           /* #A8A17B */
+  --green: var(--gai-success-on-ink);  /* #6FBF8B */
+  --amber: var(--gai-warning-on-ink);  /* #E3A253 */
+  --red: var(--gai-error-on-ink);      /* #E08585 */
+  --blue: var(--gai-info-on-ink);      /* #7FB3C2 */
+  --radius: var(--gai-radius-md);      /* 8px */
+  --font-body: var(--gai-font-body);
+  --font-display: var(--gai-font-display);
+  --font-mono: var(--gai-font-mono);
 }
 
 * { box-sizing: border-box; }
@@ -20,22 +33,36 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-body);
   font-size: 14px;
+  line-height: var(--gai-leading-normal);
 }
 
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg, #191c38, #14162b);
+  padding: 14px 24px;
+  border-bottom: 2px solid var(--accent);
+  background: var(--gai-ink);
 }
-.topbar-left { display: flex; align-items: center; gap: 12px; }
-.brand-mark { color: var(--accent); font-size: 22px; }
-.brand-title { font-weight: 700; font-size: 17px; letter-spacing: 0.2px; }
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+.brand-logo { height: 44px; width: auto; display: block; }
+.brand-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: 0.2px;
+}
+.brand-title .brand-name { color: var(--accent); }
 .brand-sub { color: var(--text-dim); font-size: 12.5px; margin-top: 2px; }
+.brand-byline {
+  color: var(--stone);
+  font-size: 11px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
 .topbar-right { display: flex; gap: 8px; align-items: center; }
 
 .pill {
@@ -43,19 +70,19 @@ body {
   background: var(--bg-panel-2);
   color: var(--text-dim);
   padding: 5px 10px;
-  border-radius: 999px;
+  border-radius: var(--gai-radius-pill);
   font-size: 11.5px;
   font-weight: 600;
   letter-spacing: 0.3px;
 }
 .pill-mock {
-  color: #1a1c2f;
+  color: var(--gai-ink);
   background: var(--amber);
   border-color: var(--amber);
 }
 
 .disclaimer {
-  background: #241a3d;
+  background: var(--gai-neutral-800);
   border-bottom: 1px solid var(--border);
   color: var(--text-dim);
   font-size: 12.5px;
@@ -67,7 +94,9 @@ body {
 .disclaimer code {
   background: rgba(255,255,255,0.06);
   padding: 1px 5px;
-  border-radius: 4px;
+  border-radius: var(--gai-radius-sm);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
 }
 
 .tabs {
@@ -81,7 +110,8 @@ body {
   border: none;
   color: var(--text-dim);
   padding: 10px 16px;
-  font-size: 13.5px;
+  font-family: var(--font-display);
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   border-bottom: 3px solid transparent;
@@ -108,6 +138,7 @@ main { padding: 20px 24px 40px 24px; max-width: 1400px; margin: 0 auto; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px 16px;
+  box-shadow: var(--gai-elevation-sm, 0 1px 2px rgba(0,0,0,0.08));
 }
 .kpi-label {
   color: var(--text-dim);
@@ -117,6 +148,7 @@ main { padding: 20px 24px 40px 24px; max-width: 1400px; margin: 0 auto; }
   margin-bottom: 6px;
 }
 .kpi-value {
+  font-family: var(--font-display);
   font-size: 22px;
   font-weight: 700;
 }
@@ -147,6 +179,7 @@ main { padding: 20px 24px 40px 24px; max-width: 1400px; margin: 0 auto; }
   margin-bottom: 16px;
 }
 .panel-title {
+  font-family: var(--font-display);
   font-size: 13px;
   font-weight: 700;
   color: var(--text);
@@ -157,11 +190,11 @@ main { padding: 20px 24px 40px 24px; max-width: 1400px; margin: 0 auto; }
   font-size: 12px;
   margin-top: 10px;
   margin-bottom: 0;
-  line-height: 1.5;
+  line-height: var(--gai-leading-normal);
 }
 .panel.callout {
   border-color: var(--accent);
-  background: linear-gradient(180deg, #221a45, #1c1f3a);
+  background: var(--bg-panel-2);
 }
 
 .table-wrap { overflow-x: auto; }
@@ -185,12 +218,12 @@ th {
 }
 .sev-badge {
   padding: 2px 8px;
-  border-radius: 999px;
+  border-radius: var(--gai-radius-pill);
   font-weight: 700;
   font-size: 10.5px;
 }
-.sev-1 { background: rgba(248,113,113,0.15); color: var(--red); }
-.sev-2 { background: rgba(251,191,36,0.15); color: var(--amber); }
+.sev-1 { background: rgba(224,133,133,0.15); color: var(--red); }
+.sev-2 { background: rgba(227,162,83,0.15); color: var(--amber); }
 
 .spotlight-grid {
   display: grid;
@@ -206,4 +239,11 @@ footer {
   color: var(--text-dim);
   font-size: 11.5px;
   text-align: center;
+}
+footer .tagline {
+  color: var(--stone);
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  margin-top: 6px;
 }

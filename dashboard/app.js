@@ -2,26 +2,30 @@
    Renders synthetic telemetry from data/dashboard_summary.json.
    No backend, no network calls beyond the local JSON + Chart.js CDN. */
 
+/* Getamazednow AI Design System v1.0 — dark-surface (on-Ink) palette.
+   Signal family for accents; semantic on-Ink variants for status colors;
+   Stone as the secondary/neutral accent. */
 const COLORS = {
-  accent: "#8c6dfc",
-  accent2: "#4fd1c5",
-  green: "#34d399",
-  amber: "#fbbf24",
-  red: "#f87171",
-  blue: "#60a5fa",
+  accent: "#5FA8CC",   // gai-signal
+  accent2: "#8FC3DE",  // gai-signal-core
+  green: "#6FBF8B",    // gai-success-on-ink
+  amber: "#E3A253",    // gai-warning-on-ink
+  red: "#E08585",      // gai-error-on-ink
+  blue: "#7FB3C2",     // gai-info-on-ink
+  stone: "#A8A17B",    // gai-stone
   grid: "rgba(255,255,255,0.06)",
-  text: "#9ea3c7",
+  text: "#B7BEC2",     // gai-neutral-300
 };
 
 if (typeof Chart === "undefined") {
   document.querySelector("main").innerHTML =
-    `<div class="panel" style="color:#f87171;">Chart.js failed to load from the CDN (jsDelivr and cdnjs both unreachable). ` +
+    `<div class="panel" style="color:#E08585;">Chart.js failed to load from the CDN (jsDelivr and cdnjs both unreachable). ` +
     `Check your network connection, or download chart.umd.min.js locally and reference it from index.html instead of a CDN.</div>`;
   throw new Error("Chart.js not loaded — aborting dashboard init.");
 }
 
 Chart.defaults.color = COLORS.text;
-Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+Chart.defaults.font.family = "'Inter', 'Segoe UI', Roboto, sans-serif";
 Chart.defaults.font.size = 11;
 
 function fmtUsd(v, digits = 2) {
@@ -581,6 +585,6 @@ function wireTabs() {
 
 main().catch(err => {
   document.querySelector("main").innerHTML =
-    `<div class="panel" style="color:#f87171;">Failed to load dashboard data: ${err.message}. If viewing this file directly via file://, serve it over a local HTTP server instead (browsers block fetch() of local JSON from file://).</div>`;
+    `<div class="panel" style="color:#E08585;">Failed to load dashboard data: ${err.message}. If viewing this file directly via file://, serve it over a local HTTP server instead (browsers block fetch() of local JSON from file://).</div>`;
   console.error(err);
 });
