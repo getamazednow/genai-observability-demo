@@ -1,0 +1,76 @@
+# OpenTelemetry Collector — tri-cloud GenAI ingest spine
+#
+# One Collector, two exporters:
+#   file/jsonl  -> ingest/bridge/otlp_file_to_csv.py -> contract CSVs -> mock dashboard
+#   datadog     -> LLM Observability (native gen_ai.* mapping), env-gated
+#
+# Run (contrib distribution required for the datadog exporter):
+#   otelcol-contrib --config ingest/collector/otel-collector-config.yaml
+# Emit test spans:
+#   python ingest/emitters/azure_foundry_emitter.py   (and gcp_ / aws_ variants)
+#
+# See docs/otel-conformance-matrix.md for the contract this enforces.
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  # Rule 0 enforcement: governance tags are mandatory resource attributes.
+  # Spans missing the contract tags are flagged (not dropped) so gaps are visible
+  # on a dashboard instead of silently vanishing. Tighten to drop() once teams
+  # are conformant.
+  transform/contract_flag:
+    trace_statements:
+      - context: resource
+        statements:
+          - set(attributes["genai.contract.violation"], "missing_use_case") where attributes["gen_ai.demo.use_case"] == nil
+          - set(attributes["genai.contract.violation"], "missing_tenant") where attributes["gen_ai.demo.tenant"] == nil
+          - set(attributes["genai.contract.violation"], "missing_risk_tier") where attributes["gen_ai.demo.risk_tier"] == nil
+
+  # Privacy: prompt/output content never leaves the Collector by default.
+  # Logging content is a governance decision (redaction/classification/retention
+  # per risk tier) — enable deliberately, not by default. This deletes the
+  # semconv content attributes if an SDK emitted them.
+  attributes/strip_content:
+    actions:
+      - key: gen_ai.input.messages
+        action: delete
+      - key: gen_ai.output.messages
+        action: delete
+      - key: gen_ai.system_instructions
+        action: delete
+
+  # Never let unbounded identifiers become metric tags downstream.
+  # (Kept as span attributes for trace-level forensics; hash upstream.)
+  batch:
+    timeout: 5s
+
+exporters:
+  # Lane A — demo path: JSONL consumed by ingest/bridge/otlp_file_to_csv.py
+  file/jsonl:
+    path: ../../data/live/otlp_spans.jsonl
+    format: json
+
+  # Lane B — production path: Datadog LLM Observability (requires contrib build).
+  # Gated on DD_API_KEY; site per your org (datadoghq.com, datadoghq.eu, ...).
+  datadog:
+    api:
+      key: ${env:DD_API_KEY}
+      site: ${env:DD_SITE}
+
+service:
+  pipelines:
+    traces/demo:
+      receivers: [otlp]
+      processors: [transform/contract_flag, attributes/strip_content, batch]
+      exporters: [file/jsonl]
+    # Uncomment once DD_API_KEY is set and you're ready to dual-ship:
+    # traces/datadog:
+    #   receivers: [otlp]
+    #   processors: [transform/contract_flag, attributes/strip_content, batch]
+    #   exporters: [datadog]
