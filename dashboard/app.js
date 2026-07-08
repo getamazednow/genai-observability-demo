@@ -120,10 +120,23 @@ function renderExecTab(data, labels) {
 
   const tenants = data.scenario.tenants;
   const tenantTotals = tenants.map(t => daily.reduce((s, d) => s + (d.workflows_by_tenant[t] || 0), 0));
+  const tenantPalette = [COLORS.accent, COLORS.accent2, COLORS.blue, COLORS.green, COLORS.amber, COLORS.red];
   new Chart(document.getElementById("chart-tenant"), {
     type: "doughnut",
-    data: { labels: tenants, datasets: [{ data: tenantTotals, backgroundColor: [COLORS.accent, COLORS.accent2, COLORS.blue] }] },
+    data: { labels: tenants, datasets: [{ data: tenantTotals, backgroundColor: tenants.map((_, i) => tenantPalette[i % tenantPalette.length]) }] },
     options: { plugins: { legend: { position: "bottom", labels: { boxWidth: 12 } } } },
+  });
+
+  const useCases = (data.scenario.use_cases || []).map(u => u.use_case_label);
+  const ucLabels = useCases.length ? useCases : [data.scenario.use_case];
+  const ucTotals = ucLabels.map((_, i) => {
+    const key = (data.scenario.use_cases && data.scenario.use_cases[i]) ? data.scenario.use_cases[i].use_case : null;
+    return daily.reduce((s, d) => s + (key ? (d.workflows_by_use_case && d.workflows_by_use_case[key]) || 0 : d.workflows_total), 0);
+  });
+  new Chart(document.getElementById("chart-usecase"), {
+    type: "bar",
+    data: { labels: ucLabels, datasets: [{ data: ucTotals, backgroundColor: tenantPalette.slice(0, ucLabels.length) }] },
+    options: { indexAxis: "y", plugins: { legend: { display: false } }, scales: { x: { grid: { color: COLORS.grid } }, y: { grid: { display: false } } } },
   });
 
   const llmCost = daily.reduce((s, d) => s + d.llm_cost_usd, 0);

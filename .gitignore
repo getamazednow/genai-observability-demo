@@ -10,3 +10,6 @@ node_modules/
 
 # Private source documents — not for publication
 docs/source-documents/*.pdf
+
+# Brand design system source — applied to the dashboard, not published
+Getamazednow AI Design System v1.0/

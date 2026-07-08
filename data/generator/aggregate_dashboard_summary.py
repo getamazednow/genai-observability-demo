@@ -19,7 +19,14 @@ from datetime import datetime
 BASE = os.path.join(os.path.dirname(__file__), "..", "synthetic")
 RAW = os.path.join(BASE, "raw")
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "dashboard", "data")
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config.json")
 os.makedirs(OUT, exist_ok=True)
+
+
+def load_enabled_scenarios():
+    with open(CONFIG_PATH) as f:
+        cfg = json.load(f)
+    return [s for s in cfg["scenarios"] if s.get("enabled", True)]
 
 
 def read_csv(name):
@@ -144,6 +151,10 @@ for day_idx, d in enumerate(days):
     for w in wfs:
         by_tenant[w["tenant"]] += 1
 
+    by_usecase = defaultdict(int)
+    for w in wfs:
+        by_usecase[w["use_case"]] += 1
+
     # ---- AI Cost and Capacity ----
     input_tokens_total = sum(int(r["input_tokens"]) for r in llms)
     output_tokens_total = sum(int(r["output_tokens"]) for r in llms)
@@ -219,6 +230,7 @@ for day_idx, d in enumerate(days):
         policy_approval_bypasses=approval_bypasses,
         high_risk_tool_calls=high_risk_tool_calls,
         workflows_by_tenant=dict(by_tenant),
+        workflows_by_use_case=dict(by_usecase),
 
         # Cost & Capacity
         input_tokens_total=input_tokens_total,
@@ -261,16 +273,34 @@ overall_success_rate = round(100 * len(successful_all) / total_wf, 2) if total_w
 overall_cost_per_success = round(total_cost_all / len(successful_all), 4) if successful_all else 0
 all_latencies = [int(w["total_latency_ms"]) for w in workflows]
 
+enabled_scenarios = load_enabled_scenarios()
+all_tenants = []
+for s in enabled_scenarios:
+    for t in s["tenants"]:
+        if t not in all_tenants:
+            all_tenants.append(t)
+use_case_labels = [s.get("use_case_label", s["use_case"]) for s in enabled_scenarios]
+business_units = sorted(set(s["business_unit"] for s in enabled_scenarios))
+ml_apps = sorted(set(s["ml_app"] for s in enabled_scenarios))
+
 summary = dict(
     generated_at=datetime.utcnow().isoformat() + "Z",
     scenario=dict(
-        use_case="Order Support & Returns Assistant",
-        business_unit="Retail Customer Care",
-        ml_app="retail-support-agent",
-        tenants=["brand_a", "brand_b", "brand_c"],
+        # Backward-compatible single-string fields (used by the current dashboard UI):
+        # join across scenarios so the KPI subtitle stays readable if more than one is enabled.
+        use_case=" + ".join(use_case_labels),
+        business_unit=" + ".join(business_units),
+        ml_app=" + ".join(ml_apps),
+        tenants=all_tenants,
         window_days=len(days),
         window_start=days[0] if days else None,
         window_end=days[-1] if days else None,
+        # Full per-scenario breakdown for future dashboard use (e.g. a use-case filter).
+        use_cases=[
+            dict(id=s["id"], use_case=s["use_case"], use_case_label=s.get("use_case_label", s["use_case"]),
+                 business_unit=s["business_unit"], ml_app=s["ml_app"], tenants=s["tenants"])
+            for s in enabled_scenarios
+        ],
     ),
     headline=dict(
         total_workflows=total_wf,

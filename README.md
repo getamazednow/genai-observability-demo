@@ -43,11 +43,11 @@ Dashboards 6 and 7 are the ones worth reading the fine print on: their quality s
 
 | Metric | Value |
 |---|---|
-| Workflows (30d) | ~5,100 |
-| Success rate | ~95% |
+| Workflows (30d) | ~5,000 |
+| Success rate | ~97% |
 | Cost per successful workflow | ~$0.025 |
 | Forecasted monthly AI run-rate | ~$120 (against a $150 assumed budget) |
-| Estimated monthly cost avoidance vs. human-handled equivalent* | ~$31,400 |
+| Estimated monthly cost avoidance vs. human-handled equivalent* | ~$31,200 |
 | Incidents | 2 (1 Sev1, 1 Sev2) + 1 release rollback |
 
 <sub>*Illustrative only — assumes a $6.50 fully-loaded cost per human-handled contact, a modelling assumption for this demo, not a sourced benchmark. Regenerate the data (below) to reproduce exact figures.</sub>
@@ -64,6 +64,7 @@ genai-observability-demo/
 │   └── roadmap.md                 — 90-day path to production, annotated against this repo
 ├── data/
 │   ├── generator/                 — Python: generates synthetic trace-tree telemetry + aggregates it
+│   │   └── config.json            — time period + per-use-case scenario config (see Configuring below)
 │   └── synthetic/
 │       ├── raw/                   — span-level CSVs (workflow, LLM, retrieval, tool, guardrail, incident, release event)
 │       └── (dashboard summary is written to dashboard/data/)
@@ -101,6 +102,21 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 (Browsers block `fetch()` of local JSON over `file://`, so serve it — or publish via GitHub Pages, which works out of the box since `dashboard/` is fully static.)
+
+## Configuring the generator
+
+Everything scenario-specific lives in [`data/generator/config.json`](data/generator/config.json), not in code — the generator script itself has no hardcoded dates, tenants, models, or tool lists.
+
+**Change the time period.** Edit `global.start_date` / `global.end_date`. Storylines (the release regression, the injection cluster, the rate-limit spike) are keyed to day-index offsets within that window per scenario — shrink the window below a storyline's `day_start` and it's simply skipped; there's no minimum window length.
+
+**Add a use case additively.** Append a new object to the `scenarios` array with its own `id`, `tenants`, `channels`, `primary_model`/`fallback_model`, `retrievers`, `tools`, `guardrails`, `volume` profile, and `storylines`. Each enabled scenario:
+- runs on its own deterministic RNG stream (seeded from `global.random_seed` + the scenario `id`), so adding a scenario never changes the numbers already produced by existing ones — re-running with the same config always reproduces the same combined output.
+- needs its own `incident_id` / `release_event_id` values inside its storyline blocks (these become the row IDs in `incident_event.csv` / `release_event.csv`) — just make sure they don't collide with another scenario's IDs.
+- appends its rows into the same shared CSVs and the same `dashboard_summary.json`; the daily rollup now carries a `workflows_by_use_case` breakdown alongside the existing `workflows_by_tenant` one, and the Executive tab has a "workflow volume by use case" chart that picks this up automatically.
+
+The shipped `config.json` includes a second example scenario, `banking_card_disputes` (a Financial Services vertical — card dispute/fraud triage), with `"enabled": false`. Flip it to `true` and regenerate to see the additive path work end to end without writing any new code. Set `"enabled": false` on the default `retail_support` scenario if you want the banking scenario to stand alone instead of adding to it.
+
+Note: the headline numbers table above and the specific incident/release IDs referenced in `docs/` and `training/` reflect the default single-scenario config. Enabling more scenarios or a different date range will change the totals (that's expected — the README explicitly treats these as illustrative, regenerate-to-reproduce figures, not fixed facts).
 
 ## Known gaps in this v1 (by design)
 
