@@ -17,8 +17,10 @@ from collections import defaultdict
 from datetime import datetime
 
 BASE = os.path.join(os.path.dirname(__file__), "..", "synthetic")
-RAW = os.path.join(BASE, "raw")
-OUT = os.path.join(os.path.dirname(__file__), "..", "..", "dashboard", "data")
+# Overridable so the same aggregation logic can run against live-telemetry CSVs
+# produced by ingest/bridge/otlp_file_to_csv.py (defaults unchanged: synthetic demo).
+RAW = os.environ.get("GENAI_RAW_DIR", os.path.join(BASE, "raw"))
+OUT = os.environ.get("GENAI_OUT_DIR", os.path.join(os.path.dirname(__file__), "..", "..", "dashboard", "data"))
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config.json")
 os.makedirs(OUT, exist_ok=True)
 
@@ -181,8 +183,13 @@ for day_idx, d in enumerate(days):
     n_retrievals = len(retrievals)
     retrieval_hits = sum(1 for r in retrievals if r.get("retrieval_hit") in ("True", "true", True))
     retrieval_hit_rate_pct = round(100 * retrieval_hits / n_retrievals, 2) if n_retrievals else 0
-    avg_groundedness = round(statistics.mean(float(r["groundedness_score"]) for r in retrievals), 3) if retrievals else 0
-    avg_citation_accuracy = round(statistics.mean(float(r["citation_accuracy_score"]) for r in retrievals), 3) if retrievals else 0
+    # Eval-harness columns may be empty when the CSVs come from the live-telemetry
+    # bridge (ingest/bridge/): request spans never carry eval scores — a scheduled
+    # eval pipeline does (see docs/otel-conformance-matrix.md). Treat empty as absent.
+    _groundedness_vals = [float(r["groundedness_score"]) for r in retrievals if r.get("groundedness_score", "") != ""]
+    _citation_vals = [float(r["citation_accuracy_score"]) for r in retrievals if r.get("citation_accuracy_score", "") != ""]
+    avg_groundedness = round(statistics.mean(_groundedness_vals), 3) if _groundedness_vals else 0
+    avg_citation_accuracy = round(statistics.mean(_citation_vals), 3) if _citation_vals else 0
     hallucination_count = sum(1 for r in retrievals if r.get("hallucination_flag") in ("True", "true", True))
     hallucination_rate_pct = round(100 * hallucination_count / n_retrievals, 2) if n_retrievals else 0
     abstention_count = sum(1 for r in retrievals if r.get("abstention_flag") in ("True", "true", True))
