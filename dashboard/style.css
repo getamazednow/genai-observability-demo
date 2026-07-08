@@ -47,7 +47,7 @@ body {
   background: var(--gai-ink);
 }
 .topbar-left { display: flex; align-items: center; gap: 14px; }
-.brand-logo { height: 44px; width: auto; display: block; }
+.brand-logo { height: 64px; width: 64px; display: block; }
 .brand-title {
   font-family: var(--font-display);
   font-weight: 800;
