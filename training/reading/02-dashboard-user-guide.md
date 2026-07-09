@@ -15,14 +15,16 @@ Browsers block `fetch()` of local JSON over `file://`, so it must be served (loc
 ```bash
 cd genai-observability-demo/data/generator
 python3 generate_synthetic_data.py        # writes data/synthetic/raw/*.csv
-python3 aggregate_dashboard_summary.py    # writes dashboard/data/dashboard_summary.json
+python3 aggregate_dashboard_summary.py    # writes dashboard/data/dashboard_summary.synthetic.json
 ```
 
-Every screen carries a **"MOCK / SYNTHETIC DATA"** pill in the header — keep that visible in any live demo or screen-share; it's the honesty mechanism that makes this useful in a governance conversation rather than misleading in one.
+**Data-source toggle.** The top bar has a **Synthetic | Live** selector. *Synthetic* renders the generator output above; *Live* renders telemetry that flowed through the OTel Collector → bridge pipeline (see [`ingest/README.md`](../../ingest/README.md), aggregated with `GENAI_SOURCE=live`). The choice persists across page reloads.
+
+Every screen carries a status pill in the header — amber **"MOCK / SYNTHETIC DATA"** or green **"SIMULATED LIVE (OTLP)"** depending on the selected source — keep it visible in any live demo or screen-share; it's the honesty mechanism that makes this useful in a governance conversation rather than misleading in one.
 
 ## Navigation model
 
-Seven tabs across the top, one per dashboard in the addendum's pack. All read from a single pre-aggregated file, `dashboard/data/dashboard_summary.json`, itself built from the raw trace-tree span data (`data/synthetic/raw/*.csv`) by the aggregator script. See the [dashboard information architecture diagram](../diagrams/exports/05-dashboard-information-architecture.png) below for how the seven map to audiences.
+Seven tabs across the top, one per dashboard in the addendum's pack. All read from a single pre-aggregated file per source — `dashboard/data/dashboard_summary.synthetic.json` or `.live.json` — built by the aggregator script from the raw trace-tree span data (`data/synthetic/raw/*.csv` or `data/live/raw/*.csv` respectively). See the [dashboard information architecture diagram](../diagrams/exports/05-dashboard-information-architecture.png) below for how the seven map to audiences.
 
 ### Tab 1 — Executive AI Health
 
