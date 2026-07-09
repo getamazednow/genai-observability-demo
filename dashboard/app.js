@@ -1,5 +1,7 @@
 /* GenAI Project Observability — demo dashboard
-   Renders synthetic telemetry from data/dashboard_summary.json.
+   Renders telemetry from data/dashboard_summary.<source>.json, where <source>
+   is "synthetic" (generator) or "live" (OTLP Collector -> bridge), selectable
+   via the Synthetic|Live toggle in the top bar.
    No backend, no network calls beyond the local JSON + Chart.js CDN. */
 
 /* Getamazednow AI Design System v1.0 — dark-surface (on-Ink) palette.
@@ -59,9 +61,49 @@ function baseLineOpts(extra = {}) {
   }, extra);
 }
 
+/* ---- Data-source selection (Synthetic | Live) ----
+   Each source has its own summary file produced by the aggregator:
+     synthetic: GENAI_SOURCE=synthetic python3 data/generator/aggregate_dashboard_summary.py
+     live:      GENAI_SOURCE=live      python3 data/generator/aggregate_dashboard_summary.py
+   Choice persists in localStorage; switching reloads so every chart re-renders cleanly. */
+const SOURCE = localStorage.getItem("genai_source") === "live" ? "live" : "synthetic";
+
+function wireSourceToggle() {
+  document.querySelectorAll("#source-toggle .source-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.source === SOURCE);
+    btn.addEventListener("click", () => {
+      if (btn.dataset.source === SOURCE) return;
+      localStorage.setItem("genai_source", btn.dataset.source);
+      location.reload();
+    });
+  });
+  const pill = document.getElementById("source-pill");
+  if (SOURCE === "live") {
+    pill.textContent = "SIMULATED LIVE (OTLP)";
+    pill.classList.remove("pill-mock");
+    pill.classList.add("pill-live");
+  }
+}
+
+async function fetchSummary() {
+  const res = await fetch(`data/dashboard_summary.${SOURCE}.json`);
+  if (res.ok) return res.json();
+  if (SOURCE === "synthetic") {
+    // Fall back to the legacy filename so pre-toggle checkouts still render.
+    const legacy = await fetch("data/dashboard_summary.json");
+    if (legacy.ok) return legacy.json();
+  }
+  throw new Error(
+    `data/dashboard_summary.${SOURCE}.json not found. Generate it with: ` +
+    (SOURCE === "live"
+      ? "run the Collector + an emitter, then ingest/bridge/otlp_file_to_csv.py, then GENAI_SOURCE=live python3 data/generator/aggregate_dashboard_summary.py"
+      : "python3 data/generator/generate_synthetic_data.py, then python3 data/generator/aggregate_dashboard_summary.py")
+  );
+}
+
 async function main() {
-  const res = await fetch("data/dashboard_summary.json");
-  const data = await res.json();
+  wireSourceToggle();
+  const data = await fetchSummary();
   const daily = data.daily;
   const labels = daily.map(d => shortDate(d.date));
   const h = data.headline;

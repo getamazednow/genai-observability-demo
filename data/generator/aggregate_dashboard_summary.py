@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Aggregates the raw synthetic span-level CSVs into the daily rollup JSON
-consumed by the static dashboard (dashboard/data/dashboard_summary.json).
+Aggregates raw span-level CSVs into the daily rollup JSON consumed by the
+static dashboard (dashboard/data/dashboard_summary.<source>.json, where
+<source> is GENAI_SOURCE: "synthetic" default, or "live" for bridge output).
 
 This mirrors what a real Datadog dashboard query would return: pre-aggregated
 metric series, not raw spans. Run this after generate_synthetic_data.py.
@@ -17,10 +18,15 @@ from collections import defaultdict
 from datetime import datetime
 
 BASE = os.path.join(os.path.dirname(__file__), "..", "synthetic")
-# Overridable so the same aggregation logic can run against live-telemetry CSVs
-# produced by ingest/bridge/otlp_file_to_csv.py (defaults unchanged: synthetic demo).
-RAW = os.environ.get("GENAI_RAW_DIR", os.path.join(BASE, "raw"))
+# GENAI_SOURCE names the data source and the output file (dashboard_summary.<source>.json).
+# "synthetic" (default) reads data/synthetic/raw; "live" reads data/live/raw (the CSVs
+# produced by ingest/bridge/otlp_file_to_csv.py). GENAI_RAW_DIR still overrides the input
+# directory explicitly if set.
+SOURCE = os.environ.get("GENAI_SOURCE", "synthetic")
+_default_raw = os.path.join(os.path.dirname(__file__), "..", "live", "raw") if SOURCE == "live" else os.path.join(BASE, "raw")
+RAW = os.environ.get("GENAI_RAW_DIR", _default_raw)
 OUT = os.environ.get("GENAI_OUT_DIR", os.path.join(os.path.dirname(__file__), "..", "..", "dashboard", "data"))
+OUT_NAME = f"dashboard_summary.{SOURCE}.json"
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config.json")
 os.makedirs(OUT, exist_ok=True)
 
@@ -331,7 +337,14 @@ summary = dict(
     release_events=release_events,
 )
 
-with open(os.path.join(OUT, "dashboard_summary.json"), "w") as f:
+summary["source"] = SOURCE
+
+with open(os.path.join(OUT, OUT_NAME), "w") as f:
     json.dump(summary, f, indent=2)
 
-print(f"Wrote dashboard_summary.json with {len(daily)} days, {total_wf} workflows, {len(incidents)} incidents.")
+# Legacy filename kept in sync for the synthetic default so older links/docs still work.
+if SOURCE == "synthetic":
+    with open(os.path.join(OUT, "dashboard_summary.json"), "w") as f:
+        json.dump(summary, f, indent=2)
+
+print(f"Wrote {OUT_NAME} with {len(daily)} days, {total_wf} workflows, {len(incidents)} incidents.")
