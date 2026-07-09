@@ -80,6 +80,35 @@ body {
   background: var(--amber);
   border-color: var(--amber);
 }
+.pill-live {
+  color: var(--gai-ink);
+  background: var(--green);
+  border-color: var(--green);
+}
+
+/* Data-source selector (Synthetic | Live) */
+.source-toggle {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: var(--gai-radius-pill);
+  overflow: hidden;
+}
+.source-btn {
+  background: var(--bg-panel-2);
+  color: var(--text-dim);
+  border: none;
+  padding: 5px 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.source-btn + .source-btn { border-left: 1px solid var(--border); }
+.source-btn.active {
+  background: var(--accent);
+  color: var(--gai-ink);
+}
 
 .disclaimer {
   background: var(--gai-neutral-800);

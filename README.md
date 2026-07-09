@@ -69,7 +69,7 @@ genai-observability-demo/
 │       ├── raw/                   — span-level CSVs (workflow, LLM, retrieval, tool, guardrail, incident, release event)
 │       └── (dashboard summary is written to dashboard/data/)
 ├── dashboard/                     — static HTML/CSS/JS app (GitHub Pages-ready), Chart.js via CDN
-│   └── data/dashboard_summary.json — pre-aggregated daily rollup the dashboard reads
+│   └── data/                      — pre-aggregated daily rollups: dashboard_summary.synthetic.json | .live.json (+ legacy dashboard_summary.json)
 ├── datadog/                       — dashboards-as-code + monitor/SLO templates for the real implementation
 │   ├── dashboards/
 │   ├── monitors/
@@ -92,7 +92,7 @@ No build step, no server-side code, no dependencies beyond Python 3 (stdlib only
 ```bash
 cd data/generator
 python3 generate_synthetic_data.py        # writes data/synthetic/raw/*.csv
-python3 aggregate_dashboard_summary.py    # writes dashboard/data/dashboard_summary.json
+python3 aggregate_dashboard_summary.py    # writes dashboard/data/dashboard_summary.synthetic.json
 ```
 
 **View the dashboard:**
@@ -102,6 +102,20 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 (Browsers block `fetch()` of local JSON over `file://`, so serve it — or publish via GitHub Pages, which works out of the box since `dashboard/` is fully static.)
+
+**Synthetic | Live toggle.** The top bar of the dashboard switches between two data sources, each with its own pre-aggregated summary file in `dashboard/data/`:
+
+- `dashboard_summary.synthetic.json` — the generator path above (default; a legacy copy is also written to `dashboard_summary.json` for older links).
+- `dashboard_summary.live.json` — the simulated-live path: OTel Collector (`ingest/collector/`) receives OTLP from the platform emitters (`ingest/emitters/`), the bridge converts the Collector's JSONL to contract CSVs, and the same aggregator rolls them up:
+
+```bash
+otelcol-contrib --config ingest/collector/otel-collector-config.yaml &   # listens on 4317/4318
+python3 ingest/emitters/azure_foundry_emitter.py                         # or gcp_ / aws_ variants
+python3 ingest/bridge/otlp_file_to_csv.py                                # data/live/otlp_spans.jsonl -> data/live/raw/*.csv
+GENAI_SOURCE=live python3 data/generator/aggregate_dashboard_summary.py  # writes dashboard_summary.live.json
+```
+
+A committed sample of `dashboard_summary.live.json` ships with the repo so the Live toggle works out of the box; runtime state under `data/live/` stays gitignored.
 
 ## Configuring the generator
 
