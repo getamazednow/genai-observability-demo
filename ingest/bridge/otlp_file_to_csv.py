@@ -8,8 +8,9 @@ data/live/raw/, NEVER into data/synthetic/raw/. The existing aggregator and
 dashboard then run unchanged:
 
     python ingest/bridge/otlp_file_to_csv.py
-    GENAI_RAW_DIR=data/live/raw GENAI_OUT_DIR=dashboard/data \
-        python data/generator/aggregate_dashboard_summary.py
+    GENAI_SOURCE=live python data/generator/aggregate_dashboard_summary.py
+    # -> dashboard/data/dashboard_summary.live.json; select "Live" in the
+    #    dashboard's Synthetic|Live toggle to view it
 
 This file is a conformance proof, not a product: if spans from all three cloud
 emitters flow through the Collector and this bridge and the dashboard renders,

@@ -41,8 +41,9 @@ python azure_foundry_emitter.py && python gcp_adk_emitter.py && python aws_agent
 python ingest/bridge/otlp_file_to_csv.py
 
 # 4. Aggregate + view — the SAME aggregator and dashboard as the synthetic demo
-GENAI_RAW_DIR=data/live/raw python data/generator/aggregate_dashboard_summary.py
+GENAI_SOURCE=live python data/generator/aggregate_dashboard_summary.py   # writes dashboard/data/dashboard_summary.live.json
 cd dashboard && python3 -m http.server 8000
+# open http://localhost:8000 and flip the Synthetic|Live toggle in the top bar
 ```
 
 No Collector handy? Every emitter takes `--console` to print its spans, and the
@@ -50,9 +51,12 @@ bridge accepts any file in Collector file-exporter format via `GENAI_OTLP_JSONL=
 
 ## Design rules (why this can't break the demo)
 
-- The bridge **writes to `data/live/raw/` only**; `data/synthetic/raw/` and the
-  committed dashboard JSON are never touched. The synthetic demo always works.
+- The bridge **writes to `data/live/raw/` only**; `data/synthetic/raw/` is never
+  touched. Live aggregation writes its own `dashboard_summary.live.json` — the
+  synthetic summary file is never overwritten, so the synthetic demo always works.
 - `data/live/` is gitignored — live telemetry is runtime state, not repo content.
+  (A sample `dashboard_summary.live.json` *is* committed so the dashboard's Live
+  toggle works from a clean clone.)
 - Prompt/output content is stripped in the Collector **by default**; logging
   content is a governance decision per risk tier, made deliberately.
 - Contract-tag violations are flagged, not dropped, so conformance gaps show up

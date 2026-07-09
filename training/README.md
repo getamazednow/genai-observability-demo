@@ -37,7 +37,7 @@ training/
 ## Facilitator notes for a live CoP session (suggested ~45 minute agenda)
 
 1. **(5 min) Frame the problem** — why conventional APM misses agentic-AI failure modes (`reading/01-demo-overview.md`, "Why conventional APM isn't enough").
-2. **(10 min) Live dashboard walkthrough** — follow the suggested order in `reading/02-dashboard-user-guide.md`: Executive Health → Security incident spotlight → Engineering trace waterfall → Cost & Capacity.
+2. **(10 min) Live dashboard walkthrough** — follow the suggested order in `reading/02-dashboard-user-guide.md`: Executive Health → Security incident spotlight → Engineering trace waterfall → Cost & Capacity. Close by flipping the **Synthetic | Live** toggle to show the same dashboard rendering OTel Collector-ingested telemetry (`ingest/`) — the "same contract, different source" point lands better shown than told.
 3. **(10 min) Be explicit about what's real vs. mocked** — `reading/03-architecture-and-caveats.md`, especially the synthetic evaluation-harness caveat. This is the section most likely to be challenged by a technically sophisticated audience; presenting it up front builds credibility rather than losing it.
 4. **(10 min) Roadmap and what it takes to go live** — `reading/04-roadmap-and-next-steps.md` plus the roadmap timeline diagram.
 5. **(10 min) Q&A**, using `reading/05-datadog-implementation-reference.md` and `reading/06-claude-code-production-build-plan.md` as backup material for technical questions on implementation.

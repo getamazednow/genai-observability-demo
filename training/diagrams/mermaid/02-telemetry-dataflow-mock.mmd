@@ -12,7 +12,7 @@ flowchart LR
         GEN --> S6["incident_event.csv"]
         GEN --> S7["release_event.csv"]
         S1 & S2 & S3 & S4 & S5 & S6 & S7 --> AGG["Aggregator<br/>aggregate_dashboard_summary.py"]
-        AGG --> JSON["dashboard_summary.json"]
+        AGG --> JSON["dashboard_summary<br/>.synthetic.json | .live.json"]
         JSON --> DASH["Static Dashboard<br/>index.html + app.js<br/>(7 tabs, Chart.js)"]
     end
 
