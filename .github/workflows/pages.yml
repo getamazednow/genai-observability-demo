@@ -1,10 +1,21 @@
-name: Deploy dashboard to GitHub Pages
+name: Deploy site to GitHub Pages
+
+# Publishes from `main`:
+#   /            product page (index.html)
+#   /demo/       demo dashboard (source: dashboard/)
+#   /dashboard/  -> redirects to /demo/
+#
+# See scripts/build-site.sh for the full publication layout.
 
 on:
   push:
     branches: [main]
     paths:
+      - "index.html"
       - "dashboard/**"
+      - "training/diagrams/exports/**"
+      - "scripts/build-site.sh"
+      - "scripts/check-links.py"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -30,10 +41,18 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload dashboard as Pages artifact
+      - name: Build site
+        run: |
+          chmod +x scripts/build-site.sh
+          ./scripts/build-site.sh
+
+      - name: Check for broken internal links
+        run: python3 scripts/check-links.py _site
+
+      - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dashboard
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment

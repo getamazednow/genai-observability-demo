@@ -17,3 +17,6 @@ Getamazednow AI Design System v1.2/
 
 # Live telemetry (runtime state from ingest/ scaffold)
 data/live/
+
+# Generated GitHub Pages build output
+_site/

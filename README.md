@@ -80,8 +80,31 @@ genai-observability-demo/
 │   ├── diagrams/                  — 6 architecture diagrams (Mermaid source + PNG exports)
 │   ├── docx/                      — consolidated Word training guide
 │   └── slides/                    — Exec Overview + Technical Deep-Dive PowerPoint decks
+├── index.html                     — product/overview page, published at the site root
 └── scripts/
+    ├── build-site.sh             — assembles the GitHub Pages publication tree into _site/
+    ├── check-links.py            — fails the build on any broken internal link
     └── bootstrap-github-issues.sh — creates the initial Issues backlog (mock-to-real migration phases)
+```
+
+## Published site
+
+Deployed from `main` by `.github/workflows/pages.yml` to **https://observability.getamazednow.ai**:
+
+| URL | Content | Source |
+|---|---|---|
+| `/` | Product / overview page | `index.html` |
+| `/demo/` | Demo dashboard | `dashboard/` |
+| `/dashboard/` | Redirects to `/demo/` | generated |
+| `/404.html` | Branded not-found page | generated |
+
+`dashboard/` keeps its name in the repo — the generators, docs and training material all reference that path — and is published as `/demo/`. The workflow runs `scripts/check-links.py`, so a deploy fails rather than shipping a broken link.
+
+**Preview the full site locally:**
+```bash
+./scripts/build-site.sh
+python3 -m http.server 8080 --directory _site
+# open http://localhost:8080
 ```
 
 ## Running it
