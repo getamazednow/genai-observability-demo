@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- WORK IN PROGRESS — not for public serving. Redirects to the front door.
+       To preview locally, comment out the meta refresh + redirect script below. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta http-equiv="refresh" content="0; url=/" />
+  <script>if(location.hostname!=="localhost"&&location.hostname!=="127.0.0.1"){location.replace("/");}</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Assure Observe — Getamazednow AI</title>
+<meta name="description" content="A reference architecture and demo dashboard for observing agentic Gen AI workflows in production — what to measure, why it matters, and how to operationalise it on Datadog. Built entirely on synthetic data." />
+<link rel="icon" type="image/svg+xml" href="demo/assets/Getamazednow-AI-Favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="demo/assets/Getamazednow-AI-Favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="demo/assets/Getamazednow-AI-Favicon-180.png" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" />
+<style>
+/* ── Getamazednow AI Design System v1.2 — tokens (consumed unchanged) ───────── */
+:root{
+  --gai-ink:#2A363B; --gai-signal:#5FA8CC; --gai-signal-deep:#2E7DA6;
+  --gai-signal-core:#8FC3DE; --gai-stone:#A8A17B; --gai-white:#FFFFFF;
+  --gai-neutral-50:#F6F7F7; --gai-neutral-100:#EBEDEE; --gai-neutral-200:#D5DADB;
+  --gai-neutral-300:#B7BEC2; --gai-neutral-400:#909CA1; --gai-neutral-500:#6B797E;
+  --gai-neutral-600:#545E63; --gai-neutral-700:#3F474A; --gai-neutral-800:#2C3234;
+  --gai-neutral-900:#1C1F21;
+  --gai-success:#2C6644; --gai-success-on-ink:#6FBF8B;
+  --gai-warning:#A85A16; --gai-warning-on-ink:#E3A253;
+  --gai-error:#A02E2E;   --gai-error-on-ink:#E08585;
+  --gai-info:#355F6D;    --gai-info-on-ink:#7FB3C2;
+  --gai-font-display:"Poppins","Montserrat","Segoe UI",sans-serif;
+  --gai-font-body:"Inter","Segoe UI",Roboto,sans-serif;
+  --gai-font-mono:"JetBrains Mono","Courier New",monospace;
+  --gai-radius-sm:4px; --gai-radius-md:8px; --gai-radius-lg:16px; --gai-radius-pill:999px;
+  --gai-shadow-md:0 4px 16px rgba(28,31,33,.12);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:132px;}
+body{margin:0;background:var(--gai-white);color:var(--gai-neutral-800);
+  font-family:var(--gai-font-body);font-size:15.5px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+a{color:var(--gai-signal-deep);}
+
+/* ── Topbar (spec §6) — the single identity ────────────────────────────────── */
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:24px;
+  padding:14px 32px;background:var(--gai-ink);border-bottom:2px solid var(--gai-signal);}
+.topbar-left{display:flex;align-items:center;gap:16px;}
+.brand-logo{height:128px;width:128px;display:block;}
+.brand-title{font-family:var(--gai-font-display);font-weight:800;font-size:17px;
+  letter-spacing:.2px;color:var(--gai-white);}
+.brand-title .brand-name{color:var(--gai-signal);}
+.brand-sub{color:var(--gai-neutral-300);font-size:12.5px;margin-top:2px;}
+.brand-byline{color:var(--gai-stone);font-size:11px;letter-spacing:.6px;
+  text-transform:uppercase;margin-top:2px;}
+.topbar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;}
+.pill{border:1px solid var(--gai-neutral-700);background:var(--gai-neutral-800);
+  color:var(--gai-neutral-300);padding:5px 12px;border-radius:var(--gai-radius-pill);
+  font-size:11.5px;font-weight:600;letter-spacing:.3px;white-space:nowrap;}
+.pill-mock{color:var(--gai-ink);background:var(--gai-warning-on-ink);border-color:var(--gai-warning-on-ink);}
+.pill-live{color:var(--gai-ink);background:var(--gai-success-on-ink);border-color:var(--gai-success-on-ink);}
+
+/* ── Section nav (no competing lockup) ─────────────────────────────────────── */
+.sectnav{position:sticky;top:0;z-index:20;background:rgba(246,247,247,.94);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--gai-neutral-200);}
+.sectnav-inner{display:flex;gap:4px;overflow-x:auto;max-width:1180px;margin:0 auto;padding:0 24px;}
+.sectnav a{font-family:var(--gai-font-display);font-weight:600;font-size:12.5px;
+  color:var(--gai-neutral-600);text-decoration:none;padding:13px 12px;white-space:nowrap;
+  border-bottom:3px solid transparent;}
+.sectnav a:hover{color:var(--gai-ink);border-bottom-color:var(--gai-signal);}
+
+/* ── Hero ──────────────────────────────────────────────────────────────────── */
+.hero{background:var(--gai-ink);color:var(--gai-white);position:relative;overflow:hidden;
+  padding:76px 0 0;}
+.hero::after{content:"";position:absolute;right:-140px;top:-120px;width:620px;height:620px;
+  background:radial-gradient(circle,rgba(95,168,204,.22) 0%,rgba(95,168,204,0) 62%);pointer-events:none;}
+.hero-lattice{position:absolute;right:-40px;bottom:-60px;width:520px;opacity:.16;pointer-events:none;}
+.kicker{font-family:var(--gai-font-display);font-weight:600;font-size:12px;
+  letter-spacing:2.2px;text-transform:uppercase;color:var(--gai-signal);}
+.hero h1{font-family:var(--gai-font-display);font-weight:800;font-size:54px;line-height:1.08;
+  margin:18px 0 0;max-width:16ch;letter-spacing:-.5px;}
+.hero h1 em{font-style:italic;color:var(--gai-signal);}
+.hero p.lede{max-width:62ch;color:var(--gai-neutral-200);font-size:18px;margin:22px 0 0;}
+.statstrip{display:flex;flex-wrap:wrap;gap:0;margin:44px 0 0;border-top:1px solid rgba(255,255,255,.14);}
+.stat{flex:1 1 150px;padding:22px 26px 30px 0;}
+.stat .n{font-family:var(--gai-font-display);font-weight:800;font-size:34px;
+  color:var(--gai-white);line-height:1;}
+.stat .l{font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--gai-stone);margin-top:8px;}
+
+/* ── Sections ──────────────────────────────────────────────────────────────── */
+section{padding:74px 0;}
+section.alt{background:var(--gai-neutral-50);border-top:1px solid var(--gai-neutral-100);
+  border-bottom:1px solid var(--gai-neutral-100);}
+section.ink{background:var(--gai-ink);color:var(--gai-neutral-100);}
+h2{font-family:var(--gai-font-display);font-weight:700;font-size:32px;line-height:1.2;
+  color:var(--gai-ink);margin:14px 0 0;letter-spacing:-.3px;}
+section.ink h2{color:var(--gai-white);}
+h2+p.sub{color:var(--gai-neutral-500);font-size:17px;max-width:74ch;margin:12px 0 0;}
+section.ink h2+p.sub{color:var(--gai-neutral-300);}
+h3{font-family:var(--gai-font-display);font-weight:600;font-size:17px;color:var(--gai-ink);margin:0 0 6px;}
+section.ink h3{color:var(--gai-white);}
+.mt{margin-top:38px;}
+
+/* ── Cards & grids ─────────────────────────────────────────────────────────── */
+.grid{display:grid;gap:18px;}
+.g2{grid-template-columns:repeat(2,1fr);}
+.g3{grid-template-columns:repeat(3,1fr);}
+.g4{grid-template-columns:repeat(4,1fr);}
+.card{background:var(--gai-white);border:1px solid var(--gai-neutral-200);
+  border-radius:var(--gai-radius-lg);padding:22px 24px;}
+section.alt .card{box-shadow:var(--gai-shadow-md);border-color:var(--gai-neutral-100);}
+section.ink .card{background:var(--gai-neutral-800);border-color:var(--gai-neutral-700);color:var(--gai-neutral-200);}
+.card p{margin:0;font-size:14.5px;color:var(--gai-neutral-600);}
+section.ink .card p{color:var(--gai-neutral-300);}
+.card .num{font-family:var(--gai-font-mono);font-size:12px;color:var(--gai-signal-deep);
+  letter-spacing:1px;display:block;margin-bottom:8px;}
+section.ink .card .num{color:var(--gai-signal);}
+
+.kpi{background:var(--gai-white);border:1px solid var(--gai-neutral-200);
+  border-left:3px solid var(--gai-signal-deep);border-radius:var(--gai-radius-md);padding:18px 20px;}
+.kpi .v{font-family:var(--gai-font-display);font-weight:800;font-size:27px;color:var(--gai-ink);line-height:1.1;}
+.kpi .k{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--gai-neutral-500);margin-top:7px;}
+
+/* ── Tables ────────────────────────────────────────────────────────────────── */
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--gai-white);
+  border:1px solid var(--gai-neutral-200);border-radius:var(--gai-radius-md);overflow:hidden;}
+th{background:var(--gai-ink);color:var(--gai-white);font-family:var(--gai-font-display);
+  font-weight:600;font-size:12px;letter-spacing:.8px;text-transform:uppercase;
+  text-align:left;padding:12px 14px;}
+td{padding:12px 14px;border-top:1px solid var(--gai-neutral-100);
+  color:var(--gai-neutral-700);vertical-align:top;}
+tbody tr:nth-child(even){background:var(--gai-neutral-50);}
+code{font-family:var(--gai-font-mono);font-size:12.5px;background:var(--gai-neutral-100);
+  color:var(--gai-neutral-800);padding:1px 6px;border-radius:var(--gai-radius-sm);}
+section.ink code{background:rgba(255,255,255,.08);color:var(--gai-signal-core);}
+
+/* ── Tags / status ─────────────────────────────────────────────────────────── */
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px;}
+.tag{font-size:12.5px;font-weight:500;padding:6px 13px;border-radius:var(--gai-radius-pill);
+  background:var(--gai-neutral-100);color:var(--gai-neutral-700);border:1px solid var(--gai-neutral-200);}
+.st{font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:var(--gai-radius-pill);
+  white-space:nowrap;display:inline-block;}
+.st-done{background:#E4F0E9;color:var(--gai-success);}
+.st-part{background:#F6E9DA;color:var(--gai-warning);}
+.st-no{background:var(--gai-neutral-100);color:var(--gai-neutral-600);}
+.sev1{color:var(--gai-error);font-weight:600;}
+.sev2{color:var(--gai-warning);font-weight:600;}
+
+/* ── Callout ───────────────────────────────────────────────────────────────── */
+.callout{border-left:3px solid var(--gai-signal-deep);background:var(--gai-neutral-50);
+  padding:18px 22px;border-radius:0 var(--gai-radius-md) var(--gai-radius-md) 0;
+  font-size:14.5px;color:var(--gai-neutral-700);margin-top:30px;}
+section.ink .callout{background:var(--gai-neutral-800);color:var(--gai-neutral-200);
+  border-left-color:var(--gai-signal);}
+
+/* ── Risk / reward ─────────────────────────────────────────────────────────── */
+.rr h3{font-family:var(--gai-font-display);font-size:13px;letter-spacing:1.6px;
+  text-transform:uppercase;margin-bottom:14px;}
+.rr-reward h3{color:var(--gai-success-on-ink);}
+.rr-risk h3{color:var(--gai-warning-on-ink);}
+.rr ul{list-style:none;margin:0;padding:0;}
+.rr li{padding:11px 0;border-top:1px solid var(--gai-neutral-700);font-size:14.5px;
+  color:var(--gai-neutral-300);}
+.rr li b{color:var(--gai-white);font-weight:600;}
+
+/* ── Figure ────────────────────────────────────────────────────────────────── */
+figure{margin:34px 0 0;background:var(--gai-white);border:1px solid var(--gai-neutral-200);
+  border-radius:var(--gai-radius-lg);padding:20px;}
+figure img{width:100%;display:block;border-radius:var(--gai-radius-sm);}
+figcaption{font-size:12.5px;color:var(--gai-neutral-500);margin-top:12px;}
+
+/* ── CTA ───────────────────────────────────────────────────────────────────── */
+.btn{display:inline-block;font-family:var(--gai-font-display);font-weight:600;font-size:14px;
+  padding:13px 26px;border-radius:var(--gai-radius-pill);text-decoration:none;
+  background:var(--gai-signal);color:var(--gai-ink);border:1px solid var(--gai-signal);}
+.btn:hover{background:var(--gai-signal-core);border-color:var(--gai-signal-core);}
+.btn-ghost{background:transparent;color:var(--gai-signal);}
+.btn-ghost:hover{background:rgba(95,168,204,.12);color:var(--gai-signal-core);}
+.btnrow{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px;}
+
+/* ── Footer (running identity) ─────────────────────────────────────────────── */
+footer{background:var(--gai-neutral-900);color:var(--gai-neutral-400);padding:44px 0 52px;
+  border-top:2px solid var(--gai-signal);}
+.foot-kicker{font-family:var(--gai-font-mono);font-size:11px;letter-spacing:1.6px;
+  text-transform:uppercase;color:var(--gai-neutral-500);}
+.foot-id{display:flex;align-items:center;gap:12px;margin-top:22px;}
+.foot-id img{height:34px;width:34px;}
+.foot-id .n{font-family:var(--gai-font-display);font-weight:700;font-size:14.5px;color:var(--gai-white);}
+.foot-id .b{font-size:11.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--gai-stone);}
+.foot-tag{margin-top:20px;font-size:13px;color:var(--gai-neutral-500);}
+.foot-tag a{color:var(--gai-signal);text-decoration:none;}
+
+@media (max-width:1000px){
+  .g4{grid-template-columns:repeat(2,1fr);} .g3{grid-template-columns:repeat(2,1fr);}
+  .hero h1{font-size:40px;}
+}
+@media (max-width:680px){
+  .wrap{padding:0 20px;} .topbar{flex-direction:column;align-items:flex-start;}
+  .brand-logo{height:88px;width:88px;}
+  .g2,.g3,.g4{grid-template-columns:1fr;} .hero h1{font-size:32px;}
+  .hero-lattice{display:none;} section{padding:52px 0;} h2{font-size:25px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ TOPBAR — single brand identity (spec §6) ══ -->
+<header class="topbar">
+  <!-- WORK IN PROGRESS — not for public serving. Redirects to the front door.
+       To preview locally, comment out the meta refresh + redirect script below. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta http-equiv="refresh" content="0; url=/" />
+  <script>if(location.hostname!=="localhost"&&location.hostname!=="127.0.0.1"){location.replace("/");}</script>
+  <div class="topbar-left">
+    <img class="brand-logo" src="demo/assets/Getamazednow-AI-Icon-Color-Keyline-Signal.svg" alt="Getamazednow AI — Tensor Node Lattice mark" />
+    <div>
+      <div class="brand-title"><span class="brand-name">Getamazednow AI</span> · Assure Observe</div>
+      <div class="brand-sub">Reference architecture &amp; demo dashboard for agentic Gen AI workflows</div>
+      <div class="brand-byline">A Getamazednow Company</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="pill pill-mock">MOCK / SYNTHETIC DATA</span>
+  </div>
+</header>
+
+<nav class="sectnav">
+  <div class="sectnav-inner">
+    <a href="#why">The gap</a>
+    <a href="#dashboards">Seven dashboards</a>
+    <a href="#measure">What gets measured</a>
+    <a href="#numbers">Headline numbers</a>
+    <a href="#storylines">Seeded storylines</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#roadmap">90-day path</a>
+    <a href="#riskreward">Risk &amp; reward</a>
+    <a href="#repo">What ships</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <img class="hero-lattice" src="demo/assets/Getamazednow-AI-Hero-Lattice.svg" alt="" aria-hidden="true" />
+  <div class="wrap" style="position:relative;">
+    <div class="kicker">Gen AI Observability · Reference Architecture</div>
+    <h1>A "successful" answer can still be <em>unsafe</em>, <em>ungrounded</em> and <em>uneconomic</em>.</h1>
+    <p class="lede">Agentic Gen AI fails in ways conventional APM never sees. A workflow returns HTTP 200, the user gets a reply — and underneath sits an unbudgeted cost curve, a weak citation, a bypassed policy gate, or a refund tool driven by an injected prompt. This is a minimum-viable observability model for that class of system: cost, reliability, performance, agent behaviour, security and responsible-AI risk in one place, correlated by trace.</p>
+    <div class="statstrip">
+      <div class="stat"><div class="n">~150</div><div class="l">Metrics catalogued</div></div>
+      <div class="stat"><div class="n">13</div><div class="l">Measurement dimensions</div></div>
+      <div class="stat"><div class="n">7</div><div class="l">Dashboards built</div></div>
+      <div class="stat"><div class="n">~5,000</div><div class="l">Synthetic workflows</div></div>
+      <div class="stat"><div class="n">90</div><div class="l">Days to production</div></div>
+    </div>
+    <div class="btnrow" style="padding-bottom:60px;">
+      <a class="btn" href="demo/">Open the demo dashboard</a>
+      <a class="btn btn-ghost" href="https://github.com/getamazednow/genai-observability-demo/blob/main/README.md" target="_blank" rel="noopener">Read the repo</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ THE GAP ══ -->
+<section id="why">
+  <div class="wrap">
+    <div class="kicker" style="color:var(--gai-signal-deep);">Why this exists</div>
+    <h2>What conventional APM does not catch</h2>
+    <p class="sub">Traditional observability answers <i>did it respond, how fast, did it error</i>. None of those questions detect the six failure modes that actually matter to an architecture board, a risk committee or a CFO.</p>
+    <div class="grid g3 mt">
+      <div class="card"><h3>Silent cost drift</h3><p>Prompt bloat, retry storms and fallback routing move unit economics without a single error being raised. Cost per <em>successful</em> workflow is the only honest denominator.</p></div>
+      <div class="card"><h3>Ungrounded confidence</h3><p>Groundedness, citation accuracy and hallucination rate are invisible to request tracing. They come from a separate evaluation pipeline running on sampled traffic.</p></div>
+      <div class="card"><h3>Excessive agency</h3><p>Tool calls with real-world side effects — refunds, writes, sends, purchases — need approval-decision telemetry, not just success counts.</p></div>
+      <div class="card"><h3>Adversarial pressure</h3><p>Prompt-injection attempts, and specifically the share that <em>bypassed</em> the guardrail, are the signal. Blocked-only reporting flatters the control.</p></div>
+      <div class="card"><h3>Provider fragility</h3><p>Rate limits and quota exhaustion are a material share of production LLM failures — a capacity risk expressed as a reliability and cost incident.</p></div>
+      <div class="card"><h3>Change without a gate</h3><p>A prompt version bump is a production change. Without regression scoring and an eval gate, quality regressions ship silently and are found by customers.</p></div>
+    </div>
+    <div class="callout"><b>The demo scenario.</b> An <b>Order Support &amp; Returns Assistant</b> — an agentic retail customer-service workflow (order status, returns, refunds, loyalty credits, address changes) across three storefront brands over a synthetic 30-day window. Chosen because it exercises every governance dimension at once: cost at scale, tool-driven money movement, and a believable attack surface. A second Financial Services scenario (card dispute &amp; fraud triage) ships disabled in config and can be switched on without code changes.</div>
+  </div>
+</section>
+
+<!-- ══ DASHBOARDS ══ -->
+<section id="dashboards" class="alt">
+  <div class="wrap">
+    <div class="kicker" style="color:var(--gai-signal-deep);">The dashboard pack</div>
+    <h2>Seven dashboards, one telemetry contract</h2>
+    <p class="sub">Starting from the catalogue's own "practical dashboards to build" shortlist (the first three) and extending through the rest. Each is audience-specific — an executive should never have to read a trace waterfall to know whether the programme is healthy.</p>
+    <div class="grid g2 mt">
+      <div class="card"><span class="num">01 · EXEC / BOARD</span><h3>Executive AI Health</h3><p>Workflow volume, success rate, cost per successful workflow, monthly run-rate, estimated cost avoidance vs. a human-handled equivalent, P95 latency, incident log, policy violations.</p></div>
+      <div class="card"><span class="num">02 · PLATFORM ENGINEERING</span><h3>Engineering Operations</h3><p>Latency decomposed by layer (model / retrieval / tool), P50–P99 trend, error and retry rate, rate-limit events, agent loop events, and a representative single-trace waterfall.</p></div>
+      <div class="card"><span class="num">03 · CYBER / RESPONSIBLE AI</span><h3>Security &amp; Responsible AI</h3><p>Prompt-injection attempts split blocked vs. bypassed, sensitive-data egress, toxicity flags, high-risk tool calls, policy-approval bypasses, and an incident spotlight.</p></div>
+      <div class="card"><span class="num">04 · FINANCE / CAPACITY</span><h3>Cost &amp; Capacity</h3><p>Token usage, cost by model, quota utilisation against an assumed daily quota, cumulative cost vs. monthly budget, and fallback-model cost uplift.</p></div>
+      <div class="card"><span class="num">05 · PRODUCT / ARCHITECTURE</span><h3>Agent Behaviour</h3><p>Average steps and tool calls per workflow, tool-call mix, escalation rate, and tool-call success rate as a tool-selection-quality proxy.</p></div>
+      <div class="card"><span class="num">06 · DATA GOVERNANCE</span><h3>RAG &amp; Grounding</h3><p>Retrieval hit rate, groundedness, citation accuracy, hallucination rate, abstention rate and source freshness — from the evaluation series, not raw spans.</p></div>
+      <div class="card" style="grid-column:span 2;"><span class="num">07 · CHANGE &amp; RELEASE GOVERNANCE</span><h3>Release &amp; Evaluation</h3><p>Regression pass rate, golden-set accuracy, canary health and the release/rollback log — the eval-gate loop that turns a prompt change from an untracked edit into a governed production release.</p></div>
+    </div>
+    <div class="callout"><b>Read the fine print on 6 and 7.</b> Their quality scores are generated as a synthetic <em>evaluation-harness series</em>, independent of the raw request spans — deliberately, because that is how a real implementation works: evals run on a schedule against sampled traffic, not inline on every request. Standing up a real harness (LLM-as-judge, golden sets, human-review sampling) is the Weeks 7–10 phase, not a shortcut taken here.</div>
+  </div>
+</section>
+
+<!-- ══ WHAT GETS MEASURED ══ -->
+<section id="measure">
+  <div class="wrap">
+    <div class="kicker" style="color:var(--gai-signal-deep);">The measurement baseline</div>
+    <h2>13 dimensions. 20 metrics that earn their place first.</h2>
+    <p class="sub">The full catalogue runs to roughly 150 metrics. Nobody instruments 150 on day one — this is the priority set, and the honest status of each in the demo.</p>
+    <div class="tags">
+      <span class="tag">Cost</span><span class="tag">Performance / latency</span><span class="tag">Scale &amp; capacity</span>
+      <span class="tag">Reliability / resiliency</span><span class="tag">Agent behaviour</span><span class="tag">RAG &amp; grounding</span>
+      <span class="tag">Security</span><span class="tag">Responsible AI</span><span class="tag">Incidents &amp; operational risk</span>
+      <span class="tag">Model quality, drift &amp; evaluation</span><span class="tag">Data, privacy &amp; compliance</span>
+      <span class="tag">Change, release &amp; governance</span><span class="tag">Executive view (spans all)</span>
+    </div>
+    <div class="mt">
+      <table>
+        <thead><tr><th style="width:30%">Priority metric</th><th style="width:34%">Why it earns a place</th><th style="width:36%">Status in this demo</th></tr></thead>
+        <tbody>
+          <tr><td>Cost per successful workflow</td><td>Economic viability — the unit that survives board scrutiny</td><td><span class="st st-done">MODELLED</span> Executive tab</td></tr>
+          <tr><td>Workflow success rate</td><td>Reliability defined by business outcome, not HTTP 200</td><td><span class="st st-done">MODELLED</span> Executive tab</td></tr>
+          <tr><td>End-to-end latency P95</td><td>UX and SLA, decomposed by layer</td><td><span class="st st-done">MODELLED</span> Executive + Engineering</td></tr>
+          <tr><td>Retry, timeout &amp; fallback rate</td><td>Waste, instability and silent degradation</td><td><span class="st st-done">MODELLED</span> timeout via tool <code>error_type</code> only</td></tr>
+          <tr><td>Rate-limit events</td><td>Provider quota and scaling risk</td><td><span class="st st-done">MODELLED</span> Engineering tab</td></tr>
+          <tr><td>Tokens &amp; calls per workflow</td><td>Cost drivers and agent efficiency</td><td><span class="st st-done">MODELLED</span> raw span data</td></tr>
+          <tr><td>Groundedness &amp; citation accuracy</td><td>Factual trust and source-backed integrity</td><td><span class="st st-part">EVAL SERIES</span> synthetic, not span-derived</td></tr>
+          <tr><td>Prompt-injection attempt rate</td><td>Adversarial pressure — track the bypass share</td><td><span class="st st-done">MODELLED</span> Security tab</td></tr>
+          <tr><td>Sensitive-data egress events</td><td>Privacy and confidentiality; zero tolerance</td><td><span class="st st-done">MODELLED</span> Security tab</td></tr>
+          <tr><td>Unauthorised tool-call attempts</td><td>Excessive agency — the highest-consequence failure</td><td><span class="st st-done">MODELLED</span> policy-approval bypasses</td></tr>
+          <tr><td>Human escalation rate</td><td>Where the automation boundary actually sits</td><td><span class="st st-done">MODELLED</span> Agent Behaviour tab</td></tr>
+          <tr><td>Incident MTTD / MTTR</td><td>Operational readiness of the AI estate</td><td><span class="st st-done">MODELLED</span> Executive incident log</td></tr>
+          <tr><td>Model / prompt version regression score</td><td>Change and drift detection at release time</td><td><span class="st st-done">MODELLED</span> seeded v14→v15 rollback</td></tr>
+          <tr><td>Human override rate</td><td>Trust and quality proxy</td><td><span class="st st-no">NOT MODELLED</span> no human-edit concept in v1</td></tr>
+          <tr><td>Bias / fairness flags, refusal quality</td><td>Responsible-AI assurance evidence</td><td><span class="st st-no">NOT MODELLED</span> scoped to Weeks 7–10</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><b>Aligned to external reference frames, not invented.</b> OpenTelemetry GenAI semantic conventions (vendor-neutral spans, model identity, token counts) · NIST AI Risk Management Framework 1.0 (risk framing) · OWASP Top 10 for LLM Applications (security controls) · Datadog LLM/Agent Observability (implementation reference).</div>
+  </div>
+</section>
+
+<!-- ══ HEADLINE NUMBERS ══ -->
+<section id="numbers" class="ink">
+  <div class="wrap">
+    <div class="kicker">From the current synthetic run</div>
+    <h2>What the executive view returns</h2>
+    <p class="sub">Illustrative figures from the default single-scenario config over a 30-day window. Regenerate the data to reproduce them exactly — these are outputs of a model, not claims about a live system.</p>
+    <div class="grid g4 mt">
+      <div class="kpi"><div class="v">~5,000</div><div class="k">Workflows (30 days)</div></div>
+      <div class="kpi"><div class="v">~97%</div><div class="k">Success rate</div></div>
+      <div class="kpi"><div class="v">~$0.025</div><div class="k">Cost / successful workflow</div></div>
+      <div class="kpi"><div class="v">~$120</div><div class="k">Forecast monthly run-rate</div></div>
+      <div class="kpi"><div class="v">$150</div><div class="k">Assumed monthly budget</div></div>
+      <div class="kpi"><div class="v">~$31,200</div><div class="k">Est. monthly cost avoidance*</div></div>
+      <div class="kpi"><div class="v">2</div><div class="k">Incidents (1 Sev1, 1 Sev2)</div></div>
+      <div class="kpi"><div class="v">1</div><div class="k">Release rollback</div></div>
+    </div>
+    <p style="font-size:12.5px;color:var(--gai-neutral-400);margin-top:20px;">*Illustrative only — assumes a $6.50 fully-loaded cost per human-handled contact. That is a modelling assumption for this demo, not a sourced benchmark, and it is the number an executive audience will challenge first. Treat it as a sensitivity input, not a result.</p>
+  </div>
+</section>
+
+<!-- ══ STORYLINES ══ -->
+<section id="storylines">
+  <div class="wrap">
+    <div class="kicker" style="color:var(--gai-signal-deep);">Diagnosable signal, not noise</div>
+    <h2>Three storylines seeded into the data</h2>
+    <p class="sub">A dashboard that only ever shows a healthy green estate proves nothing. Three failure narratives are deliberately injected so each dashboard has a job to do and can be demonstrated end to end.</p>
+    <div class="mt">
+      <table>
+        <thead><tr><th style="width:20%">Event</th><th style="width:42%">What happened</th><th style="width:38%">What it demonstrates</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>REL-2026-0608</code><br /><code>REL-2026-0609</code><br /><span class="sev2">Release regression</span></td>
+            <td>A prompt version bump (v14 → v15) degraded groundedness and citation accuracy. Caught by the evaluation harness and rolled back roughly 27 hours later.</td>
+            <td>The Release &amp; Evaluation dashboard's core job — catching a quality regression <em>before</em> it becomes a customer-visible incident, and evidencing the eval-gate → rollback loop for change governance.</td>
+          </tr>
+          <tr>
+            <td><code>INC-2026-0611</code><br /><span class="sev2">Sev2</span></td>
+            <td>A cluster of prompt-injection attempts targeting the <code>refund_issue</code> tool. The guardrail caught 92%; a handful bypassed.</td>
+            <td>The Security dashboard's core job — detecting an adversarial pattern and quantifying precisely what got through. The 8% is the risk-committee conversation.</td>
+          </tr>
+          <tr>
+            <td><code>INC-2026-0621</code><br /><span class="sev1">Sev1</span></td>
+            <td>A promo-driven traffic surge triggered provider rate-limiting, forcing retries and fallback-model routing — spiking both latency and cost.</td>
+            <td>Capacity risk expressed simultaneously as a reliability and a cost event. Mirrors Datadog's published finding that provider rate limits are a material share of production LLM failures.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ARCHITECTURE ══ -->
+<section id="architecture" class="alt">
+  <div class="wrap">
+    <div class="kicker" style="color:var(--gai-signal-deep);">How it is built</div>
+    <h2>The synthetic schema <em>is</em> the target telemetry contract</h2>
+    <p class="sub">This is the design decision that makes the demo more than a mock-up. Every field the generator emits is a field a real instrumentation layer must emit. Moving to production replaces the data source — not the model, not the dashboards, not the contract.</p>
+    <div class="grid g3 mt">
+      <div class="card"><span class="num">STEP 01</span><h3>Emit</h3><p>A trace tree per workflow — workflow, LLM, retrieval, tool and guardrail spans — from the Python generator, or from platform emitters (Azure AI Foundry, GCP ADK, AWS AgentCore) over OTLP.</p></div>
+      <div class="card"><span class="num">STEP 02</span><h3>Collect &amp; bridge</h3><p>An OpenTelemetry Collector receives OTLP on 4317/4318; a bridge converts Collector JSONL into the contract CSVs. Same field names in both the synthetic and simulated-live paths.</p></div>
+      <div class="card"><span class="num">STEP 03</span><h3>Aggregate &amp; render</h3><p>One aggregator produces daily rollups consumed by a static, dependency-free dashboard (Chart.js via CDN, GitHub Pages-ready) with a Synthetic | Live toggle.</p></div>
+    </div>
+    <figure>
+      <img src="training/diagrams/exports/03-mock-to-real-migration.png" alt="Mock-to-real migration architecture — the synthetic generator is replaced by real instrumentation emitting the same telemetry contract" />
+      <figcaption><b>Mock → real migration.</b> Production means swapping the generator for real instrumentation (Datadog LLM/Agent Observability SDK, or OpenTelemetry GenAI semantic conventions) emitting the same field names, then importing the dashboards-as-code templates in <code>/datadog</code> instead of reading local JSON. Full diagram set — trace tree, telemetry dataflow, dashboard information architecture, Datadog implementation architecture — ships in <code>training/diagrams/</code>.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ══ ROADMAP ══ -->
+<section id="roadmap">
+  <div class="wrap">
+    <div class="kicker" style="color:var(--gai-signal-deep);">Investment path</div>
+    <h2>90 days from reference to production capability</h2>
+    <p class="sub">Four phases, each with an exit criterion an architecture board can actually test — and an honest status against this repo. Two phases are complete in mock form; one is partial; one has not started.</p>
+    <div class="mt">
+      <table>
+        <thead><tr><th style="width:15%">Horizon</th><th style="width:24%">Goal</th><th style="width:30%">Exit criterion</th><th style="width:31%">Status in this repo</th></tr></thead>
+        <tbody>
+          <tr><td><b>Weeks 0–2</b><br />Foundation</td><td>Establish standards and one observable pilot</td><td>One agentic workflow visible end-to-end with model spans, tool spans, token/cost/latency metrics and basic monitors</td><td><span class="st st-done">DONE IN MOCK FORM</span><br />Telemetry contract defined; one workflow fully instrumented — as synthetic data, not live traffic</td></tr>
+          <tr><td><b>Weeks 3–6</b><br />Operate</td><td>Move from traces to operational control</td><td>Production support can detect, triage and assign AI workflow incidents via the platform, not manual log inspection</td><td><span class="st st-done">DONE IN MOCK FORM</span><br />All 7 dashboards built; SLO/monitor definitions stubbed but not wired to a live alerting channel</td></tr>
+          <tr><td><b>Weeks 7–10</b><br />Govern</td><td>Operationalise responsible AI and security controls</td><td>High-risk workflows carry policy-decision telemetry, audit evidence, approval/override tracking and responsible-AI dashboards</td><td><span class="st st-part">PARTIAL</span><br />Guardrail and approval telemetry modelled; a <em>real</em> eval harness, bias/fairness flags, refusal quality and human override rate are not</td></tr>
+          <tr><td><b>Weeks 11–13</b><br />Scale</td><td>Create reusable platform patterns</td><td>Second and third use cases onboard with materially less effort; governance and operations patterns are reusable</td><td><span class="st st-no">NOT STARTED</span><br />Single-use-case reference; extracting a reusable instrumentation library is the next phase once real traffic exists</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3 style="margin-top:44px;font-size:20px;">Production SLOs to carry forward</h3>
+    <div class="grid g3 mt" style="margin-top:20px;">
+      <div class="card"><h3>Workflow success rate</h3><p><b>≥ 98%</b> for low/medium-risk workflows, higher for critical. Success defined by business outcome — not HTTP 200, not "the LLM responded".</p></div>
+      <div class="card"><h3>Cost per successful workflow</h3><p>Budget threshold by use case and business unit. Alert when cost rises faster than successful completions.</p></div>
+      <div class="card"><h3>P95 end-to-end latency</h3><p>Use-case specific, with separate targets for interactive chat and batch agents; always decomposed by layer.</p></div>
+      <div class="card"><h3>Agent loop / fan-out control</h3><p>Hard stop at a defined step count, repeated tool sequence or fan-out threshold. A breach is both a reliability <em>and</em> a cost-risk event.</p></div>
+      <div class="card"><h3>Sensitive-data egress</h3><p>Zero tolerance for confirmed credential, secret or protected-data leakage. Block, redact, escalate by severity.</p></div>
+      <div class="card"><h3>High-risk action without approval</h3><p>Zero tolerance. Covers write, delete, send, purchase, financial, HR and production actions.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ RISK & REWARD ══ -->
+<section id="riskreward" class="ink">
+  <div class="wrap">
+    <div class="kicker">Eyes open</div>
+    <h2>Risk &amp; reward of governing Gen AI this way</h2>
+    <p class="sub">Instrumenting to this depth buys evidence and speed. It also adds telemetry cost, cardinality and a new class of alert fatigue — that trade should be made deliberately, at board level.</p>
+    <div class="grid g2 mt rr">
+      <div class="rr-reward">
+        <h3>Reward</h3>
+        <ul>
+          <li><b>Defensible unit economics.</b> Cost per successful workflow, run-rate and budget variance become standing board metrics rather than an end-of-quarter surprise.</li>
+          <li><b>Audit evidence by construction.</b> Policy decisions, approval bypasses and guardrail outcomes are logged as telemetry — not reconstructed from logs after an incident.</li>
+          <li><b>Change governance at release speed.</b> An eval gate turns a prompt edit into a governed release with a measurable regression score and a rollback path.</li>
+          <li><b>One correlated view.</b> Cost, reliability, security and grounding share a trace ID, so a Sev1 can be explained across all four dimensions in a single conversation.</li>
+          <li><b>Reusable across use cases.</b> The telemetry contract, not the dashboard, is the asset — the second workflow onboards at a fraction of the first one's cost.</li>
+        </ul>
+      </div>
+      <div class="rr-risk">
+        <h3>Risk</h3>
+        <ul>
+          <li><b>Telemetry cost and cardinality.</b> Per-span AI telemetry is expensive at volume. Sampling and retention policy are design decisions, not afterthoughts.</li>
+          <li><b>Metric theatre.</b> 150 catalogued metrics invite dashboards nobody acts on. Start with the 20 that carry a decision; the rest are a reference, not a backlog.</li>
+          <li><b>False assurance from synthetic evals.</b> A groundedness score is only as trustworthy as the harness behind it. Until a real LLM-as-judge and human-review pipeline exists, treat quality scores as directional.</li>
+          <li><b>Alert fatigue.</b> Continuous AI telemetry overwhelms teams unless thresholds are tuned per risk tier and routed to an owner who can act.</li>
+          <li><b>Privacy exposure in the telemetry itself.</b> Prompts and completions are the richest signal and the most sensitive payload. Redaction and DLP are prerequisites, not a later phase.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><b>The risk worth taking.</b> Under-instrumenting is the more expensive failure. The cost of the telemetry is bounded and forecastable; the cost of an unobserved agentic incident — a bypassed approval on a money-movement tool, a grounded-looking hallucination at scale — is not.</div>
+  </div>
+</section>
+
+<!-- ══ WHAT SHIPS ══ -->
+<section id="repo">
+  <div class="wrap">
+    <div class="kicker" style="color:var(--gai-signal-deep);">What ships</div>
+    <h2>A repo you can run in under a minute</h2>
+    <p class="sub">No build step, no server-side code, no dependencies beyond Python 3 (standard library only) for the generator and a browser for the dashboard.</p>
+    <div class="grid g3 mt">
+      <div class="card"><span class="num">docs/</span><h3>Measurement &amp; mapping</h3><p>Condensed metrics catalogue, the catalogue → Datadog telemetry-contract mapping, and the annotated 90-day roadmap.</p></div>
+      <div class="card"><span class="num">data/</span><h3>Synthetic generator</h3><p>Config-driven, deterministic per-scenario RNG streams — add a use case by appending to <code>config.json</code>, never by editing code.</p></div>
+      <div class="card"><span class="num">dashboard/</span><h3>Static demo app</h3><p>Seven tabs, GitHub Pages-ready, with a Synthetic | Live data-source toggle.</p></div>
+      <div class="card"><span class="num">datadog/</span><h3>Dashboards as code</h3><p>Dashboard, monitor and SLO templates for the real implementation.</p></div>
+      <div class="card"><span class="num">ingest/</span><h3>OTLP path</h3><p>Collector config, platform emitters (Azure Foundry, GCP ADK, AWS AgentCore) and the JSONL → contract-CSV bridge.</p></div>
+      <div class="card"><span class="num">training/</span><h3>Enablement pack</h3><p>Facilitator guide, six architecture diagrams, a Word training guide, and Exec Overview plus Technical Deep-Dive decks.</p></div>
+    </div>
+    <div class="btnrow">
+      <a class="btn" href="demo/">Open the demo dashboard</a>
+      <a class="btn btn-ghost" style="color:var(--gai-signal-deep);border-color:var(--gai-neutral-300);" href="https://github.com/getamazednow/genai-observability-demo/blob/main/training/README.md" target="_blank" rel="noopener">Training pack</a>
+      <a class="btn btn-ghost" style="color:var(--gai-signal-deep);border-color:var(--gai-neutral-300);" href="https://github.com/getamazednow/genai-observability-demo/blob/main/docs/roadmap.md" target="_blank" rel="noopener">90-day roadmap</a>
+    </div>
+    <div class="callout" style="margin-top:40px;">
+      <b>Sources.</b> <i>AI Observability Metrics Catalogue for Agentic LLM Workflows</i>, v1.0, 30 Jun 2026 · <i>AI Observability — Datadog Implementation Addendum</i>, 30 Jun 2026 ·
+      <a href="https://opentelemetry.io/docs/specs/semconv/gen-ai/">OpenTelemetry GenAI semantic conventions</a> ·
+      <a href="https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf">NIST AI RMF 1.0</a> ·
+      <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">OWASP Top 10 for LLM Applications</a> ·
+      <a href="https://docs.datadoghq.com/llm_observability/">Datadog LLM Observability</a>. Licensed MIT.
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER — running identity ══ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-kicker">Assure Observe — GenAI Project Observability · Executive Reference · v1.2 · Mock / synthetic data · Not connected to any live system</div>
+    <div class="foot-id">
+      <img src="demo/assets/Getamazednow-AI-Icon-Monochrome-White.svg" alt="Getamazednow AI" />
+      <div>
+        <div class="n">Getamazednow AI</div>
+        <div class="b">A Getamazednow Company</div>
+      </div>
+    </div>
+    <div class="foot-tag">Practical AI. Possible Futures. — <a href="https://getamazednow.ai">getamazednow.ai</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
