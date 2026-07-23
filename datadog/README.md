@@ -35,9 +35,10 @@ When you're ready to implement for real:
 | `genai.eval.golden_set_accuracy` | gauge | `artefact` — from scheduled eval run |
 | `genai.release.event` | count | `event_type` (`release`\|`rollback`), `artefact, from_version, to_version` |
 | `genai.release.active_prompt_version` | gauge (tag value) | `use_case` |
+| `genai.decision.count` | count | `decision_type, selected_action, policy_result` (`pass`\|`fail`\|`bypass`), `owner, risk_tier, explainable (bool), authority_proven (bool)` — first-class decision records (see `docs/decision-contract.md`) |
 
 ## Contents
 
-- `dashboards/` — one JSON file per dashboard in the addendum's 7-dashboard pack. All 7 are now fully specified and flagged `"status": "implemented_in_demo"`, matching the 7 tabs in `/dashboard`. `agent-behaviour-and-agency.json` and `rag-and-grounding-quality.json` carry a `"caveat"` field calling out what this v1 single-agent, non-LLM-judge scenario still doesn't model (multi-agent handoffs; a real eval harness) — see `docs/roadmap.md`.
-- `monitors/` — alert definitions for the SLOs/alert policies in the addendum §8.
+- `dashboards/` — one JSON file per dashboard in the addendum's 7-dashboard pack, plus `ai-decision-trace.json` (the decision-tracing capability from `docs/decision-contract.md`). All are flagged `"status": "implemented_in_demo"`, matching the tabs in `/dashboard`. `agent-behaviour-and-agency.json` and `rag-and-grounding-quality.json` carry a `"caveat"` field calling out what this v1 single-agent, non-LLM-judge scenario still doesn't model (multi-agent handoffs; a real eval harness) — see `docs/roadmap.md`.
+- `monitors/` — alert definitions for the SLOs/alert policies in the addendum §8. `decision-override-without-authority.json` is the decision-scoped complement to `high-risk-action-without-approval.json`: it fires on the first-class decision record (with full evidence/options/outcome) rather than the guardrail span alone.
 - `slos/` — SLO objects referencing the monitors.

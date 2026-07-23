@@ -175,6 +175,12 @@ main { padding: 20px 24px 40px 24px; max-width: 1400px; margin: 0 auto; }
   text-transform: uppercase;
   letter-spacing: 0.4px;
   margin-bottom: 6px;
+  /* Reserve two lines so single- and double-line labels keep every KPI value
+     on the same baseline — numbers read as a straight line across the row. */
+  line-height: 1.3;
+  min-height: 2.6em;
+  display: flex;
+  align-items: flex-end;
 }
 .kpi-value {
   font-family: var(--font-display);
@@ -261,6 +267,88 @@ th {
 }
 .spotlight-item .label { color: var(--text-dim); font-size: 11.5px; margin-bottom: 4px; }
 .spotlight-item .value { font-size: 14px; font-weight: 600; line-height: 1.4; }
+
+/* ---- Collapsible info expander ---- */
+.info-expander {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-panel);
+  padding: 10px 16px;
+  margin-bottom: 16px;
+}
+.info-expander > summary {
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.info-expander > summary::-webkit-details-marker { display: none; }
+.info-expander > summary::before {
+  content: "ⓘ";
+  color: var(--accent);
+  font-size: 14px;
+}
+.info-expander > summary::after {
+  content: "▸";
+  margin-left: auto;
+  transition: transform 0.15s ease;
+  color: var(--text-dim);
+}
+.info-expander[open] > summary::after { transform: rotate(90deg); }
+.info-expander[open] > summary { margin-bottom: 4px; }
+
+/* ---- Decision Trace ---- */
+.decision-picker, .decision-filters select, .decision-filters input {
+  background: var(--bg-panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--gai-radius-sm, 6px);
+  padding: 6px 10px;
+  font-size: 12.5px;
+  font-family: var(--font-body);
+}
+.decision-picker { margin-left: 12px; min-width: 320px; }
+.decision-filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+.decision-filters input { flex: 1; min-width: 200px; }
+
+.decision-header {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+}
+.decision-id { font-family: var(--font-mono); font-size: 15px; font-weight: 700; color: var(--accent-2); }
+.dchip {
+  display: inline-block; padding: 3px 10px; border-radius: var(--gai-radius-pill, 999px);
+  font-size: 11px; font-weight: 600; border: 1px solid var(--border); color: var(--text-dim);
+}
+.dchip.type { background: rgba(95,168,204,0.14); color: var(--accent-2); border-color: rgba(95,168,204,0.4); }
+.dchip.pass { background: rgba(111,191,139,0.14); color: var(--green); border-color: rgba(111,191,139,0.4); }
+.dchip.fail { background: rgba(224,133,133,0.14); color: var(--red); border-color: rgba(224,133,133,0.4); }
+.dchip.bypass { background: rgba(224,133,133,0.2); color: var(--red); border-color: var(--red); }
+
+.decision-flow {
+  display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px; margin: 8px 0 20px;
+}
+.flow-step {
+  flex: 1; min-width: 120px; background: var(--bg-panel-2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 10px 12px; position: relative;
+}
+.flow-step .fs-label { color: var(--text-dim); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 5px; }
+.flow-step .fs-value { font-size: 13px; font-weight: 600; line-height: 1.35; word-break: break-word; }
+.flow-step.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.flow-arrow { align-self: center; color: var(--text-dim); font-size: 16px; }
+
+.basis-list { margin: 0; padding-left: 18px; }
+.basis-list li { font-size: 12.5px; margin-bottom: 3px; }
+.option-pill {
+  display: inline-block; margin: 3px 6px 3px 0; padding: 4px 10px; border-radius: var(--gai-radius-pill, 999px);
+  font-size: 11.5px; border: 1px solid var(--border); color: var(--text-dim);
+}
+.option-pill.chosen { background: var(--accent); color: var(--gai-ink); border-color: var(--accent); font-weight: 700; }
 
 footer {
   border-top: 1px solid var(--border);

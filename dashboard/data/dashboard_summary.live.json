@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-09T23:11:13.481812Z",
+  "generated_at": "2026-07-23T04:31:37.970729Z",
   "scenario": {
     "use_case": "Order Support & Returns Assistant",
     "business_unit": "Retail Customer Care",
@@ -94,7 +94,7 @@
       "daily_llm_call_quota": 700,
       "cumulative_cost_usd": 0.01,
       "budget_burn_pct": 0.0,
-      "avg_step_count": 4,
+      "avg_step_count": 4.33,
       "avg_tool_calls_per_workflow": 1,
       "tool_calls_by_name": {
         "order_status_lookup": 3
@@ -110,10 +110,82 @@
       "regression_pass_rate_pct": 97.3,
       "golden_set_accuracy_pct": 90.2,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 1,
+      "decision_overrides": 0,
+      "decision_escalations": 0
     }
   ],
   "incidents": [],
   "release_events": [],
+  "decisions": {
+    "total": 1,
+    "explainability_coverage_pct": 100.0,
+    "authority_coverage_pct": 100.0,
+    "override_count": 0,
+    "by_type": {
+      "refund_eligibility": 1
+    },
+    "by_action": {
+      "approve_standard_refund": 1
+    },
+    "samples": [
+      {
+        "decision_id": "DEC-LIVE-0001",
+        "workflow_id": "b363c4152ad91729dcdb426c098bc4ad",
+        "ts": "2026-07-08T06:58:25Z",
+        "decision_type": "refund_eligibility",
+        "actor_name": "order-support-returns",
+        "actor_version": "1.4.2",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 184.95,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 3,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "orders_kb",
+          "orders-v3:8871"
+        ],
+        "evidence_freshness_days": "2",
+        "groundedness_score": 0.91,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "approve_standard_refund",
+        "selection_basis": [
+          "damaged_item_confirmed",
+          "claim_within_30_day_window=True",
+          "order_value_below_auto_limit=True"
+        ],
+        "confidence": 0.93,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": false,
+          "approval_status": "not_required",
+          "approver_id": ""
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": 184.95
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "medium"
+      }
+    ]
+  },
   "source": "live"
 }

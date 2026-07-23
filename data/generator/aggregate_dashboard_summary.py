@@ -43,6 +43,17 @@ def read_csv(name):
         return list(csv.DictReader(f))
 
 
+def read_csv_optional(name):
+    """Like read_csv but returns [] if the file is absent. Used for decision_span.csv,
+    which the synthetic generator emits but the live-telemetry bridge does not yet
+    (decision events are emitted by agents/orchestrators — see docs/decision-contract.md)."""
+    path = os.path.join(RAW, name)
+    if not os.path.exists(path):
+        return []
+    with open(path, newline="") as f:
+        return list(csv.DictReader(f))
+
+
 def day_key(ts_str):
     return ts_str[:10]
 
@@ -64,6 +75,7 @@ llm_spans = read_csv("llm_span.csv")
 retrieval_spans = read_csv("retrieval_span.csv")
 tool_spans = read_csv("tool_span.csv")
 guardrail_spans = read_csv("guardrail_span.csv")
+decision_spans = read_csv_optional("decision_span.csv")
 incidents = read_csv("incident_event.csv")
 release_events = read_csv("release_event.csv")
 
@@ -94,6 +106,10 @@ for r in retrieval_spans:
 by_day_guardrail = defaultdict(list)
 for r in guardrail_spans:
     by_day_guardrail[day_key(r["ts"])].append(r)
+
+by_day_decision = defaultdict(list)
+for r in decision_spans:
+    by_day_decision[day_key(r["ts"])].append(r)
 
 eval_rnd = random.Random(7)  # deterministic wobble for the synthetic eval-harness series
 cumulative_cost = 0.0
@@ -211,6 +227,12 @@ for day_idx, d in enumerate(days):
     active_prompt_version = "v15" if day_idx in (7, 8) else "v14"
     canary_health = "degraded" if day_idx == 7 else ("recovering" if day_idx == 8 else "healthy")
 
+    # ---- Decision tracing (first-class decision records; see docs/decision-contract.md) ----
+    decs = by_day_decision[d]
+    decisions_total = len(decs)
+    decision_overrides = sum(1 for x in decs if x["decision_type"] == "guardrail_override")
+    decision_escalations = sum(1 for x in decs if x["selected_action"] in ("escalate_for_manual_review", "request_human_approval"))
+
     daily.append(dict(
         date=d,
         workflows_total=total,
@@ -276,6 +298,11 @@ for day_idx, d in enumerate(days):
         golden_set_accuracy_pct=golden_set_accuracy_pct,
         active_prompt_version=active_prompt_version,
         canary_health=canary_health,
+
+        # Decision tracing
+        decisions_total=decisions_total,
+        decision_overrides=decision_overrides,
+        decision_escalations=decision_escalations,
     ))
 
 # Overall / headline stats (last 30 days)
@@ -295,6 +322,67 @@ for s in enabled_scenarios:
 use_case_labels = [s.get("use_case_label", s["use_case"]) for s in enabled_scenarios]
 business_units = sorted(set(s["business_unit"] for s in enabled_scenarios))
 ml_apps = sorted(set(s["ml_app"] for s in enabled_scenarios))
+
+# ---- Decision-tracing rollup (docs/decision-contract.md) ----
+def _loads(s, default):
+    try:
+        return json.loads(s) if s else default
+    except (json.JSONDecodeError, TypeError):
+        return default
+
+def parse_decision(x):
+    return dict(
+        decision_id=x["decision_id"], workflow_id=x["workflow_id"], ts=x["ts"],
+        decision_type=x["decision_type"], actor_name=x["actor_name"], actor_version=x["actor_version"],
+        objective=x["objective"], input_facts=_loads(x.get("input_facts"), {}),
+        evidence_refs=_loads(x.get("evidence_refs"), []),
+        evidence_freshness_days=x.get("evidence_freshness_days", ""),
+        groundedness_score=float(x["groundedness_score"]) if x.get("groundedness_score") else None,
+        options_evaluated=_loads(x.get("options_evaluated"), []),
+        selected_action=x["selected_action"], selection_basis=_loads(x.get("selection_basis"), []),
+        confidence=float(x["confidence"]) if x.get("confidence") else None,
+        policy_evaluations=_loads(x.get("policy_evaluations"), []),
+        authority=_loads(x.get("authority"), {}),
+        tool_action=_loads(x.get("tool_action"), {}),
+        business_outcome=_loads(x.get("business_outcome"), {}),
+        owner=x.get("owner", ""), risk_tier=x.get("risk_tier", ""),
+    )
+
+total_decisions = len(decision_spans)
+dec_by_type = defaultdict(int)
+dec_by_action = defaultdict(int)
+explainable = 0          # has a non-empty selection_basis AND evidence_refs
+authority_proven = 0     # required-and-approved, or not required
+for x in decision_spans:
+    dec_by_type[x["decision_type"]] += 1
+    dec_by_action[x["selected_action"]] += 1
+    if _loads(x.get("selection_basis"), []) and _loads(x.get("evidence_refs"), []):
+        explainable += 1
+    auth = _loads(x.get("authority"), {})
+    if (not auth.get("approval_required")) or (auth.get("approver_id")):
+        authority_proven += 1
+
+override_count = dec_by_type.get("guardrail_override", 0)
+# Balanced, ts-sorted sample set for the details panel + searchable table (kept small for a static file).
+_per_type_cap = {"refund_eligibility": 14, "high_risk_tool_invocation": 14, "escalation_vs_autoresolve": 10, "guardrail_override": 12}
+_taken = defaultdict(int)
+_samples_raw = []
+for x in sorted(decision_spans, key=lambda r: r["ts"]):
+    t = x["decision_type"]
+    if _taken[t] < _per_type_cap.get(t, 10):
+        _samples_raw.append(parse_decision(x))
+        _taken[t] += 1
+decision_samples = sorted(_samples_raw, key=lambda r: r["ts"])
+
+decisions_summary = dict(
+    total=total_decisions,
+    explainability_coverage_pct=round(100 * explainable / total_decisions, 1) if total_decisions else 0,
+    authority_coverage_pct=round(100 * authority_proven / total_decisions, 1) if total_decisions else 0,
+    override_count=override_count,
+    by_type=dict(dec_by_type),
+    by_action=dict(dec_by_action),
+    samples=decision_samples,
+)
 
 summary = dict(
     generated_at=datetime.utcnow().isoformat() + "Z",
@@ -335,6 +423,7 @@ summary = dict(
     daily=daily,
     incidents=incidents,
     release_events=release_events,
+    decisions=decisions_summary,
 )
 
 summary["source"] = SOURCE

@@ -116,6 +116,7 @@ async function main() {
   renderSecTab(data, labels);
   renderCostTab(data, labels);
   renderAgentTab(data, labels);
+  renderDecisionTab(data, labels);
   renderRagTab(data, labels);
   renderReleaseTab(data, labels);
   wireTabs();
@@ -126,6 +127,7 @@ function renderExecTab(data, labels) {
   const daily = data.daily;
   const h = data.headline;
   const totalPolicyViolations = daily.reduce((s, d) => s + d.policy_approval_bypasses + d.prompt_injection_bypassed, 0);
+  const dec = data.decisions || { total: 0, explainability_coverage_pct: 0, override_count: 0 };
 
   document.getElementById("exec-kpis").innerHTML = [
     kpiCard("Workflows (30d)", fmtInt(h.total_workflows), data.scenario.use_case),
@@ -136,6 +138,9 @@ function renderExecTab(data, labels) {
     kpiCard("P95 latency (e2e)", fmtInt(h.overall_latency_p95_ms) + " ms", "30-day P95"),
     kpiCard("Incidents (Sev1/Sev2)", fmtInt(h.incident_count), "see incident log below", h.incident_count > 0 ? "warn" : "good"),
     kpiCard("Policy violations", fmtInt(totalPolicyViolations), "approval bypass + injection bypass", totalPolicyViolations > 0 ? "bad" : "good"),
+    kpiCard("Decisions traced (30d)", fmtInt(dec.total), "consequential choices, first-class"),
+    kpiCard("Explainability coverage", (dec.explainability_coverage_pct || 0) + "%", "decisions with basis + evidence", dec.explainability_coverage_pct >= 95 ? "good" : "warn"),
+    kpiCard("Guardrail overrides", fmtInt(dec.override_count), "proceeded w/o required review", dec.override_count > 0 ? "bad" : "good"),
   ].join("");
 
   new Chart(document.getElementById("chart-volume"), {
@@ -511,6 +516,177 @@ function renderAgentTab(data, labels) {
     data: { labels, datasets: [{ label: "Tool call success %", data: daily.map(d => d.tool_selection_success_pct), borderColor: COLORS.green, backgroundColor: "transparent", tension: 0.2 }] },
     options: baseLineOpts(),
   });
+}
+
+/* ---------------- DECISION TRACE ---------------- */
+function renderDecisionTab(data, labels) {
+  const daily = data.daily;
+  const dec = data.decisions || { total: 0, samples: [], by_type: {}, by_action: {}, explainability_coverage_pct: 0, authority_coverage_pct: 0, override_count: 0 };
+  const samples = dec.samples || [];
+  const totalEscalations = daily.reduce((s, d) => s + (d.decision_escalations || 0), 0);
+
+  document.getElementById("decision-kpis").innerHTML = [
+    kpiCard("Decisions traced (30d)", fmtInt(dec.total), "consequential choices promoted to records"),
+    kpiCard("Explainability coverage", (dec.explainability_coverage_pct || 0) + "%", "decisions with basis + evidence", dec.explainability_coverage_pct >= 95 ? "good" : "warn"),
+    kpiCard("Authority coverage", (dec.authority_coverage_pct || 0) + "%", "decisions with proven authority", dec.authority_coverage_pct >= 95 ? "good" : "warn"),
+    kpiCard("Guardrail overrides", fmtInt(dec.override_count), "proceeded without required review", dec.override_count > 0 ? "bad" : "good"),
+    kpiCard("Human escalations", fmtInt(totalEscalations), "routed to a person"),
+  ].join("");
+
+  const detailEl = document.getElementById("decision-detail");
+  const picker = document.getElementById("decision-picker");
+
+  if (!samples.length) {
+    detailEl.innerHTML = `<p class="panel-note" style="margin:0;">No decision records in this data source. The
+      live-telemetry bridge does not yet emit decision spans — agents/orchestrators emit them in a real implementation
+      (see <code>docs/decision-contract.md</code>). Switch to <strong>Synthetic</strong> to inspect decision records.</p>`;
+    if (picker) picker.style.display = "none";
+    return;
+  }
+
+  // Populate the record picker; default to a hero refund_eligibility approval if present.
+  picker.innerHTML = samples.map((s, i) =>
+    `<option value="${i}">${s.decision_id} · ${s.decision_type.replace(/_/g, " ")} · ${s.selected_action.replace(/_/g, " ")}</option>`
+  ).join("");
+  let defaultIdx = samples.findIndex(s => s.decision_type === "refund_eligibility" && s.selected_action === "approve_standard_refund");
+  if (defaultIdx < 0) defaultIdx = 0;
+  picker.value = defaultIdx;
+  const renderDetail = (i) => { detailEl.innerHTML = decisionDetailHtml(samples[i]); };
+  renderDetail(defaultIdx);
+  picker.onchange = () => renderDetail(Number(picker.value));
+
+  // Decisions by type (doughnut)
+  const typeLabels = Object.keys(dec.by_type);
+  const typePalette = [COLORS.accent, COLORS.blue, COLORS.amber, COLORS.red, COLORS.green, COLORS.stone];
+  new Chart(document.getElementById("chart-decisions-by-type"), {
+    type: "doughnut",
+    data: { labels: typeLabels.map(t => t.replace(/_/g, " ")), datasets: [{ data: typeLabels.map(t => dec.by_type[t]), backgroundColor: typeLabels.map((_, i) => typePalette[i % typePalette.length]) }] },
+    options: { plugins: { legend: { position: "bottom", labels: { boxWidth: 12 } } } },
+  });
+
+  // Daily decisions & overrides
+  new Chart(document.getElementById("chart-decision-trend"), {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        { type: "bar", label: "Decisions traced", data: daily.map(d => d.decisions_total || 0), backgroundColor: COLORS.accent, order: 2 },
+        { type: "line", label: "Guardrail overrides", data: daily.map(d => d.decision_overrides || 0), borderColor: COLORS.red, backgroundColor: "transparent", tension: 0.2, order: 1, yAxisID: "y1" },
+      ],
+    },
+    options: baseLineOpts({ scales: {
+      x: { grid: { color: COLORS.grid } },
+      y: { grid: { color: COLORS.grid }, beginAtZero: true, title: { display: true, text: "decisions" } },
+      y1: { position: "right", grid: { display: false }, beginAtZero: true, title: { display: true, text: "overrides" } },
+    } }),
+  });
+
+  // Searchable table
+  const typeFilter = document.getElementById("decision-filter-type");
+  const actionFilter = document.getElementById("decision-filter-action");
+  const searchBox = document.getElementById("decision-search");
+  typeFilter.innerHTML = `<option value="">All types</option>` + Object.keys(dec.by_type).map(t => `<option value="${t}">${t.replace(/_/g, " ")}</option>`).join("");
+  const actionsInSamples = Array.from(new Set(samples.map(s => s.selected_action)));
+  actionFilter.innerHTML = `<option value="">All actions</option>` + actionsInSamples.map(a => `<option value="${a}">${a.replace(/_/g, " ")}</option>`).join("");
+
+  const drawTable = () => {
+    const tf = typeFilter.value, af = actionFilter.value, q = (searchBox.value || "").toLowerCase();
+    const filtered = samples.filter(s => {
+      if (tf && s.decision_type !== tf) return false;
+      if (af && s.selected_action !== af) return false;
+      if (q) {
+        const hay = `${s.decision_id} ${s.owner} ${s.selected_action} ${s.business_outcome.outcome} ${(s.policy_evaluations[0] || {}).policy_id || ""}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+    document.getElementById("decision-count").textContent = `${filtered.length} record${filtered.length === 1 ? "" : "s"}`;
+    const rows = filtered.map(s => {
+      const pol = (s.policy_evaluations[0] || {}).result || "";
+      const polClass = pol === "pass" ? "pass" : (pol === "bypass" ? "bypass" : "fail");
+      const auth = s.authority || {};
+      const authTxt = auth.approver_id ? auth.approver_id : (auth.approval_required ? "⚠ no reviewer" : "not required");
+      return `<tr>
+          <td style="font-family:var(--font-mono);">${s.decision_id}</td>
+          <td>${s.decision_type.replace(/_/g, " ")}</td>
+          <td>${s.selected_action.replace(/_/g, " ")}</td>
+          <td>${s.confidence != null ? s.confidence.toFixed(2) : "—"}</td>
+          <td><span class="dchip ${polClass}">${pol || "—"}</span></td>
+          <td>${authTxt}</td>
+          <td>${s.business_outcome.outcome ? s.business_outcome.outcome.replace(/_/g, " ") : "—"}</td>
+        </tr>`;
+    }).join("");
+    document.getElementById("decision-table").innerHTML = `<thead><tr>
+        <th>Decision ID</th><th>Type</th><th>Selected action</th><th>Conf.</th><th>Policy</th><th>Authority</th><th>Outcome</th>
+      </tr></thead><tbody>${rows}</tbody>`;
+  };
+  typeFilter.onchange = drawTable;
+  actionFilter.onchange = drawTable;
+  searchBox.oninput = drawTable;
+  drawTable();
+}
+
+function decisionDetailHtml(s) {
+  const pol = (s.policy_evaluations[0] || {});
+  const polClass = pol.result === "pass" ? "pass" : (pol.result === "bypass" ? "bypass" : "fail");
+  const auth = s.authority || {};
+  const authTxt = auth.approver_id ? `approved by ${auth.approver_id}` : (auth.approval_required ? "⚠ required but no reviewer (bypass)" : "not required");
+  const bo = s.business_outcome || {};
+  const amount = (bo.amount != null && bo.amount !== "") ? ` · ${fmtUsd(bo.amount)}` : "";
+  const facts = Object.entries(s.input_facts || {}).map(([k, v]) => `${k.replace(/_/g, " ")}: <strong>${v}</strong>`).join(" &nbsp;·&nbsp; ");
+  const options = (s.options_evaluated || []).map(o =>
+    `<span class="option-pill ${o === s.selected_action ? "chosen" : ""}">${o.replace(/_/g, " ")}${o === s.selected_action ? " ✓" : ""}</span>`).join("");
+  const basis = (s.selection_basis || []).map(b => `<li>${String(b).replace(/_/g, " ")}</li>`).join("");
+  const evidence = (s.evidence_refs || []).join(", ");
+
+  return `
+    <div class="decision-header">
+      <span class="decision-id">${s.decision_id}</span>
+      <span class="dchip type">${s.decision_type.replace(/_/g, " ")}</span>
+      <span class="dchip">${s.actor_name} v${s.actor_version}</span>
+      <span class="dchip">risk: ${s.risk_tier}</span>
+      <span class="dchip">confidence ${s.confidence != null ? s.confidence.toFixed(2) : "—"} <em>(illustrative)</em></span>
+      <span class="dchip ${polClass}">policy ${pol.result || "—"}</span>
+    </div>
+
+    <div class="decision-flow">
+      <div class="flow-step"><div class="fs-label">Objective</div><div class="fs-value">${s.objective.replace(/_/g, " ")}</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-label">Evidence</div><div class="fs-value">${evidence}<br><span style="color:var(--text-dim);font-weight:400;">freshness ${s.evidence_freshness_days}d · groundedness ${s.groundedness_score != null ? s.groundedness_score : "—"}</span></div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step selected"><div class="fs-label">Selected action</div><div class="fs-value">${s.selected_action.replace(/_/g, " ")}</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-label">Authority</div><div class="fs-value">${authTxt}</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-label">Business outcome</div><div class="fs-value">${(bo.outcome || "—").replace(/_/g, " ")}${amount}</div></div>
+    </div>
+
+    <div class="spotlight-grid">
+      <div class="spotlight-item">
+        <div class="label">Input facts</div>
+        <div class="value" style="font-weight:400;">${facts || "—"}</div>
+      </div>
+      <div class="spotlight-item">
+        <div class="label">Options evaluated → selected</div>
+        <div class="value" style="font-weight:400;">${options}</div>
+      </div>
+      <div class="spotlight-item">
+        <div class="label">Selection basis (structured — not chain-of-thought)</div>
+        <div class="value" style="font-weight:400;"><ul class="basis-list">${basis}</ul></div>
+      </div>
+      <div class="spotlight-item">
+        <div class="label">Policy evaluation</div>
+        <div class="value" style="font-weight:400;">${pol.policy_id || "—"} v${pol.version || "—"} → <span class="dchip ${polClass}">${pol.result || "—"}</span></div>
+      </div>
+      <div class="spotlight-item">
+        <div class="label">Accountable owner</div>
+        <div class="value" style="font-weight:400;">${s.owner || "—"}</div>
+      </div>
+      <div class="spotlight-item">
+        <div class="label">Correlated workflow</div>
+        <div class="value" style="font-weight:400;font-family:var(--font-mono);font-size:12px;">${s.workflow_id}</div>
+      </div>
+    </div>`;
 }
 
 /* ---------------- RAG AND GROUNDING QUALITY ---------------- */

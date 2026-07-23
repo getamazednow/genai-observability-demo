@@ -6,6 +6,8 @@ Source: *AI Observability Metrics Catalogue for Agentic LLM Workflows* (v1.0, 30
 
 Every AI decision, model call, tool action, policy decision and human override should be observable, attributable, explainable and governable. Implement AI observability as a **trace tree**, not isolated logs: a workflow trace connects user request → policy checks → context assembly → retrieval → planning → model calls → tool calls → evaluator checks → human approvals → final outcome.
 
+The consequential decisions in that tree are now promoted to **first-class decision records** — inspectable objects with evidence, options, selection basis, policy result, authority and business outcome — rather than being inferred from adjacent spans. See [`decision-contract.md`](decision-contract.md) for the schema, governance rules and demonstrator backlog; this is the capability the [decision-tracing review](decision-contract.md) identified as the next maturity step.
+
 ## Reference alignment
 
 | Reference | Use |
@@ -35,12 +37,24 @@ Every AI decision, model call, tool action, policy decision and human override s
 | 14 | Sensitive data egress events | Privacy/confidentiality | ✅ Security tab |
 | 15 | Unauthorised tool-call attempts | Excessive agency | ✅ Security tab (`policy_approval_bypasses`) |
 | 16 | Human escalation rate | Automation boundary | ✅ raw data (`outcome=escalated_human`) + Agent Behaviour tab |
-| 17 | Human override rate | Trust/quality proxy | ⛔ still not modelled in v1 (no human-editing-the-output concept in this scenario) |
+| 17 | Human override rate | Trust/quality proxy | 🟡 partially addressed — the decision record now captures `authority` (approval/override/bypass) per consequential decision (`decision-contract.md`); a human *editing the model output* is still not modelled |
 | 18 | Policy violation count | Governance failure signal | ✅ Security + Executive tabs |
 | 19 | Incident MTTD / MTTR | Operational readiness | ✅ Executive tab (incident log) |
 | 20 | Model/prompt version regression score | Change/drift detection | ✅ Release & Evaluation tab — seeded v14→v15 regression + rollback |
 
 Items marked ⛔ still require capability this demo doesn't model. Items marked ✅ with the "synthetic eval-harness series" caveat are a deliberate architectural point, not an oversight: groundedness, citation accuracy, hallucination flags, regression pass rate and golden-set accuracy are generated directly as a daily series in `data/generator/aggregate_dashboard_summary.py`, independent of the raw workflow/LLM/tool/retrieval spans — because in a real implementation these come from a **separate evaluation pipeline** (LLM-as-judge, golden sets, human review sampling) running on a schedule, not from live request tracing. That separation is exactly what you'd build in the real Weeks 7–10 phase (see [`roadmap.md`](roadmap.md)).
+
+### Decision-tracing metrics (now computed from decision records)
+
+The full catalogue lists *Explainability coverage* (% of decisions with a rationale/source) and *Policy decision traceability* under Responsible AI. Both are now **computed directly from the decision records** (`data/synthetic/raw/decision_span.csv`), not aspirational:
+
+| Metric | Definition in this demo | Where |
+|---|---|---|
+| **Explainability coverage %** | decisions with a non-empty `selection_basis` **and** `evidence_refs`, over all consequential decisions | Decision Trace tab; `genai.decision.count{explainable:true}` |
+| **Authority coverage %** | decisions with proven authority (approval not required, or an `approver_id` present) — guardrail overrides deliberately lower it | Decision Trace tab; `genai.decision.count{authority_proven:true}` |
+| **Guardrail override count** | consequential decisions that proceeded without required review (`policy_result:bypass`) | Decision Trace tab + zero-tolerance monitor |
+
+These close the gap the decision-tracing review flagged: the concept was designed in the series but not exposed as a first-class object. See [`decision-contract.md`](decision-contract.md).
 
 ## The 13 measurement dimensions (full catalogue)
 

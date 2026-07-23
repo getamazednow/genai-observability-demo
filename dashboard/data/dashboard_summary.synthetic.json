@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-09T23:11:13.439423Z",
+  "generated_at": "2026-07-23T04:31:37.889666Z",
   "scenario": {
     "use_case": "Order Support & Returns Assistant",
     "business_unit": "Retail Customer Care",
@@ -112,7 +112,10 @@
       "regression_pass_rate_pct": 97.3,
       "golden_set_accuracy_pct": 90.2,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 91,
+      "decision_overrides": 2,
+      "decision_escalations": 9
     },
     {
       "date": "2026-06-02",
@@ -184,7 +187,10 @@
       "regression_pass_rate_pct": 97.8,
       "golden_set_accuracy_pct": 90.0,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 97,
+      "decision_overrides": 1,
+      "decision_escalations": 11
     },
     {
       "date": "2026-06-03",
@@ -256,7 +262,10 @@
       "regression_pass_rate_pct": 97.7,
       "golden_set_accuracy_pct": 90.6,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 103,
+      "decision_overrides": 6,
+      "decision_escalations": 6
     },
     {
       "date": "2026-06-04",
@@ -328,7 +337,10 @@
       "regression_pass_rate_pct": 96.9,
       "golden_set_accuracy_pct": 90.8,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 90,
+      "decision_overrides": 1,
+      "decision_escalations": 7
     },
     {
       "date": "2026-06-05",
@@ -400,7 +412,10 @@
       "regression_pass_rate_pct": 96.8,
       "golden_set_accuracy_pct": 90.7,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 102,
+      "decision_overrides": 2,
+      "decision_escalations": 12
     },
     {
       "date": "2026-06-06",
@@ -472,7 +487,10 @@
       "regression_pass_rate_pct": 96.5,
       "golden_set_accuracy_pct": 89.8,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 59,
+      "decision_overrides": 3,
+      "decision_escalations": 4
     },
     {
       "date": "2026-06-07",
@@ -544,7 +562,10 @@
       "regression_pass_rate_pct": 94.3,
       "golden_set_accuracy_pct": 89.0,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 78,
+      "decision_overrides": 3,
+      "decision_escalations": 8
     },
     {
       "date": "2026-06-08",
@@ -616,7 +637,10 @@
       "regression_pass_rate_pct": 85.8,
       "golden_set_accuracy_pct": 82.1,
       "active_prompt_version": "v15",
-      "canary_health": "degraded"
+      "canary_health": "degraded",
+      "decisions_total": 99,
+      "decision_overrides": 2,
+      "decision_escalations": 10
     },
     {
       "date": "2026-06-09",
@@ -688,7 +712,10 @@
       "regression_pass_rate_pct": 80.8,
       "golden_set_accuracy_pct": 79.1,
       "active_prompt_version": "v15",
-      "canary_health": "recovering"
+      "canary_health": "recovering",
+      "decisions_total": 106,
+      "decision_overrides": 5,
+      "decision_escalations": 11
     },
     {
       "date": "2026-06-10",
@@ -760,7 +787,10 @@
       "regression_pass_rate_pct": 86.5,
       "golden_set_accuracy_pct": 82.4,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 107,
+      "decision_overrides": 1,
+      "decision_escalations": 9
     },
     {
       "date": "2026-06-11",
@@ -832,7 +862,10 @@
       "regression_pass_rate_pct": 95.2,
       "golden_set_accuracy_pct": 87.6,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 113,
+      "decision_overrides": 5,
+      "decision_escalations": 7
     },
     {
       "date": "2026-06-12",
@@ -904,7 +937,10 @@
       "regression_pass_rate_pct": 97.8,
       "golden_set_accuracy_pct": 90.1,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 82,
+      "decision_overrides": 2,
+      "decision_escalations": 4
     },
     {
       "date": "2026-06-13",
@@ -976,7 +1012,10 @@
       "regression_pass_rate_pct": 97.0,
       "golden_set_accuracy_pct": 90.1,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 60,
+      "decision_overrides": 3,
+      "decision_escalations": 7
     },
     {
       "date": "2026-06-14",
@@ -1048,7 +1087,10 @@
       "regression_pass_rate_pct": 97.3,
       "golden_set_accuracy_pct": 91.4,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 83,
+      "decision_overrides": 2,
+      "decision_escalations": 11
     },
     {
       "date": "2026-06-15",
@@ -1120,7 +1162,10 @@
       "regression_pass_rate_pct": 97.1,
       "golden_set_accuracy_pct": 90.9,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 98,
+      "decision_overrides": 2,
+      "decision_escalations": 9
     },
     {
       "date": "2026-06-16",
@@ -1192,7 +1237,10 @@
       "regression_pass_rate_pct": 97.8,
       "golden_set_accuracy_pct": 90.6,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 114,
+      "decision_overrides": 0,
+      "decision_escalations": 16
     },
     {
       "date": "2026-06-17",
@@ -1264,7 +1312,10 @@
       "regression_pass_rate_pct": 97.7,
       "golden_set_accuracy_pct": 90.0,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 125,
+      "decision_overrides": 4,
+      "decision_escalations": 11
     },
     {
       "date": "2026-06-18",
@@ -1336,7 +1387,10 @@
       "regression_pass_rate_pct": 96.9,
       "golden_set_accuracy_pct": 90.3,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 110,
+      "decision_overrides": 1,
+      "decision_escalations": 7
     },
     {
       "date": "2026-06-19",
@@ -1408,7 +1462,10 @@
       "regression_pass_rate_pct": 97.9,
       "golden_set_accuracy_pct": 90.7,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 120,
+      "decision_overrides": 3,
+      "decision_escalations": 14
     },
     {
       "date": "2026-06-20",
@@ -1480,7 +1537,10 @@
       "regression_pass_rate_pct": 97.3,
       "golden_set_accuracy_pct": 91.0,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 83,
+      "decision_overrides": 0,
+      "decision_escalations": 9
     },
     {
       "date": "2026-06-21",
@@ -1553,7 +1613,10 @@
       "regression_pass_rate_pct": 97.5,
       "golden_set_accuracy_pct": 90.4,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 197,
+      "decision_overrides": 3,
+      "decision_escalations": 32
     },
     {
       "date": "2026-06-22",
@@ -1626,7 +1689,10 @@
       "regression_pass_rate_pct": 98.1,
       "golden_set_accuracy_pct": 91.2,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 303,
+      "decision_overrides": 4,
+      "decision_escalations": 40
     },
     {
       "date": "2026-06-23",
@@ -1698,7 +1764,10 @@
       "regression_pass_rate_pct": 97.2,
       "golden_set_accuracy_pct": 90.9,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 135,
+      "decision_overrides": 3,
+      "decision_escalations": 18
     },
     {
       "date": "2026-06-24",
@@ -1770,7 +1839,10 @@
       "regression_pass_rate_pct": 97.6,
       "golden_set_accuracy_pct": 91.5,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 130,
+      "decision_overrides": 3,
+      "decision_escalations": 9
     },
     {
       "date": "2026-06-25",
@@ -1842,7 +1914,10 @@
       "regression_pass_rate_pct": 98.0,
       "golden_set_accuracy_pct": 90.4,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 124,
+      "decision_overrides": 3,
+      "decision_escalations": 16
     },
     {
       "date": "2026-06-26",
@@ -1914,7 +1989,10 @@
       "regression_pass_rate_pct": 98.4,
       "golden_set_accuracy_pct": 90.1,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 123,
+      "decision_overrides": 3,
+      "decision_escalations": 11
     },
     {
       "date": "2026-06-27",
@@ -1986,7 +2064,10 @@
       "regression_pass_rate_pct": 97.5,
       "golden_set_accuracy_pct": 91.3,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 78,
+      "decision_overrides": 3,
+      "decision_escalations": 7
     },
     {
       "date": "2026-06-28",
@@ -2058,7 +2139,10 @@
       "regression_pass_rate_pct": 97.0,
       "golden_set_accuracy_pct": 90.8,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 83,
+      "decision_overrides": 2,
+      "decision_escalations": 4
     },
     {
       "date": "2026-06-29",
@@ -2130,7 +2214,10 @@
       "regression_pass_rate_pct": 96.9,
       "golden_set_accuracy_pct": 91.1,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 140,
+      "decision_overrides": 4,
+      "decision_escalations": 7
     },
     {
       "date": "2026-06-30",
@@ -2202,7 +2289,10 @@
       "regression_pass_rate_pct": 98.0,
       "golden_set_accuracy_pct": 90.9,
       "active_prompt_version": "v14",
-      "canary_health": "healthy"
+      "canary_health": "healthy",
+      "decisions_total": 139,
+      "decision_overrides": 7,
+      "decision_escalations": 15
     }
   ],
   "incidents": [
@@ -2214,7 +2304,7 @@
       "affected_workflows": "9",
       "affected_users": "9",
       "root_cause_category": "prompt_injection_policy_bypass",
-      "linked_trace_ids": "3bbd8078-1a70-4889-ba57-7c2441b82c41;b1e20853-5132-4646-8938-31b3ab59ec15;4a4ec730-30c5-434c-9f0c-9c0361f59dc0;aa317a3f-bfca-4906-87a0-f589cf681f38;deb2aee6-6c78-4b55-b162-d84d8c416853;19006854-bfd1-4c3f-b6d0-e4c645b104d1;96e89cf1-9141-4d5e-bf11-2718c68c8dde;82e80845-9aab-46a8-be90-1cc3198f1152;720f0ebc-c1f9-4875-b822-96e7d4da5b5d",
+      "linked_trace_ids": "939c31b9-2252-41af-96f6-0b8654dfd14d;fd0a9042-de0b-4aa8-a15f-d50170370cb9;2738ac5a-7806-449f-ab3d-c896ac0c9aee;c9c8eb7f-7652-4764-ab46-39256bc8b197;269bb420-1ff8-4763-b29e-7e937fd37678;ed54125b-a26f-4652-9045-fcd03e1de32a;5afcefc2-4c45-4aad-8951-80d26f9ed24b;364c264b-82c5-4b69-b13d-829892244727;148402ec-b52b-48c8-88bd-7cb34921a8a2",
       "detection_source": "guardrail_anomaly_monitor",
       "mitigation": "Tightened injection_classifier_v3 threshold from 0.75 to 0.68; added secondary human-review gate on refund_issue tool for flagged sessions.",
       "recurrence_flag": "false"
@@ -2259,5 +2349,2756 @@
       "notes": "Rolled back to v14 after golden-set accuracy and regression pass rate both breached release-gate thresholds; v15 held for revision before re-attempting rollout."
     }
   ],
+  "decisions": {
+    "total": 3372,
+    "explainability_coverage_pct": 100.0,
+    "authority_coverage_pct": 97.5,
+    "override_count": 83,
+    "by_type": {
+      "high_risk_tool_invocation": 2074,
+      "refund_eligibility": 1068,
+      "escalation_vs_autoresolve": 147,
+      "guardrail_override": 83
+    },
+    "by_action": {
+      "request_human_approval": 133,
+      "proceed_with_action": 1929,
+      "approve_standard_refund": 998,
+      "escalate_for_manual_review": 208,
+      "proceed_with_override": 83,
+      "reject_refund": 9,
+      "decline_action": 12
+    },
+    "samples": [
+      {
+        "decision_id": "DEC-20260601-c41875",
+        "workflow_id": "c418758d-0542-4a26-8842-1cc802fb83cf",
+        "ts": "2026-06-01T00:08:19+00:00",
+        "decision_type": "high_risk_tool_invocation",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "execute_account_mutation",
+        "input_facts": {
+          "order_value": 404.05,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 2,
+          "channel": "ivr_handoff"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:3311"
+        ],
+        "evidence_freshness_days": "13",
+        "groundedness_score": 0.808,
+        "options_evaluated": [
+          "proceed_with_action",
+          "request_human_approval",
+          "decline_action"
+        ],
+        "selected_action": "proceed_with_action",
+        "selection_basis": [
+          "identity_verified",
+          "action_within_agent_authority",
+          "groundedness=0.808"
+        ],
+        "confidence": 0.77,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-12"
+        },
+        "tool_action": {
+          "tool": "loyalty_credit",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-8f1b8b",
+        "workflow_id": "8f1b8bdb-efaf-4a0a-a113-d3644f1c0e7c",
+        "ts": "2026-06-01T00:27:44+00:00",
+        "decision_type": "refund_eligibility",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 248.93,
+          "customer_tier": "standard",
+          "claim_age_days": 22,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "order_history_index",
+          "order_history_index:3730"
+        ],
+        "evidence_freshness_days": "40",
+        "groundedness_score": 0.908,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "approve_standard_refund",
+        "selection_basis": [
+          "damaged_item_confirmed",
+          "claim_within_30_day_window=True",
+          "order_value_below_auto_limit=True"
+        ],
+        "confidence": 0.87,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-79"
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": 248.93
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-494faf",
+        "workflow_id": "494faff7-7484-41b9-8743-422515b53305",
+        "ts": "2026-06-01T00:40:27+00:00",
+        "decision_type": "refund_eligibility",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 30.6,
+          "customer_tier": "standard",
+          "claim_age_days": 23,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "order_history_index",
+          "order_history_index:6089"
+        ],
+        "evidence_freshness_days": "33",
+        "groundedness_score": 0.693,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "approve_standard_refund",
+        "selection_basis": [
+          "damaged_item_confirmed",
+          "claim_within_30_day_window=True",
+          "order_value_below_auto_limit=True"
+        ],
+        "confidence": 0.66,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-54"
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": 30.6
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-5bc553",
+        "workflow_id": "5bc5535e-9fad-4269-bfad-98da8bbc96a4",
+        "ts": "2026-06-01T01:03:29+00:00",
+        "decision_type": "high_risk_tool_invocation",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "execute_account_mutation",
+        "input_facts": {
+          "order_value": 44.88,
+          "customer_tier": "standard",
+          "claim_age_days": 36,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "order_history_index",
+          "order_history_index:4744"
+        ],
+        "evidence_freshness_days": "6",
+        "groundedness_score": 0.695,
+        "options_evaluated": [
+          "proceed_with_action",
+          "request_human_approval",
+          "decline_action"
+        ],
+        "selected_action": "proceed_with_action",
+        "selection_basis": [
+          "identity_verified",
+          "action_within_agent_authority",
+          "groundedness=0.695"
+        ],
+        "confidence": 0.66,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-35"
+        },
+        "tool_action": {
+          "tool": "loyalty_credit",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-7da67a",
+        "workflow_id": "7da67ae4-2e13-43e8-82b2-a48a9e1b9929",
+        "ts": "2026-06-01T01:23:36+00:00",
+        "decision_type": "high_risk_tool_invocation",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "execute_account_mutation",
+        "input_facts": {
+          "order_value": 476.7,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 23,
+          "channel": "ivr_handoff"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:3731"
+        ],
+        "evidence_freshness_days": "10",
+        "groundedness_score": 0.617,
+        "options_evaluated": [
+          "proceed_with_action",
+          "request_human_approval",
+          "decline_action"
+        ],
+        "selected_action": "proceed_with_action",
+        "selection_basis": [
+          "identity_verified",
+          "action_within_agent_authority",
+          "groundedness=0.617"
+        ],
+        "confidence": 0.61,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-67"
+        },
+        "tool_action": {
+          "tool": "address_update",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-59ab61",
+        "workflow_id": "59ab6153-d285-44d2-a8b7-2b7df000c045",
+        "ts": "2026-06-01T01:25:24+00:00",
+        "decision_type": "high_risk_tool_invocation",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "execute_account_mutation",
+        "input_facts": {
+          "order_value": 114.89,
+          "customer_tier": "loyalty_silver",
+          "claim_age_days": 40,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:1978"
+        ],
+        "evidence_freshness_days": "42",
+        "groundedness_score": 0.687,
+        "options_evaluated": [
+          "proceed_with_action",
+          "request_human_approval",
+          "decline_action"
+        ],
+        "selected_action": "proceed_with_action",
+        "selection_basis": [
+          "identity_verified",
+          "action_within_agent_authority",
+          "groundedness=0.687"
+        ],
+        "confidence": 0.69,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-40"
+        },
+        "tool_action": {
+          "tool": "loyalty_credit",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-209395",
+        "workflow_id": "2093950a-f909-4a5f-8974-164734814c92",
+        "ts": "2026-06-01T01:29:59+00:00",
+        "decision_type": "high_risk_tool_invocation",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "execute_account_mutation",
+        "input_facts": {
+          "order_value": 313.25,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 33,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:1946"
+        ],
+        "evidence_freshness_days": "40",
+        "groundedness_score": 0.782,
+        "options_evaluated": [
+          "proceed_with_action",
+          "request_human_approval",
+          "decline_action"
+        ],
+        "selected_action": "proceed_with_action",
+        "selection_basis": [
+          "identity_verified",
+          "action_within_agent_authority",
+          "groundedness=0.782"
+        ],
+        "confidence": 0.79,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-50"
+        },
+        "tool_action": {
+          "tool": "address_update",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-ac09eb",
+        "workflow_id": "ac09ebee-71ed-49a3-9745-78bef4a25864",
+        "ts": "2026-06-01T01:46:26+00:00",
+        "decision_type": "high_risk_tool_invocation",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "execute_account_mutation",
+        "input_facts": {
+          "order_value": 151.7,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 31,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "order_history_index",
+          "order_history_index:3095"
+        ],
+        "evidence_freshness_days": "11",
+        "groundedness_score": 0.576,
+        "options_evaluated": [
+          "proceed_with_action",
+          "request_human_approval",
+          "decline_action"
+        ],
+        "selected_action": "proceed_with_action",
+        "selection_basis": [
+          "identity_verified",
+          "action_within_agent_authority",
+          "groundedness=0.576"
+        ],
+        "confidence": 0.57,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-10"
+        },
+        "tool_action": {
+          "tool": "address_update",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-e38d13",
+        "workflow_id": "e38d13f1-520a-4918-b2e9-cbe20dbe83c7",
+        "ts": "2026-06-01T02:36:53+00:00",
+        "decision_type": "refund_eligibility",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 412.45,
+          "customer_tier": "standard",
+          "claim_age_days": 39,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:6362"
+        ],
+        "evidence_freshness_days": "9",
+        "groundedness_score": 0.609,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "approve_standard_refund",
+        "selection_basis": [
+          "damaged_item_confirmed",
+          "claim_within_30_day_window=False",
+          "order_value_below_auto_limit=False"
+        ],
+        "confidence": 0.59,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-48"
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": 412.45
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-8e5b26",
+        "workflow_id": "8e5b261b-c3a5-4cc7-8f8b-4f088ab48f5a",
+        "ts": "2026-06-01T02:50:27+00:00",
+        "decision_type": "high_risk_tool_invocation",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "execute_account_mutation",
+        "input_facts": {
+          "order_value": 381.25,
+          "customer_tier": "standard",
+          "claim_age_days": 17,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:7455"
+        ],
+        "evidence_freshness_days": "39",
+        "groundedness_score": 0.917,
+        "options_evaluated": [
+          "proceed_with_action",
+          "request_human_approval",
+          "decline_action"
+        ],
+        "selected_action": "proceed_with_action",
+        "selection_basis": [
+          "identity_verified",
+          "action_within_agent_authority",
+          "groundedness=0.917"
+        ],
+        "confidence": 0.88,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-63"
+        },
+        "tool_action": {
+          "tool": "loyalty_credit",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-be6903",
+        "workflow_id": "be69036d-bcce-4cf8-82b8-df9a6e7ffea1",
+        "ts": "2026-06-01T02:55:33+00:00",
+        "decision_type": "high_risk_tool_invocation",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "execute_account_mutation",
+        "input_facts": {
+          "order_value": 427.65,
+          "customer_tier": "loyalty_silver",
+          "claim_age_days": 9,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:4298"
+        ],
+        "evidence_freshness_days": "23",
+        "groundedness_score": 0.565,
+        "options_evaluated": [
+          "proceed_with_action",
+          "request_human_approval",
+          "decline_action"
+        ],
+        "selected_action": "proceed_with_action",
+        "selection_basis": [
+          "identity_verified",
+          "action_within_agent_authority",
+          "groundedness=0.565"
+        ],
+        "confidence": 0.57,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-74"
+        },
+        "tool_action": {
+          "tool": "loyalty_credit",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-3925bb",
+        "workflow_id": "3925bbee-18c0-47c4-b71f-0db922e9d0e3",
+        "ts": "2026-06-01T02:56:34+00:00",
+        "decision_type": "high_risk_tool_invocation",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "execute_account_mutation",
+        "input_facts": {
+          "order_value": 342.31,
+          "customer_tier": "loyalty_silver",
+          "claim_age_days": 30,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:3591"
+        ],
+        "evidence_freshness_days": "35",
+        "groundedness_score": 0.519,
+        "options_evaluated": [
+          "proceed_with_action",
+          "request_human_approval",
+          "decline_action"
+        ],
+        "selected_action": "proceed_with_action",
+        "selection_basis": [
+          "identity_verified",
+          "action_within_agent_authority",
+          "groundedness=0.519"
+        ],
+        "confidence": 0.52,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-43"
+        },
+        "tool_action": {
+          "tool": "loyalty_credit",
+          "result": "error"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-86438e",
+        "workflow_id": "86438ecf-ad0e-4feb-844a-f1eb72a93acf",
+        "ts": "2026-06-01T03:15:42+00:00",
+        "decision_type": "high_risk_tool_invocation",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "execute_account_mutation",
+        "input_facts": {
+          "order_value": 457.03,
+          "customer_tier": "loyalty_silver",
+          "claim_age_days": 23,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:5277"
+        ],
+        "evidence_freshness_days": "20",
+        "groundedness_score": 0.507,
+        "options_evaluated": [
+          "proceed_with_action",
+          "request_human_approval",
+          "decline_action"
+        ],
+        "selected_action": "proceed_with_action",
+        "selection_basis": [
+          "identity_verified",
+          "action_within_agent_authority",
+          "groundedness=0.507"
+        ],
+        "confidence": 0.48,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-62"
+        },
+        "tool_action": {
+          "tool": "loyalty_credit",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-253d10",
+        "workflow_id": "253d107b-7652-4ed9-92e4-e0b72b7144cc",
+        "ts": "2026-06-01T03:29:19+00:00",
+        "decision_type": "high_risk_tool_invocation",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "execute_account_mutation",
+        "input_facts": {
+          "order_value": 381.19,
+          "customer_tier": "loyalty_silver",
+          "claim_age_days": 21,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:3589"
+        ],
+        "evidence_freshness_days": "42",
+        "groundedness_score": 0.623,
+        "options_evaluated": [
+          "proceed_with_action",
+          "request_human_approval",
+          "decline_action"
+        ],
+        "selected_action": "proceed_with_action",
+        "selection_basis": [
+          "identity_verified",
+          "action_within_agent_authority",
+          "groundedness=0.623"
+        ],
+        "confidence": 0.59,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-88"
+        },
+        "tool_action": {
+          "tool": "address_update",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-c9c2f4",
+        "workflow_id": "c9c2f47c-005e-4a89-91f5-5b726f7f89b5",
+        "ts": "2026-06-01T03:56:58+00:00",
+        "decision_type": "refund_eligibility",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 71.22,
+          "customer_tier": "standard",
+          "claim_age_days": 28,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:7915"
+        ],
+        "evidence_freshness_days": "22",
+        "groundedness_score": 0.836,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "approve_standard_refund",
+        "selection_basis": [
+          "damaged_item_confirmed",
+          "claim_within_30_day_window=True",
+          "order_value_below_auto_limit=True"
+        ],
+        "confidence": 0.85,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-85"
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "error"
+        },
+        "business_outcome": {
+          "outcome": "failed",
+          "amount": 71.22
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "high"
+      },
+      {
+        "decision_id": "DEC-20260601-1cde75",
+        "workflow_id": "1cde7517-2e04-4d41-8634-b57653d716eb",
+        "ts": "2026-06-01T03:58:35+00:00",
+        "decision_type": "refund_eligibility",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 428.67,
+          "customer_tier": "loyalty_silver",
+          "claim_age_days": 11,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:9067"
+        ],
+        "evidence_freshness_days": "38",
+        "groundedness_score": 0.658,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "approve_standard_refund",
+        "selection_basis": [
+          "damaged_item_confirmed",
+          "claim_within_30_day_window=True",
+          "order_value_below_auto_limit=False"
+        ],
+        "confidence": 0.65,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-94"
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": 428.67
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-c0d6dd",
+        "workflow_id": "c0d6dd62-dd79-4f6b-830e-0fd492170bb2",
+        "ts": "2026-06-01T04:01:05+00:00",
+        "decision_type": "high_risk_tool_invocation",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "execute_account_mutation",
+        "input_facts": {
+          "order_value": 89.81,
+          "customer_tier": "standard",
+          "claim_age_days": 40,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:9744"
+        ],
+        "evidence_freshness_days": "10",
+        "groundedness_score": 0.909,
+        "options_evaluated": [
+          "proceed_with_action",
+          "request_human_approval",
+          "decline_action"
+        ],
+        "selected_action": "proceed_with_action",
+        "selection_basis": [
+          "identity_verified",
+          "action_within_agent_authority",
+          "groundedness=0.909"
+        ],
+        "confidence": 0.88,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-29"
+        },
+        "tool_action": {
+          "tool": "loyalty_credit",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-dac877",
+        "workflow_id": "dac87721-52dc-4b4e-b4ff-20caeae1a73a",
+        "ts": "2026-06-01T04:05:10+00:00",
+        "decision_type": "high_risk_tool_invocation",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "execute_account_mutation",
+        "input_facts": {
+          "order_value": 266.64,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 8,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "order_history_index",
+          "order_history_index:8411"
+        ],
+        "evidence_freshness_days": "45",
+        "groundedness_score": 0.568,
+        "options_evaluated": [
+          "proceed_with_action",
+          "request_human_approval",
+          "decline_action"
+        ],
+        "selected_action": "proceed_with_action",
+        "selection_basis": [
+          "identity_verified",
+          "action_within_agent_authority",
+          "groundedness=0.568"
+        ],
+        "confidence": 0.58,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-33"
+        },
+        "tool_action": {
+          "tool": "loyalty_credit",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-06fa38",
+        "workflow_id": "06fa3876-de64-434f-a232-d596919601e4",
+        "ts": "2026-06-01T04:41:14+00:00",
+        "decision_type": "high_risk_tool_invocation",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "execute_account_mutation",
+        "input_facts": {
+          "order_value": 182.81,
+          "customer_tier": "standard",
+          "claim_age_days": 10,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:7013"
+        ],
+        "evidence_freshness_days": "39",
+        "groundedness_score": 0.662,
+        "options_evaluated": [
+          "proceed_with_action",
+          "request_human_approval",
+          "decline_action"
+        ],
+        "selected_action": "proceed_with_action",
+        "selection_basis": [
+          "identity_verified",
+          "action_within_agent_authority",
+          "groundedness=0.662"
+        ],
+        "confidence": 0.67,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-41"
+        },
+        "tool_action": {
+          "tool": "address_update",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-5b476c",
+        "workflow_id": "5b476ce1-e6a2-412a-83df-d744d5e747df",
+        "ts": "2026-06-01T06:14:02+00:00",
+        "decision_type": "refund_eligibility",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 341.96,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 27,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:3041"
+        ],
+        "evidence_freshness_days": "0",
+        "groundedness_score": 0.712,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "escalate_for_manual_review",
+        "selection_basis": [
+          "order_value_above_auto_limit=True",
+          "requires_human_judgement"
+        ],
+        "confidence": 0.7,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "human-review-346"
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "escalated_human",
+          "amount": null
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-0820ae",
+        "workflow_id": "0820ae1b-0f2f-45fa-932c-fa23e9d5e29f",
+        "ts": "2026-06-01T06:27:30+00:00",
+        "decision_type": "refund_eligibility",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 327.96,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 25,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "order_history_index",
+          "order_history_index:4991"
+        ],
+        "evidence_freshness_days": "34",
+        "groundedness_score": 0.584,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "approve_standard_refund",
+        "selection_basis": [
+          "damaged_item_confirmed",
+          "claim_within_30_day_window=True",
+          "order_value_below_auto_limit=False"
+        ],
+        "confidence": 0.57,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-42"
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": 327.96
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-622d39",
+        "workflow_id": "622d391b-88f5-4afe-b9b5-3a6d76912007",
+        "ts": "2026-06-01T06:49:26+00:00",
+        "decision_type": "refund_eligibility",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 179.56,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 28,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:7055"
+        ],
+        "evidence_freshness_days": "30",
+        "groundedness_score": 0.859,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "approve_standard_refund",
+        "selection_basis": [
+          "damaged_item_confirmed",
+          "claim_within_30_day_window=True",
+          "order_value_below_auto_limit=True"
+        ],
+        "confidence": 0.82,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-92"
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": 179.56
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-947184",
+        "workflow_id": "947184ca-767c-4c8c-83da-959bf24cd2fd",
+        "ts": "2026-06-01T07:54:27+00:00",
+        "decision_type": "refund_eligibility",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 407.73,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 21,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:3097"
+        ],
+        "evidence_freshness_days": "1",
+        "groundedness_score": 0.721,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "approve_standard_refund",
+        "selection_basis": [
+          "damaged_item_confirmed",
+          "claim_within_30_day_window=True",
+          "order_value_below_auto_limit=False"
+        ],
+        "confidence": 0.71,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-36"
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": 407.73
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-62c3d6",
+        "workflow_id": "62c3d69a-9d63-4aa1-82ac-4307d620e992",
+        "ts": "2026-06-01T09:36:17+00:00",
+        "decision_type": "refund_eligibility",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 101.39,
+          "customer_tier": "loyalty_silver",
+          "claim_age_days": 20,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:9750"
+        ],
+        "evidence_freshness_days": "23",
+        "groundedness_score": 0.682,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "approve_standard_refund",
+        "selection_basis": [
+          "damaged_item_confirmed",
+          "claim_within_30_day_window=True",
+          "order_value_below_auto_limit=True"
+        ],
+        "confidence": 0.66,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-23"
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": 101.39
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-29fa26",
+        "workflow_id": "29fa26e2-df33-4dc9-b9e1-2bf32a185325",
+        "ts": "2026-06-01T09:51:25+00:00",
+        "decision_type": "refund_eligibility",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 62.74,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 40,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "order_history_index",
+          "order_history_index:4666"
+        ],
+        "evidence_freshness_days": "34",
+        "groundedness_score": 0.64,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "approve_standard_refund",
+        "selection_basis": [
+          "damaged_item_confirmed",
+          "claim_within_30_day_window=False",
+          "order_value_below_auto_limit=True"
+        ],
+        "confidence": 0.64,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-13"
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": 62.74
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-279242",
+        "workflow_id": "27924288-c074-4d7a-97e2-b4f524d532bd",
+        "ts": "2026-06-01T11:32:18+00:00",
+        "decision_type": "refund_eligibility",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 358.01,
+          "customer_tier": "loyalty_silver",
+          "claim_age_days": 30,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:9347"
+        ],
+        "evidence_freshness_days": "42",
+        "groundedness_score": 0.939,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "escalate_for_manual_review",
+        "selection_basis": [
+          "order_value_above_auto_limit=True",
+          "requires_human_judgement"
+        ],
+        "confidence": 0.91,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "human-review-225"
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "escalated_human",
+          "amount": null
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-203f76",
+        "workflow_id": "203f7667-9f0b-4060-bf29-2278e4586e68",
+        "ts": "2026-06-01T12:11:58+00:00",
+        "decision_type": "guardrail_override",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "proceed_despite_flag",
+        "input_facts": {
+          "order_value": 378.27,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 9,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:2039"
+        ],
+        "evidence_freshness_days": "42",
+        "groundedness_score": 0.846,
+        "options_evaluated": [
+          "block_action",
+          "proceed_with_override",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "proceed_with_override",
+        "selection_basis": [
+          "action_flagged_by_policy",
+          "proceeded_without_required_review",
+          "flagged_for_post_hoc_audit"
+        ],
+        "confidence": 0.86,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "bypass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "auto_approved_no_review",
+          "approver_id": ""
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-c3ea9f",
+        "workflow_id": "c3ea9f89-a0b7-44fa-a105-03064a1b83d0",
+        "ts": "2026-06-01T12:13:04+00:00",
+        "decision_type": "refund_eligibility",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 244.07,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 12,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:3485"
+        ],
+        "evidence_freshness_days": "28",
+        "groundedness_score": 0.909,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "approve_standard_refund",
+        "selection_basis": [
+          "damaged_item_confirmed",
+          "claim_within_30_day_window=True",
+          "order_value_below_auto_limit=True"
+        ],
+        "confidence": 0.92,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-83"
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": 244.07
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-fdebc9",
+        "workflow_id": "fdebc97f-0e3f-4524-85f0-2f73bcb0dabd",
+        "ts": "2026-06-01T13:37:43+00:00",
+        "decision_type": "refund_eligibility",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "approve_customer_refund",
+        "input_facts": {
+          "order_value": 413.66,
+          "customer_tier": "loyalty_silver",
+          "claim_age_days": 39,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:5851"
+        ],
+        "evidence_freshness_days": "41",
+        "groundedness_score": 0.607,
+        "options_evaluated": [
+          "reject_refund",
+          "approve_standard_refund",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "approve_standard_refund",
+        "selection_basis": [
+          "damaged_item_confirmed",
+          "claim_within_30_day_window=False",
+          "order_value_below_auto_limit=False"
+        ],
+        "confidence": 0.58,
+        "policy_evaluations": [
+          {
+            "policy_id": "RETURNS-AUTO-APPROVAL-04",
+            "version": "7.2",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": "ops-approver-57"
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": 413.66
+        },
+        "owner": "Product Owner + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-e0d427",
+        "workflow_id": "e0d42741-7f74-4e6a-8cf5-734cb714c317",
+        "ts": "2026-06-01T14:05:40+00:00",
+        "decision_type": "escalation_vs_autoresolve",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "resolve_or_escalate",
+        "input_facts": {
+          "order_value": 255.55,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 4,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:4673"
+        ],
+        "evidence_freshness_days": "36",
+        "groundedness_score": 0.718,
+        "options_evaluated": [
+          "auto_resolve",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "escalate_for_manual_review",
+        "selection_basis": [
+          "confidence_below_autoresolve_threshold",
+          "routed_to_human_queue"
+        ],
+        "confidence": 0.72,
+        "policy_evaluations": [
+          {
+            "policy_id": "ESCALATION-ROUTING-02",
+            "version": "3.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": false,
+          "approval_status": "not_required",
+          "approver_id": "human-review-473"
+        },
+        "tool_action": {
+          "tool": "",
+          "result": "n/a"
+        },
+        "business_outcome": {
+          "outcome": "escalated_human",
+          "amount": null
+        },
+        "owner": "Product Owner",
+        "risk_tier": "low"
+      },
+      {
+        "decision_id": "DEC-20260601-1434d4",
+        "workflow_id": "1434d430-d106-4174-a5da-704449135630",
+        "ts": "2026-06-01T18:17:19+00:00",
+        "decision_type": "guardrail_override",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "proceed_despite_flag",
+        "input_facts": {
+          "order_value": 420.74,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 27,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:3483"
+        ],
+        "evidence_freshness_days": "31",
+        "groundedness_score": 0.674,
+        "options_evaluated": [
+          "block_action",
+          "proceed_with_override",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "proceed_with_override",
+        "selection_basis": [
+          "action_flagged_by_policy",
+          "proceeded_without_required_review",
+          "flagged_for_post_hoc_audit"
+        ],
+        "confidence": 0.67,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "bypass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": ""
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260601-4e67ec",
+        "workflow_id": "4e67ec14-89cd-4e16-af7c-6650ba951781",
+        "ts": "2026-06-01T18:23:06+00:00",
+        "decision_type": "escalation_vs_autoresolve",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "resolve_or_escalate",
+        "input_facts": {
+          "order_value": 322.67,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 32,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "order_history_index",
+          "order_history_index:4591"
+        ],
+        "evidence_freshness_days": "6",
+        "groundedness_score": 0.587,
+        "options_evaluated": [
+          "auto_resolve",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "escalate_for_manual_review",
+        "selection_basis": [
+          "confidence_below_autoresolve_threshold",
+          "routed_to_human_queue"
+        ],
+        "confidence": 0.58,
+        "policy_evaluations": [
+          {
+            "policy_id": "ESCALATION-ROUTING-02",
+            "version": "3.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": false,
+          "approval_status": "not_required",
+          "approver_id": "human-review-237"
+        },
+        "tool_action": {
+          "tool": "",
+          "result": "n/a"
+        },
+        "business_outcome": {
+          "outcome": "escalated_human",
+          "amount": null
+        },
+        "owner": "Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260602-414e02",
+        "workflow_id": "414e0279-95ae-43cd-ae58-7087d2d6e39f",
+        "ts": "2026-06-02T02:17:17+00:00",
+        "decision_type": "guardrail_override",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "proceed_despite_flag",
+        "input_facts": {
+          "order_value": 463.41,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 33,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "order_history_index",
+          "order_history_index:7030"
+        ],
+        "evidence_freshness_days": "12",
+        "groundedness_score": 0.693,
+        "options_evaluated": [
+          "block_action",
+          "proceed_with_override",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "proceed_with_override",
+        "selection_basis": [
+          "action_flagged_by_policy",
+          "proceeded_without_required_review",
+          "flagged_for_post_hoc_audit"
+        ],
+        "confidence": 0.7,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "bypass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "auto_approved_no_review",
+          "approver_id": ""
+        },
+        "tool_action": {
+          "tool": "address_update",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260602-4a0d72",
+        "workflow_id": "4a0d72a1-618e-4b1e-b712-49c2918ca5c1",
+        "ts": "2026-06-02T03:21:34+00:00",
+        "decision_type": "escalation_vs_autoresolve",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "resolve_or_escalate",
+        "input_facts": {
+          "order_value": 346.51,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 10,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:1962"
+        ],
+        "evidence_freshness_days": "25",
+        "groundedness_score": 0.867,
+        "options_evaluated": [
+          "auto_resolve",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "escalate_for_manual_review",
+        "selection_basis": [
+          "confidence_below_autoresolve_threshold",
+          "routed_to_human_queue"
+        ],
+        "confidence": 0.85,
+        "policy_evaluations": [
+          {
+            "policy_id": "ESCALATION-ROUTING-02",
+            "version": "3.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": false,
+          "approval_status": "not_required",
+          "approver_id": "human-review-242"
+        },
+        "tool_action": {
+          "tool": "",
+          "result": "n/a"
+        },
+        "business_outcome": {
+          "outcome": "escalated_human",
+          "amount": null
+        },
+        "owner": "Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260602-d5c90c",
+        "workflow_id": "d5c90cbb-7c5e-44da-9fb6-56d3a47a6476",
+        "ts": "2026-06-02T07:46:27+00:00",
+        "decision_type": "escalation_vs_autoresolve",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "resolve_or_escalate",
+        "input_facts": {
+          "order_value": 394.91,
+          "customer_tier": "standard",
+          "claim_age_days": 14,
+          "channel": "ivr_handoff"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:1803"
+        ],
+        "evidence_freshness_days": "36",
+        "groundedness_score": 0.714,
+        "options_evaluated": [
+          "auto_resolve",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "escalate_for_manual_review",
+        "selection_basis": [
+          "confidence_below_autoresolve_threshold",
+          "routed_to_human_queue"
+        ],
+        "confidence": 0.71,
+        "policy_evaluations": [
+          {
+            "policy_id": "ESCALATION-ROUTING-02",
+            "version": "3.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": false,
+          "approval_status": "not_required",
+          "approver_id": "human-review-330"
+        },
+        "tool_action": {
+          "tool": "",
+          "result": "n/a"
+        },
+        "business_outcome": {
+          "outcome": "escalated_human",
+          "amount": null
+        },
+        "owner": "Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260602-6c3de4",
+        "workflow_id": "6c3de452-5d6a-4ae9-9a26-ac76b86a4ab7",
+        "ts": "2026-06-02T10:23:50+00:00",
+        "decision_type": "escalation_vs_autoresolve",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "resolve_or_escalate",
+        "input_facts": {
+          "order_value": 274.85,
+          "customer_tier": "loyalty_silver",
+          "claim_age_days": 38,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:1192"
+        ],
+        "evidence_freshness_days": "4",
+        "groundedness_score": 0.815,
+        "options_evaluated": [
+          "auto_resolve",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "escalate_for_manual_review",
+        "selection_basis": [
+          "confidence_below_autoresolve_threshold",
+          "routed_to_human_queue"
+        ],
+        "confidence": 0.83,
+        "policy_evaluations": [
+          {
+            "policy_id": "ESCALATION-ROUTING-02",
+            "version": "3.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": false,
+          "approval_status": "not_required",
+          "approver_id": "human-review-492"
+        },
+        "tool_action": {
+          "tool": "",
+          "result": "n/a"
+        },
+        "business_outcome": {
+          "outcome": "escalated_human",
+          "amount": null
+        },
+        "owner": "Product Owner",
+        "risk_tier": "low"
+      },
+      {
+        "decision_id": "DEC-20260603-fdbdc4",
+        "workflow_id": "fdbdc480-f67b-479a-a0ac-e22379950ed3",
+        "ts": "2026-06-03T00:35:49+00:00",
+        "decision_type": "escalation_vs_autoresolve",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "resolve_or_escalate",
+        "input_facts": {
+          "order_value": 29.49,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 39,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:4433"
+        ],
+        "evidence_freshness_days": "34",
+        "groundedness_score": 0.54,
+        "options_evaluated": [
+          "auto_resolve",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "escalate_for_manual_review",
+        "selection_basis": [
+          "confidence_below_autoresolve_threshold",
+          "routed_to_human_queue"
+        ],
+        "confidence": 0.53,
+        "policy_evaluations": [
+          {
+            "policy_id": "ESCALATION-ROUTING-02",
+            "version": "3.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": false,
+          "approval_status": "not_required",
+          "approver_id": "human-review-349"
+        },
+        "tool_action": {
+          "tool": "",
+          "result": "n/a"
+        },
+        "business_outcome": {
+          "outcome": "escalated_human",
+          "amount": null
+        },
+        "owner": "Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260603-345251",
+        "workflow_id": "34525195-945a-40b3-82fe-e204e9aa1f96",
+        "ts": "2026-06-03T03:57:58+00:00",
+        "decision_type": "guardrail_override",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "proceed_despite_flag",
+        "input_facts": {
+          "order_value": 99.2,
+          "customer_tier": "standard",
+          "claim_age_days": 21,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "order_history_index",
+          "order_history_index:2736"
+        ],
+        "evidence_freshness_days": "30",
+        "groundedness_score": 0.627,
+        "options_evaluated": [
+          "block_action",
+          "proceed_with_override",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "proceed_with_override",
+        "selection_basis": [
+          "action_flagged_by_policy",
+          "proceeded_without_required_review",
+          "flagged_for_post_hoc_audit"
+        ],
+        "confidence": 0.62,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "bypass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "auto_approved_no_review",
+          "approver_id": ""
+        },
+        "tool_action": {
+          "tool": "address_update",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260603-5c32e0",
+        "workflow_id": "5c32e086-7b67-451a-b15c-ba51f77774de",
+        "ts": "2026-06-03T06:21:13+00:00",
+        "decision_type": "guardrail_override",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "proceed_despite_flag",
+        "input_facts": {
+          "order_value": 447.06,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 14,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:5827"
+        ],
+        "evidence_freshness_days": "45",
+        "groundedness_score": 0.75,
+        "options_evaluated": [
+          "block_action",
+          "proceed_with_override",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "proceed_with_override",
+        "selection_basis": [
+          "action_flagged_by_policy",
+          "proceeded_without_required_review",
+          "flagged_for_post_hoc_audit"
+        ],
+        "confidence": 0.72,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "bypass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "auto_approved_no_review",
+          "approver_id": ""
+        },
+        "tool_action": {
+          "tool": "address_update",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "escalated_human",
+          "amount": null
+        },
+        "owner": "Cyber Security + Responsible AI/Risk",
+        "risk_tier": "high"
+      },
+      {
+        "decision_id": "DEC-20260603-84f1a4",
+        "workflow_id": "84f1a4f3-6201-44cf-8ca2-9d222a44848a",
+        "ts": "2026-06-03T07:41:14+00:00",
+        "decision_type": "guardrail_override",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "proceed_despite_flag",
+        "input_facts": {
+          "order_value": 155.07,
+          "customer_tier": "standard",
+          "claim_age_days": 29,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "order_history_index",
+          "order_history_index:8641"
+        ],
+        "evidence_freshness_days": "26",
+        "groundedness_score": 0.72,
+        "options_evaluated": [
+          "block_action",
+          "proceed_with_override",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "proceed_with_override",
+        "selection_basis": [
+          "action_flagged_by_policy",
+          "proceeded_without_required_review",
+          "flagged_for_post_hoc_audit"
+        ],
+        "confidence": 0.69,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "bypass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "auto_approved_no_review",
+          "approver_id": ""
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260603-18513f",
+        "workflow_id": "18513fb7-b09e-408d-97ea-1e837f451f91",
+        "ts": "2026-06-03T14:29:20+00:00",
+        "decision_type": "guardrail_override",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "proceed_despite_flag",
+        "input_facts": {
+          "order_value": 451.75,
+          "customer_tier": "standard",
+          "claim_age_days": 39,
+          "channel": "ivr_handoff"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:9537"
+        ],
+        "evidence_freshness_days": "22",
+        "groundedness_score": 0.65,
+        "options_evaluated": [
+          "block_action",
+          "proceed_with_override",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "proceed_with_override",
+        "selection_basis": [
+          "action_flagged_by_policy",
+          "proceeded_without_required_review",
+          "flagged_for_post_hoc_audit"
+        ],
+        "confidence": 0.64,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "bypass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "auto_approved_no_review",
+          "approver_id": ""
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260603-c8ff43",
+        "workflow_id": "c8ff4316-1531-4508-ac7d-2f492d63ceeb",
+        "ts": "2026-06-03T17:33:16+00:00",
+        "decision_type": "escalation_vs_autoresolve",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "resolve_or_escalate",
+        "input_facts": {
+          "order_value": 228.79,
+          "customer_tier": "loyalty_silver",
+          "claim_age_days": 32,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "order_history_index",
+          "order_history_index:5360"
+        ],
+        "evidence_freshness_days": "5",
+        "groundedness_score": 0.765,
+        "options_evaluated": [
+          "auto_resolve",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "escalate_for_manual_review",
+        "selection_basis": [
+          "confidence_below_autoresolve_threshold",
+          "routed_to_human_queue"
+        ],
+        "confidence": 0.78,
+        "policy_evaluations": [
+          {
+            "policy_id": "ESCALATION-ROUTING-02",
+            "version": "3.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": false,
+          "approval_status": "not_required",
+          "approver_id": "human-review-417"
+        },
+        "tool_action": {
+          "tool": "",
+          "result": "n/a"
+        },
+        "business_outcome": {
+          "outcome": "escalated_human",
+          "amount": null
+        },
+        "owner": "Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260603-49b44c",
+        "workflow_id": "49b44cf8-b577-40ff-bab8-9288ba57fe44",
+        "ts": "2026-06-03T18:43:02+00:00",
+        "decision_type": "guardrail_override",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "proceed_despite_flag",
+        "input_facts": {
+          "order_value": 157.68,
+          "customer_tier": "loyalty_silver",
+          "claim_age_days": 38,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:6776"
+        ],
+        "evidence_freshness_days": "2",
+        "groundedness_score": 0.639,
+        "options_evaluated": [
+          "block_action",
+          "proceed_with_override",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "proceed_with_override",
+        "selection_basis": [
+          "action_flagged_by_policy",
+          "proceeded_without_required_review",
+          "flagged_for_post_hoc_audit"
+        ],
+        "confidence": 0.65,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "bypass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "auto_approved_no_review",
+          "approver_id": ""
+        },
+        "tool_action": {
+          "tool": "address_update",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260603-bd152d",
+        "workflow_id": "bd152dab-464f-430d-bd09-876980ef3275",
+        "ts": "2026-06-03T19:57:22+00:00",
+        "decision_type": "escalation_vs_autoresolve",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "resolve_or_escalate",
+        "input_facts": {
+          "order_value": 65.43,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 33,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:2047"
+        ],
+        "evidence_freshness_days": "29",
+        "groundedness_score": 0.797,
+        "options_evaluated": [
+          "auto_resolve",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "escalate_for_manual_review",
+        "selection_basis": [
+          "confidence_below_autoresolve_threshold",
+          "routed_to_human_queue"
+        ],
+        "confidence": 0.79,
+        "policy_evaluations": [
+          {
+            "policy_id": "ESCALATION-ROUTING-02",
+            "version": "3.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": false,
+          "approval_status": "not_required",
+          "approver_id": "human-review-418"
+        },
+        "tool_action": {
+          "tool": "",
+          "result": "n/a"
+        },
+        "business_outcome": {
+          "outcome": "escalated_human",
+          "amount": null
+        },
+        "owner": "Product Owner",
+        "risk_tier": "low"
+      },
+      {
+        "decision_id": "DEC-20260603-d051ff",
+        "workflow_id": "d051ff43-e2f2-4f88-9200-e5d8c91e0df9",
+        "ts": "2026-06-03T21:53:45+00:00",
+        "decision_type": "guardrail_override",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "proceed_despite_flag",
+        "input_facts": {
+          "order_value": 183.15,
+          "customer_tier": "loyalty_silver",
+          "claim_age_days": 14,
+          "channel": "mobile_app"
+        },
+        "evidence_refs": [
+          "order_history_index",
+          "order_history_index:4949"
+        ],
+        "evidence_freshness_days": "41",
+        "groundedness_score": 0.786,
+        "options_evaluated": [
+          "block_action",
+          "proceed_with_override",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "proceed_with_override",
+        "selection_basis": [
+          "action_flagged_by_policy",
+          "proceeded_without_required_review",
+          "flagged_for_post_hoc_audit"
+        ],
+        "confidence": 0.78,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "bypass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "approved",
+          "approver_id": ""
+        },
+        "tool_action": {
+          "tool": "refund_issue",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260604-b24ae2",
+        "workflow_id": "b24ae23b-cf53-42e2-91ae-1b594e8784d1",
+        "ts": "2026-06-04T04:57:30+00:00",
+        "decision_type": "escalation_vs_autoresolve",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "resolve_or_escalate",
+        "input_facts": {
+          "order_value": 382.64,
+          "customer_tier": "loyalty_silver",
+          "claim_age_days": 12,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "order_history_index",
+          "order_history_index:6737"
+        ],
+        "evidence_freshness_days": "12",
+        "groundedness_score": 0.896,
+        "options_evaluated": [
+          "auto_resolve",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "escalate_for_manual_review",
+        "selection_basis": [
+          "confidence_below_autoresolve_threshold",
+          "routed_to_human_queue"
+        ],
+        "confidence": 0.91,
+        "policy_evaluations": [
+          {
+            "policy_id": "ESCALATION-ROUTING-02",
+            "version": "3.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": false,
+          "approval_status": "not_required",
+          "approver_id": "human-review-497"
+        },
+        "tool_action": {
+          "tool": "",
+          "result": "n/a"
+        },
+        "business_outcome": {
+          "outcome": "escalated_human",
+          "amount": null
+        },
+        "owner": "Product Owner",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260604-845926",
+        "workflow_id": "845926b8-5aec-44c2-9be8-7ca846a2f1de",
+        "ts": "2026-06-04T09:41:52+00:00",
+        "decision_type": "guardrail_override",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "proceed_despite_flag",
+        "input_facts": {
+          "order_value": 133.39,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 11,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:7186"
+        ],
+        "evidence_freshness_days": "4",
+        "groundedness_score": 0.725,
+        "options_evaluated": [
+          "block_action",
+          "proceed_with_override",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "proceed_with_override",
+        "selection_basis": [
+          "action_flagged_by_policy",
+          "proceeded_without_required_review",
+          "flagged_for_post_hoc_audit"
+        ],
+        "confidence": 0.71,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "bypass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "auto_approved_no_review",
+          "approver_id": ""
+        },
+        "tool_action": {
+          "tool": "address_update",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260604-ec5bc8",
+        "workflow_id": "ec5bc846-739b-4ec5-8f49-76e9745d69a8",
+        "ts": "2026-06-04T09:48:17+00:00",
+        "decision_type": "escalation_vs_autoresolve",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "resolve_or_escalate",
+        "input_facts": {
+          "order_value": 478.44,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 25,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:6454"
+        ],
+        "evidence_freshness_days": "1",
+        "groundedness_score": 0.566,
+        "options_evaluated": [
+          "auto_resolve",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "escalate_for_manual_review",
+        "selection_basis": [
+          "confidence_below_autoresolve_threshold",
+          "routed_to_human_queue"
+        ],
+        "confidence": 0.55,
+        "policy_evaluations": [
+          {
+            "policy_id": "ESCALATION-ROUTING-02",
+            "version": "3.0",
+            "result": "pass"
+          }
+        ],
+        "authority": {
+          "approval_required": false,
+          "approval_status": "not_required",
+          "approver_id": "human-review-274"
+        },
+        "tool_action": {
+          "tool": "",
+          "result": "n/a"
+        },
+        "business_outcome": {
+          "outcome": "escalated_human",
+          "amount": null
+        },
+        "owner": "Product Owner",
+        "risk_tier": "low"
+      },
+      {
+        "decision_id": "DEC-20260605-ecf1bd",
+        "workflow_id": "ecf1bd1a-592c-4630-8e66-23f1fb654977",
+        "ts": "2026-06-05T13:22:02+00:00",
+        "decision_type": "guardrail_override",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "proceed_despite_flag",
+        "input_facts": {
+          "order_value": 341.85,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 36,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "returns_policy_kb",
+          "returns_policy_kb:3819"
+        ],
+        "evidence_freshness_days": "6",
+        "groundedness_score": 0.949,
+        "options_evaluated": [
+          "block_action",
+          "proceed_with_override",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "proceed_with_override",
+        "selection_basis": [
+          "action_flagged_by_policy",
+          "proceeded_without_required_review",
+          "flagged_for_post_hoc_audit"
+        ],
+        "confidence": 0.92,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "bypass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "auto_approved_no_review",
+          "approver_id": ""
+        },
+        "tool_action": {
+          "tool": "address_update",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Responsible AI/Risk",
+        "risk_tier": "medium"
+      },
+      {
+        "decision_id": "DEC-20260605-5f7d5c",
+        "workflow_id": "5f7d5cb5-0c25-4c1b-9737-de7340bd55a4",
+        "ts": "2026-06-05T18:44:32+00:00",
+        "decision_type": "guardrail_override",
+        "actor_name": "retail-support-agent",
+        "actor_version": "2.4.1",
+        "objective": "proceed_despite_flag",
+        "input_facts": {
+          "order_value": 402.61,
+          "customer_tier": "loyalty_gold",
+          "claim_age_days": 33,
+          "channel": "web_chat"
+        },
+        "evidence_refs": [
+          "faq_kb",
+          "faq_kb:4675"
+        ],
+        "evidence_freshness_days": "24",
+        "groundedness_score": 0.749,
+        "options_evaluated": [
+          "block_action",
+          "proceed_with_override",
+          "escalate_for_manual_review"
+        ],
+        "selected_action": "proceed_with_override",
+        "selection_basis": [
+          "action_flagged_by_policy",
+          "proceeded_without_required_review",
+          "flagged_for_post_hoc_audit"
+        ],
+        "confidence": 0.75,
+        "policy_evaluations": [
+          {
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL",
+            "version": "1.0",
+            "result": "bypass"
+          }
+        ],
+        "authority": {
+          "approval_required": true,
+          "approval_status": "auto_approved_no_review",
+          "approver_id": ""
+        },
+        "tool_action": {
+          "tool": "address_update",
+          "result": "success"
+        },
+        "business_outcome": {
+          "outcome": "resolved",
+          "amount": null
+        },
+        "owner": "Cyber Security + Responsible AI/Risk",
+        "risk_tier": "medium"
+      }
+    ]
+  },
   "source": "synthetic"
 }

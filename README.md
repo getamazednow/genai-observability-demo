@@ -27,7 +27,7 @@ Three storylines are deliberately seeded into the data so the dashboards show a 
 
 ## What's in the dashboard
 
-All 7 dashboards from the addendum's Datadog pack, starting from the catalogue's own "practical dashboards to build" shortlist (the first 3) and extending through the rest:
+All 7 dashboards from the addendum's Datadog pack (plus an 8th — Decision Trace — added to expose first-class decision tracing), starting from the catalogue's own "practical dashboards to build" shortlist (the first 3) and extending through the rest:
 
 1. **Executive AI Health** — workflow volume, success rate, cost per successful workflow, monthly run-rate, estimated cost avoidance vs. a human-handled equivalent, P95 latency, incident log, policy violations.
 2. **Engineering Operations** — latency decomposed by layer (model/retrieval/tool), P50/P95/P99 trend, error/retry rate, rate-limit events, agent loop events, a representative single-trace waterfall.
@@ -36,6 +36,7 @@ All 7 dashboards from the addendum's Datadog pack, starting from the catalogue's
 5. **Agent Behaviour** — average steps/tool calls per workflow, tool-call mix, escalation rate, tool-call success rate as a tool-selection-quality proxy.
 6. **RAG & Grounding** — retrieval hit rate, groundedness, citation accuracy, hallucination rate, abstention rate, source freshness.
 7. **Release & Evaluation** — regression pass rate, golden-set accuracy, canary health, and the release/rollback log.
+8. **Decision Trace** — consequential agent decisions promoted to first-class, inspectable records: evidence, options evaluated, selection basis, policy result, authority and business outcome, correlated by `workflow_id`. Explainability and authority coverage metrics, decisions-by-type, daily decisions vs. guardrail overrides, and a searchable decision table. Implements the [decision-tracing capability](docs/decision-contract.md); rationale/confidence shown are **illustrative synthetic values** (agent-emitted in production, never back-filled).
 
 Dashboards 6 and 7 are the ones worth reading the fine print on: their quality scores (groundedness, citation accuracy, hallucination flags, regression pass rate, golden-set accuracy) are generated as a **synthetic evaluation-harness series**, independent of the raw request spans — deliberately, because that's how a real implementation works too (evals run on a schedule against sampled traffic, not inline on every request). See [`docs/datadog-mapping.md`](docs/datadog-mapping.md) for the full caveat.
 

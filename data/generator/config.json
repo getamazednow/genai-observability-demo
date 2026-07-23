@@ -51,6 +51,39 @@
       "volume": { "base_daily": 140, "growth_per_day": 2, "weekend_dip_factor": 0.7, "jitter": 15 },
       "escalation_rate": { "normal": 0.06, "spike": 0.11 },
 
+      "_decisions_comment": "Promotes consequential agent choices to first-class decision records (docs/decision-contract.md). Emitted into decision_span.csv on a SEPARATE RNG stream so existing workflow/span numbers reproduce byte-for-byte. selection_basis and confidence are ILLUSTRATIVE synthetic values in this mock -- in production they must be emitted by the agent/orchestrator, never back-filled (see decision-contract.md §5).",
+      "decisions": {
+        "enabled": true,
+        "types": {
+          "refund_eligibility": {
+            "trigger_tool": "refund_issue",
+            "objective": "approve_customer_refund",
+            "options": ["reject_refund", "approve_standard_refund", "escalate_for_manual_review"],
+            "owner": "Product Owner + Responsible AI/Risk",
+            "policy_id": "RETURNS-AUTO-APPROVAL-04", "policy_version": "7.2"
+          },
+          "high_risk_tool_invocation": {
+            "trigger_tools": ["address_update", "loyalty_credit"],
+            "objective": "execute_account_mutation",
+            "options": ["proceed_with_action", "request_human_approval", "decline_action"],
+            "owner": "Cyber Security + Product Owner",
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL", "policy_version": "1.0"
+          },
+          "escalation_vs_autoresolve": {
+            "objective": "resolve_or_escalate",
+            "options": ["auto_resolve", "escalate_for_manual_review"],
+            "owner": "Product Owner",
+            "policy_id": "ESCALATION-ROUTING-02", "policy_version": "3.0"
+          },
+          "guardrail_override": {
+            "objective": "proceed_despite_flag",
+            "options": ["block_action", "proceed_with_override", "escalate_for_manual_review"],
+            "owner": "Cyber Security + Responsible AI/Risk",
+            "policy_id": "HIGH-RISK-ACTION-APPROVAL", "policy_version": "1.0"
+          }
+        }
+      },
+
       "storylines": {
         "release_regression": {
           "enabled": true, "day_start": 7, "day_end": 8,

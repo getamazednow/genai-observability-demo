@@ -92,6 +92,34 @@ Entirely `gen_ai.demo.guardrail.*` (`policy_name`, `policy_version`, `evaluator`
 `score`, `threshold`, `allow_block_escalate`, `reason_code`, `reviewer_id`).
 No semconv equivalent; deliberate — policy decisions are recorded, not implemented.
 
+### decision_span.csv ← spans with `gen_ai.operation.name` = `decision` (custom op)
+
+Promotes a consequential agent decision to a first-class, inspectable record (see
+[`decision-contract.md`](decision-contract.md)). Entirely `gen_ai.demo.decision.*`;
+no semconv equivalent — decision tracing is not yet covered by the GenAI conventions.
+Correlated to its workflow trace, retrieval/policy/tool spans and outcome by `workflow_id`
+(= `trace_id`). The JSON-valued attributes carry structured sub-objects as strings.
+
+| CSV column | OTel source (`gen_ai.demo.decision.*`) | Notes |
+|---|---|---|
+| `decision_id` | `.decision_id` | stable key, correlates to the workflow trace |
+| `decision_type` | `.decision_type` | `refund_eligibility` \| `high_risk_tool_invocation` \| `escalation_vs_autoresolve` \| `guardrail_override` |
+| `actor_type` / `actor_name` / `actor_version` | `.actor_*` | who/what decided, and the version (for replay) |
+| `objective` | `.objective` | what the decision was trying to achieve |
+| `input_facts` | `.input_facts` (JSON string) | redaction class applies before emission |
+| `evidence_refs` / `evidence_freshness_days` / `groundedness_score` | `.evidence_*`, `.groundedness_score` | references correlated `retrieve` spans |
+| `options_evaluated` / `selected_action` / `selection_basis` | `.options_evaluated`, `.selected_action`, `.selection_basis` (JSON) | **the choice fields** — structured basis, NOT chain-of-thought |
+| `confidence` | `.confidence` | agent-emitted in production; illustrative in the mock — never back-filled by the pipeline |
+| `policy_evaluations` | `.policy_evaluations` (JSON) | `{policy_id, version, result}` — correlates to guardrail spans |
+| `authority` | `.authority` (JSON) | `{approval_required, approval_status, approver_id}` — correlates to tool approval |
+| `tool_action` / `business_outcome` | `.tool_action`, `.business_outcome` (JSON) | closes the loop to the tool call and business result |
+| `owner` / `risk_tier` | `.owner`, `.risk_tier` | accountable function; inherited risk tier |
+
+**Rule 0 applies:** platform SDKs will not emit `gen_ai.demo.decision.*` — the agent/orchestrator
+must set these at the application level. `selection_basis` and `confidence` are the two fields most
+easily faked; the governance rule (decision-contract.md §5) is that they are emitted by the agent or a
+dedicated rationale-summariser, never synthesised by the observability layer to look complete.
+
 ### incident_event.csv / release_event.csv — not span data
 
 These are **events**, not traces: in production they come from the incident tooling

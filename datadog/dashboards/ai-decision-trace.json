@@ -1,0 +1,82 @@
+{
+  "title": "AI Decision Trace — Order Support & Returns Assistant",
+  "description": "Template dashboard (import via Datadog UI/API). Promotes consequential agent decisions to first-class, inspectable records: evidence, options, selection basis, policy result, authority and business outcome. Implements the decision-tracing capability in docs/decision-contract.md. Rationale and confidence are agent-emitted in production, never back-filled by the observability layer. Adapt metric/facet names to your actual instrumentation — see ../README.md.",
+  "layout_type": "ordered",
+  "status": "implemented_in_demo",
+  "widgets": [
+    {
+      "definition": {
+        "type": "note",
+        "content": "**Decision tracing** answers *why the agent selected this action from the alternatives available to it* — distinct from execution tracing (what ran) on the other dashboards. Each decision span (`genai.decision.*`) is correlated to its workflow trace, retrieval/policy/tool spans and business outcome by `workflow_id`. Rationale (`selection_basis`) is a structured, externally-inspectable summary — NOT model chain-of-thought (see docs/decision-contract.md §5)."
+      }
+    },
+    {
+      "definition": {
+        "type": "query_value",
+        "title": "Decisions traced (consequential)",
+        "requests": [{ "q": "sum:genai.decision.count{use_case:order_support_returns_assistant}.as_count()" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "query_value",
+        "title": "Explainability coverage % (decisions with basis + evidence)",
+        "requests": [{ "q": "100 * sum:genai.decision.count{explainable:true}.as_count() / sum:genai.decision.count{*}.as_count()" }],
+        "precision": 1
+      }
+    },
+    {
+      "definition": {
+        "type": "query_value",
+        "title": "Authority coverage % (proven authority)",
+        "requests": [{ "q": "100 * sum:genai.decision.count{authority_proven:true}.as_count() / sum:genai.decision.count{*}.as_count()" }],
+        "precision": 1
+      }
+    },
+    {
+      "definition": {
+        "type": "query_value",
+        "title": "Guardrail overrides (proceeded without required review)",
+        "requests": [{ "q": "sum:genai.decision.count{policy_result:bypass}.as_count()" }],
+        "conditional_formats": [{ "comparator": ">", "value": 0, "palette": "white_on_red" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Decisions by type",
+        "requests": [{ "q": "sum:genai.decision.count{*} by {decision_type}.as_count()", "display_type": "bars" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Decisions traced vs. guardrail overrides — daily",
+        "requests": [
+          { "q": "sum:genai.decision.count{*}.as_count()", "display_type": "bars" },
+          { "q": "sum:genai.decision.count{policy_result:bypass}.as_count()", "display_type": "line" }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "toplist",
+        "title": "Selected action distribution",
+        "requests": [{ "q": "top(sum:genai.decision.count{*} by {selected_action}.as_count(), 10, 'sum', 'desc')" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "toplist",
+        "title": "Decisions by accountable owner",
+        "requests": [{ "q": "top(sum:genai.decision.count{*} by {owner}.as_count(), 10, 'sum', 'desc')" }]
+      }
+    },
+    {
+      "definition": {
+        "type": "note",
+        "content": "**Investigator workflow:** filter to a `decision_type` (e.g. `refund_eligibility`), open a decision span, and read its `options_evaluated`, `selected_action`, `selection_basis`, `policy_evaluations`, `authority` and `business_outcome` attributes in one view — the first-class decision record. In the static demo this is the **Decision Trace** tab (`dashboard/`). Not yet modelled: cross-version decision replay/comparison (decision-contract.md P2)."
+      }
+    }
+  ]
+}

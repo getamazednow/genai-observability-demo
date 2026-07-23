@@ -36,6 +36,7 @@ HEADERS = {
     "retrieval_span.csv": "workflow_id,ts,retriever,index,query_type,top_k,source_ids,source_authority,source_freshness_days,retrieval_latency_ms,relevance_score,retrieval_cost_usd,retrieval_hit,groundedness_score,citation_accuracy_score,hallucination_flag,abstention_flag",
     "tool_span.csv": "workflow_id,ts,tool_name,tool_version,action_type,read_or_write,risk_class,approval_required,approval_status,latency_ms,status,error_type,cost_usd",
     "guardrail_span.csv": "workflow_id,ts,policy_name,policy_version,evaluator,score,threshold,allow_block_escalate,reason_code,reviewer_id",
+    "decision_span.csv": "decision_id,workflow_id,ts,decision_type,actor_type,actor_name,actor_version,objective,input_facts,evidence_refs,evidence_freshness_days,groundedness_score,options_evaluated,selected_action,selection_basis,confidence,policy_evaluations,authority,tool_action,business_outcome,owner,risk_tier",
     "incident_event.csv": "incident_id,severity,detected_ts,resolved_ts,affected_workflows,affected_users,root_cause_category,linked_trace_ids,detection_source,mitigation,recurrence_flag",
     "release_event.csv": "event_id,event_type,ts,artefact,from_version,to_version,golden_set_accuracy_pct,regression_test_pass_rate_pct,canary_health,notes",
 }
@@ -105,6 +106,8 @@ def main():
                 children["retrieval"].append((a, span))
             elif op == "guardrail":
                 children["guardrail"].append((a, span))
+            elif op == "decision":
+                children["decision"].append((a, span))
         if root is None:
             continue
 
@@ -163,6 +166,22 @@ def main():
                 g(a, p + "policy_version"), g(a, p + "evaluator"), g(a, p + "score", 0),
                 g(a, p + "threshold", 0), g(a, p + "allow_block_escalate"),
                 g(a, p + "reason_code"), g(a, p + "reviewer_id"),
+            ])
+        for a, s in children["decision"]:
+            p = "gen_ai.demo.decision."
+            # JSON-valued attributes (input_facts, evidence_refs, options_evaluated, selection_basis,
+            # policy_evaluations, authority, tool_action, business_outcome) pass through as strings —
+            # the same shape the synthetic generator writes and the aggregator json.loads back.
+            rows["decision_span.csv"].append([
+                g(a, p + "decision_id"), trace_id, iso(s["startTimeUnixNano"]),
+                g(a, p + "decision_type"), g(a, p + "actor_type"), g(a, p + "actor_name"),
+                g(a, p + "actor_version"), g(a, p + "objective"), g(a, p + "input_facts"),
+                g(a, p + "evidence_refs"), g(a, p + "evidence_freshness_days", 0),
+                g(a, p + "groundedness_score", 0), g(a, p + "options_evaluated"),
+                g(a, p + "selected_action"), g(a, p + "selection_basis"),
+                g(a, p + "confidence", 0), g(a, p + "policy_evaluations"),
+                g(a, p + "authority"), g(a, p + "tool_action"), g(a, p + "business_outcome"),
+                g(a, p + "owner"), g(a, p + "risk_tier"),
             ])
 
     for name, header in HEADERS.items():

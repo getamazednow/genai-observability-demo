@@ -13,12 +13,13 @@ Source: *AI Observability — Datadog Implementation Addendum* — an internal s
 | **Retrieval span** | `retriever, index, query_type, top_k, source_ids, source_authority, source_freshness, retrieval_latency, relevance_score` | Same field set | `data/synthetic/raw/retrieval_span.csv` |
 | **Tool span** | `tool_name, tool_version, action_type, read_or_write, risk_class, approval_required, approval_status, latency, status, error_type` | Same field set + a `cost_usd` field (tool/API cost) | `data/synthetic/raw/tool_span.csv` |
 | **Guardrail/evaluation span** | `policy_name, policy_version, evaluator, score, threshold, allow_block_escalate, reason_code, reviewer_id` | Same field set | `data/synthetic/raw/guardrail_span.csv` |
+| **Decision record** *(not in the original addendum table — added here per [`decision-contract.md`](decision-contract.md))* | `decision_id, decision_type, actor, objective, input_facts, evidence_refs, options_evaluated, selected_action, selection_basis, confidence, policy_evaluations, authority, tool_action, business_outcome, owner, risk_tier` | Same field set, one row per consequential decision, correlated by `workflow_id` | `data/synthetic/raw/decision_span.csv` |
 | **Incident event** | `severity, affected_workflows, affected_users, root_cause_category, linked_trace_id, detection_source, mitigation, recurrence_flag` | Same field set | `data/synthetic/raw/incident_event.csv` |
 | **Release/evaluation event** *(not in the original addendum table — added here)* | `event_id, event_type (release\|rollback), artefact, from_version, to_version, golden_set_accuracy_pct, regression_test_pass_rate_pct, canary_health` | New table, models a prompt-version rollout + rollback | `data/synthetic/raw/release_event.csv` |
 
 ## Dashboard pack mapping
 
-The addendum specifies 7 dashboards. **All 7 are now implemented** as tabs in `dashboard/index.html` and as full JSON templates in `datadog/dashboards/`.
+The addendum specifies 7 dashboards. **All 7 are now implemented** as tabs in `dashboard/index.html` and as full JSON templates in `datadog/dashboards/`, plus an **8th — AI Decision Trace** — added to implement the decision-tracing capability ([`decision-contract.md`](decision-contract.md)).
 
 | Datadog dashboard (addendum §7) | Status in this demo | Notes |
 |---|---|---|
@@ -29,10 +30,11 @@ The addendum specifies 7 dashboards. **All 7 are now implemented** as tabs in `d
 | Agent Behaviour and Agency | ✅ Implemented — tab 5 (partial) | Step count, tool-call mix, escalation rate, tool-call success as a tool-selection-accuracy proxy. **Not modelled:** multi-agent handoffs, plan-revision count, critic/evaluator disagreement — this scenario is single-agent |
 | RAG and Grounding Quality | ✅ Implemented — tab 6 (synthetic eval layer) | Retrieval hit rate, groundedness score, citation accuracy, hallucination rate, abstention rate, source freshness. Groundedness/citation-accuracy/hallucination/abstention are modelled as **synthetic evaluation-harness output**, not derived from raw retrieval spans — that distinction is the real architectural point: a production system needs an actual eval pipeline (LLM-as-judge + human review + golden sets) to produce these numbers |
 | AI Release and Evaluation | ✅ Implemented — tab 7 | A seeded prompt v14→v15 release, regression detection, and rollback, with daily regression-pass-rate and golden-set-accuracy series and a release/rollback log |
+| AI Decision Trace *(added — not in the addendum's original pack)* | ✅ Implemented — tab 8 (`ai-decision-trace.json`) | First-class decision records: inspectable record with evidence, options, selection basis, policy result, authority and business outcome; decisions-by-type, daily decisions vs. overrides, and a searchable decision table. Explainability and authority coverage computed from the records. **Rationale/confidence are illustrative in the mock** — agent-emitted in production (`decision-contract.md` §5) |
 
 ## Instrumentation standard
 
-Per the addendum: instrument with Datadog's LLM/Agent Observability SDK where supported, and OpenTelemetry GenAI semantic conventions where cross-vendor portability is preferred. The synthetic span taxonomy in this repo (`workflow / llm / retrieval / tool / guardrail`) mirrors the addendum's recommended span taxonomy (`workflow, agent, llm, retrieval, tool, guardrail, human_review, final_response`) so migrating the generator's field names into either SDK is a direct mapping exercise, not a redesign.
+Per the addendum: instrument with Datadog's LLM/Agent Observability SDK where supported, and OpenTelemetry GenAI semantic conventions where cross-vendor portability is preferred. The synthetic span taxonomy in this repo (`workflow / llm / retrieval / tool / guardrail / decision`) mirrors the addendum's recommended span taxonomy (`workflow, agent, llm, retrieval, tool, guardrail, human_review, final_response`) so migrating the generator's field names into either SDK is a direct mapping exercise, not a redesign.
 
 ## What would change to go from mock → real
 

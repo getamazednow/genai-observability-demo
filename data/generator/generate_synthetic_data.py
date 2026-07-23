@@ -74,6 +74,33 @@ def weighted_choice(rnd, options_weights):
     return rnd.choices(options, weights=weights)[0]
 
 
+def build_selection_basis(dtype, selected, order_value, claim_age, groundedness, drnd):
+    """Structured, externally-inspectable reasons for the selected action.
+    NOT a dump of model chain-of-thought (see docs/decision-contract.md §5.1):
+    each item is a short grounded fact/flag an auditor can verify."""
+    if dtype == "refund_eligibility":
+        if selected == "approve_standard_refund":
+            b = ["damaged_item_confirmed", f"claim_within_30_day_window={claim_age <= 30}",
+                 f"order_value_below_auto_limit={order_value < 300}"]
+        elif selected == "reject_refund":
+            b = ["policy_condition_not_met", f"claim_age_days={claim_age}"]
+        else:
+            b = [f"order_value_above_auto_limit={order_value >= 300}", "requires_human_judgement"]
+    elif dtype == "high_risk_tool_invocation":
+        if selected == "proceed_with_action":
+            b = ["identity_verified", "action_within_agent_authority", f"groundedness={groundedness}"]
+        elif selected == "request_human_approval":
+            b = ["high_risk_write_action", "approval_policy_requires_review"]
+        else:
+            b = ["preconditions_not_satisfied", "declined_by_policy"]
+    elif dtype == "escalation_vs_autoresolve":
+        b = ["confidence_below_autoresolve_threshold", "routed_to_human_queue"] if selected == "escalate_for_manual_review" \
+            else ["sufficient_evidence", "within_autoresolve_policy"]
+    else:  # guardrail_override
+        b = ["action_flagged_by_policy", "proceeded_without_required_review", "flagged_for_post_hoc_audit"]
+    return b
+
+
 def generate_scenario(scenario, global_cfg, start_date, days, rows):
     """Generates all spans/rows for one use-case scenario and appends them
     into the shared `rows` dict of lists (additive across scenarios)."""
@@ -200,11 +227,13 @@ def generate_scenario(scenario, global_cfg, start_date, days, rows):
             hallucination_flag = (groundedness < 0.55 and rnd.random() < 0.15) or rnd.random() < 0.004
             abstention_flag = (not hallucination_flag) and groundedness < 0.4 and rnd.random() < 0.30
 
+            source_ids_this_wf = f"{retriever}:{rnd.randint(1000,9999)}"
+            source_freshness_this_wf = rnd.randint(0, 45)
             rows["retrieval"].append(dict(
                 workflow_id=workflow_id, ts=ts.isoformat(), retriever=retriever, index=retriever,
                 query_type=query_type, top_k=5,
-                source_ids=f"{retriever}:{rnd.randint(1000,9999)}", source_authority="approved",
-                source_freshness_days=rnd.randint(0, 45),
+                source_ids=source_ids_this_wf, source_authority="approved",
+                source_freshness_days=source_freshness_this_wf,
                 retrieval_latency_ms=retrieval_latency, relevance_score=relevance,
                 retrieval_cost_usd=retrieval_cost, retrieval_hit=retrieval_hit,
                 groundedness_score=groundedness, citation_accuracy_score=citation_accuracy,
@@ -267,6 +296,10 @@ def generate_scenario(scenario, global_cfg, start_date, days, rows):
             total_tool_cost = 0.0
             high_risk_without_approval = False
             tool_errors_this_wf = 0
+            write_tool_name = None
+            write_tool_status = None
+            write_tool_approval_required = False
+            write_tool_approval_status = None
             for _ in range(n_tools):
                 tool = rnd.choice(tools)
                 approval_required = tool["risk_class"] in ("medium", "high")
@@ -288,6 +321,11 @@ def generate_scenario(scenario, global_cfg, start_date, days, rows):
                     approval_required=approval_required, approval_status=approval_status,
                     latency_ms=latency, status=status, error_type=error_type, cost_usd=tool_cost
                 ))
+                if tool["read_or_write"] == "write" and write_tool_name is None:
+                    write_tool_name = tool["name"]
+                    write_tool_status = status
+                    write_tool_approval_required = approval_required
+                    write_tool_approval_status = approval_status
                 if status == "error":
                     tool_errors_this_wf += 1
                 total_tool_latency += latency
@@ -351,6 +389,90 @@ def generate_scenario(scenario, global_cfg, start_date, days, rows):
                 llm_call_count=n_llm_calls, tool_call_count=tool_call_count,
                 step_count=step_count, loop_count=loop_count
             ))
+
+            # ---- Decision record (first-class decision object) ----
+            # Emitted on a SEPARATE RNG stream (drnd) keyed by workflow_id so it never
+            # perturbs the main `rnd` sequence -- existing CSV numbers reproduce exactly.
+            # Only *consequential* workflows (a write action, an override, or an escalation)
+            # produce a decision; pure read/execution workflows do not (decision-contract.md §2).
+            dcfg = scenario.get("decisions", {})
+            if dcfg.get("enabled"):
+                dtypes = dcfg.get("types", {})
+                dtype = None
+                if high_risk_without_approval and "guardrail_override" in dtypes:
+                    dtype = "guardrail_override"
+                elif write_tool_name == "refund_issue" and "refund_eligibility" in dtypes:
+                    dtype = "refund_eligibility"
+                elif write_tool_name in ("address_update", "loyalty_credit") and "high_risk_tool_invocation" in dtypes:
+                    dtype = "high_risk_tool_invocation"
+                elif escalated and "escalation_vs_autoresolve" in dtypes:
+                    dtype = "escalation_vs_autoresolve"
+
+                if dtype:
+                    dspec = dtypes[dtype]
+                    drnd = random.Random(stable_seed(global_cfg.get("random_seed", 42), sid, "decision", workflow_id))
+                    options = dspec.get("options", [])
+
+                    if dtype == "refund_eligibility":
+                        selected = "escalate_for_manual_review" if outcome == "escalated_human" else \
+                            ("reject_refund" if outcome == "blocked_policy" else "approve_standard_refund")
+                    elif dtype == "high_risk_tool_invocation":
+                        selected = "request_human_approval" if outcome == "escalated_human" else \
+                            ("decline_action" if outcome == "blocked_policy" else "proceed_with_action")
+                    elif dtype == "escalation_vs_autoresolve":
+                        selected = "escalate_for_manual_review" if escalated else "auto_resolve"
+                    else:
+                        selected = "proceed_with_override"
+
+                    policy_result = "bypass" if dtype == "guardrail_override" else \
+                        ("fail" if outcome == "blocked_policy" else "pass")
+
+                    approval_required_dec = write_tool_approval_required if write_tool_name else (dtype == "guardrail_override")
+                    approval_status_dec = write_tool_approval_status if write_tool_name else (
+                        "auto_approved_no_review" if dtype == "guardrail_override" else "not_required")
+                    if selected in ("escalate_for_manual_review", "request_human_approval"):
+                        approver_id = f"human-review-{drnd.randint(200, 499)}"
+                    elif policy_result == "bypass":
+                        approver_id = ""  # no reviewer -- precisely the governance signal
+                    elif approval_required_dec:
+                        approver_id = f"ops-approver-{drnd.randint(10, 99)}"
+                    else:
+                        approver_id = ""
+
+                    order_value = round(drnd.uniform(24.0, 480.0), 2)
+                    claim_age = drnd.randint(1, 40)
+                    customer_tier = drnd.choice(["standard", "loyalty_silver", "loyalty_gold"])
+                    input_facts = {"order_value": order_value, "customer_tier": customer_tier,
+                                   "claim_age_days": claim_age, "channel": channel}
+                    basis = build_selection_basis(dtype, selected, order_value, claim_age, groundedness, drnd)
+                    # Illustrative confidence (loosely tracks groundedness). In production this is
+                    # emitted by the agent or a rationale-summariser, never back-filled here.
+                    confidence = round(min(0.99, max(0.4, groundedness * drnd.uniform(0.95, 1.03))), 2)
+                    amount = order_value if (dtype == "refund_eligibility" and selected == "approve_standard_refund") else None
+
+                    rows["decision"].append(dict(
+                        decision_id=f"DEC-{ts.strftime('%Y%m%d')}-{workflow_id[:6]}",
+                        workflow_id=workflow_id, ts=ts.isoformat(), decision_type=dtype,
+                        actor_type="agent", actor_name=ml_app, actor_version=version,
+                        objective=dspec.get("objective", ""),
+                        input_facts=json.dumps(input_facts),
+                        evidence_refs=json.dumps([retriever, source_ids_this_wf]),
+                        evidence_freshness_days=source_freshness_this_wf,
+                        groundedness_score=groundedness,
+                        options_evaluated=json.dumps(options),
+                        selected_action=selected,
+                        selection_basis=json.dumps(basis),
+                        confidence=confidence,
+                        policy_evaluations=json.dumps([{"policy_id": dspec.get("policy_id", ""),
+                                                        "version": dspec.get("policy_version", ""),
+                                                        "result": policy_result}]),
+                        authority=json.dumps({"approval_required": bool(approval_required_dec),
+                                              "approval_status": approval_status_dec,
+                                              "approver_id": approver_id}),
+                        tool_action=json.dumps({"tool": write_tool_name or "", "result": write_tool_status or "n/a"}),
+                        business_outcome=json.dumps({"outcome": outcome, "amount": amount}),
+                        owner=dspec.get("owner", ""), risk_tier=risk_tier,
+                    ))
 
     # ---- Incident events (derived from this scenario's storylines) ----
     if injection_sl.get("enabled") and injection_trace_ids:
@@ -425,7 +547,7 @@ def main():
 
     os.makedirs(RAW_DIR, exist_ok=True)
 
-    rows = dict(workflow=[], llm=[], retrieval=[], tool=[], guardrail=[], incident=[], release=[])
+    rows = dict(workflow=[], llm=[], retrieval=[], tool=[], guardrail=[], decision=[], incident=[], release=[])
 
     enabled_scenarios = [s for s in cfg["scenarios"] if s.get("enabled", True)]
     if not enabled_scenarios:
@@ -439,14 +561,15 @@ def main():
     write_csv(os.path.join(RAW_DIR, "retrieval_span.csv"), rows["retrieval"])
     write_csv(os.path.join(RAW_DIR, "tool_span.csv"), rows["tool"])
     write_csv(os.path.join(RAW_DIR, "guardrail_span.csv"), rows["guardrail"])
+    write_csv(os.path.join(RAW_DIR, "decision_span.csv"), rows["decision"])
     write_csv(os.path.join(RAW_DIR, "incident_event.csv"), rows["incident"])
     write_csv(os.path.join(RAW_DIR, "release_event.csv"), rows["release"])
 
     print(f"scenarios={[s['id'] for s in enabled_scenarios]} days={days} "
           f"workflows={len(rows['workflow'])} llm_spans={len(rows['llm'])} "
           f"retrieval_spans={len(rows['retrieval'])} tool_spans={len(rows['tool'])} "
-          f"guardrail_spans={len(rows['guardrail'])} incidents={len(rows['incident'])} "
-          f"release_events={len(rows['release'])}")
+          f"guardrail_spans={len(rows['guardrail'])} decisions={len(rows['decision'])} "
+          f"incidents={len(rows['incident'])} release_events={len(rows['release'])}")
 
 
 if __name__ == "__main__":

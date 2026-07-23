@@ -50,6 +50,7 @@
   <button class="tab-btn" data-tab="sec">Security &amp; Responsible AI</button>
   <button class="tab-btn" data-tab="cost">Cost &amp; Capacity</button>
   <button class="tab-btn" data-tab="agent">Agent Behaviour</button>
+  <button class="tab-btn" data-tab="decision">Decision Trace</button>
   <button class="tab-btn" data-tab="rag">RAG &amp; Grounding</button>
   <button class="tab-btn" data-tab="release">Release &amp; Evaluation</button>
 </nav>
@@ -228,6 +229,54 @@
         <canvas id="chart-tool-success"></canvas>
         <p class="panel-note">Proxy metric: this demo doesn't model ground-truth "correct tool for intent" labelling, so tool-call success rate stands in for tool-selection accuracy. A real evaluation harness would score selection directly against labelled intents.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ DECISION TRACE ============ -->
+  <section id="tab-decision" class="tab-panel">
+    <div class="kpi-row" id="decision-kpis"></div>
+
+    <details class="info-expander">
+      <summary>Why this view exists — decisions as first-class trace objects</summary>
+      <p class="panel-note" style="margin-top:8px;">
+        Every other tab answers <em>what happened</em>. This one answers <em>why the agent selected this action from the
+        alternatives available to it</em> — the difference between execution tracing and decision tracing. Each record below
+        promotes a consequential choice (refund eligibility, high-risk tool use, escalation, guardrail override) into an
+        inspectable object correlated to its evidence, policy checks, authority and business outcome by <code>workflow_id</code>.
+        <strong>Rationale and confidence shown here are illustrative synthetic values</strong> — in production they must be emitted by the
+        agent, never back-filled (see <code>docs/decision-contract.md</code> §5).
+      </p>
+    </details>
+
+    <div class="panel">
+      <div class="panel-title">
+        Decision record — inspect
+        <select id="decision-picker" class="decision-picker"></select>
+      </div>
+      <div id="decision-detail"></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Decisions by type (30-day total)</div>
+        <canvas id="chart-decisions-by-type" style="max-height:240px;"></canvas>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Daily decisions &amp; guardrail overrides</div>
+        <canvas id="chart-decision-trend"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Decision search — filter by type, action or free text</div>
+      <div class="decision-filters">
+        <select id="decision-filter-type"><option value="">All types</option></select>
+        <select id="decision-filter-action"><option value="">All actions</option></select>
+        <input id="decision-search" type="text" placeholder="Search id, owner, policy, outcome…" />
+        <span id="decision-count" class="pill">—</span>
+      </div>
+      <div class="table-wrap"><table id="decision-table"></table></div>
+      <p class="panel-note">Search covers a representative, balanced sample of decision records (not the full 30-day set) to keep this static demo lightweight; a live Datadog/APM implementation would search every decision span.</p>
     </div>
   </section>
 

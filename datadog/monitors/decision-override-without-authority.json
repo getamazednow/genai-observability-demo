@@ -1,0 +1,13 @@
+{
+  "name": "[GenAI][Order Support Assistant] Consequential decision executed without proven authority",
+  "type": "query alert",
+  "query": "sum(last_5m):sum:genai.decision.count{policy_result:bypass,use_case:order_support_returns_assistant}.as_count() > 0",
+  "message": "A consequential agent decision (guardrail_override) proceeded without the required review/approval — the decision record shows no reviewer in its `authority` field. This is the decision-scoped complement to the tool-level 'high-risk action without approval' monitor: it fires on the DECISION object, giving investigators the full record (evidence, options, selected action, business outcome) not just the tool call. Zero-tolerance governance control. Escalate to Architecture + Responsible AI/Risk. @security-oncall @pagerduty-genai-oncall",
+  "tags": ["service:support-agent-orchestrator", "use_case:order_support_returns_assistant", "team:responsible-ai", "severity:sev1", "capability:decision-tracing"],
+  "options": {
+    "thresholds": { "critical": 0 },
+    "notify_no_data": false,
+    "renotify_interval": 15
+  },
+  "source_ref": "docs/decision-contract.md §5 (governance rules) + §7 (P0 authority record). Complements monitors/high-risk-action-without-approval.json by asserting on the first-class decision record rather than the guardrail span alone."
+}
